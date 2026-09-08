@@ -360,7 +360,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="https://raw.githubusercontent.com/rameliaz/grm-workshop/master/files/exercise.qmd" class="sidebar-item-text sidebar-link">
+  <a href="./files/exercise.qmd?download" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Download <code>quarto</code> exercise</span></a>
   </div>
 </li>
@@ -471,7 +471,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="finding-your-way-around-this-site">Finding your way around this site</h3>
 <ul>
 <li><a href="files/intro.html"><strong>Slide Deck</strong></a> - the content of the talk</li>
-<li><a href="./files/exercise.html"><strong>Download <code>quarto</code> exercise</strong></a>/<a href="files/exercise.Rmd"><strong>Download <code>rmarkdown</code> exercise</strong></a> — the hands-on document, in whichever format suits your setup, to open and run in RStudio</li>
+<li><a href="files/exercise.qmd?download"><strong>Download <code>quarto</code> exercise</strong></a>/<a href="files/exercise.Rmd"><strong>Download <code>rmarkdown</code> exercise</strong></a> — the hands-on document, in whichever format suits your setup, to open and run in RStudio</li>
 <li><a href="files/exercise.html"><strong>Rendered <code>html</code> of the exercise</strong></a> — a read-only walkthrough of the hands-on exercise, handy if you’d rather follow along on screen than run R yourself</li>
 <li><strong>Important link</strong> - the tutorial paper this session is based on, plus further reading
 <ul>
@@ -968,7 +968,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </footer>
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-  document.querySelectorAll('a[href$=".Rmd"]').forEach(function (a) {
+  document.querySelectorAll('a[href$=".Rmd"], a[href*=".qmd"]').forEach(function (a) {
     a.setAttribute("download", "");
   });
 });

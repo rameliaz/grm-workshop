@@ -22,7 +22,7 @@ Day 2 (29 September), 14:45–16:15
 ### Finding your way around this site
 
 - [**Slide Deck**](files/intro.html) - the content of the talk
-- [**Download `quarto` exercise**](files/exercise.qmd)/[**Download `rmarkdown` exercise**](files/exercise.Rmd) — the hands-on document, in whichever format suits your setup, to open and run in RStudio
+- [**Download `quarto` exercise**](files/exercise.qmd?download)/[**Download `rmarkdown` exercise**](files/exercise.Rmd) — the hands-on document, in whichever format suits your setup, to open and run in RStudio
 - [**Rendered `html` of the exercise**](files/exercise.html) — a read-only walkthrough of the hands-on exercise, handy if you'd rather follow along on screen than run R yourself
 - **Important link** - the tutorial paper this session is based on, plus further reading
     + The tutorial paper: [Zein & Akhtar (2025)](https://onlinelibrary.wiley.com/doi/full/10.1002/ijop.13265).
