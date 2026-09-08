@@ -1,0 +1,478 @@
+---
+title: "Introduction to IRT's Graded Response Model"
+author:
+  - "Dr. Rizqy Amelia Zein"
+institute:
+  - "Research Data & Methods Team, Center for Advanced Internet Studies (CAIS)"
+  - "Department of Psychology, Universitas Airlangga"
+event: ""
+format:
+  cais-revealjs:
+    logo: ../img/Transparent.png
+    footer: "GRM-IRT | Zein | Workshop Itemkonstruktion 2026"
+    auto-stretch: false
+    chalkboard: true
+---
+
+## AGENDA {.agenda-slide}
+<!-- Klasse: .agenda-slide -->
+
+1. What makes IRT different from "default" factor analysis (classical test theory - CTT)?
+2. Meet the IRT family
+3. Item and model parameters of the Graded Response Model (GRM)
+4. Hands-On: Fitting a GRM 
+5. Interpreting model and item parameters
+6. Wrap-up, discussion, and Q&A
+
+## {.section-slide}
+<!-- Zwischentitelfolie 01 -->
+
+::: {.section-number}
+01
+:::
+
+::: {.section-bubble}
+What makes IRT different from CTT? 
+:::
+
+## Three points of divergence {.columns-slide}
+
+::: {.lead}
+Although CTT and IRT share similar fundamental assumptions, they differ in at least three aspects below.
+:::
+
+::: {.columns-area}
+::: {.col-item .text-center}
+[<i class="fa-solid fa-chart-line"></i>]{.col-icon}
+
+### Item-Latent Variable Relationship: Linear vs. Probabilistic
+<br>
+**IRT models the relationship between items and the latent variable using probabilistic function.** <br>
+<br>
+CTT primarily expresses this relationship as a linear term.
+:::
+::: {.col-item .text-center}
+[<i class="fa-solid fa-gauge-high"></i>]{.col-icon}
+
+### Reliability: A "one-for-all" coefficient vs. A spectrum
+<br>
+**IRT allows reliability to vary along with the latent trait spectrum.** <br>
+<br>
+CTT strongly assumes that reliability (thus measurement error) remains similar for the whole sample.
+:::
+::: {.col-item .text-center}
+[<i class="fa-solid fa-scale-balanced"></i>]{.col-icon}
+
+### Invariance: Scale- vs. Item-level
+<br>
+**IRT enables estimation of invariance at both item- (i.e., "differential item functioning" or DIF) and scale-level (i.e., "differential test functioning" or DTF).** <br>
+<br>
+CTT primarily focuses on estimating measurement invariance at the scale-level.
+:::
+:::
+
+## 1️⃣ Linear vs. Probabilistic {.text-slide-bg}
+
+::: {.lead}
+Suppose that we want to measure how much a participant experiences symptoms of depression.
+:::
+
+![](../img/diagrams/1.png){fig-align="center" width="40%"}
+
+## 1️⃣ Linear vs. Probabilistic {.text-slide-bg}
+
+::: {.lead}
+Suppose that we want to measure how much a participant experiences symptoms of depression **using a self-report scale**.
+:::
+
+![](../img/diagrams/2.png){fig-align="center" width="50%"}
+
+## 1️⃣ Linear vs. Probabilistic {.text-slide-bg}
+
+::: {.lead}
+Let us zoom in here.
+:::
+
+![](../img/diagrams/3.png){fig-align="center" width="50%"}
+
+## 1️⃣ Linear vs. Probabilistic {.text-slide-bg}
+
+::: {.lead}
+In CTT terms, every increase in the latent trait (i.e., "Depression") is associated with a constant increase in the expected score on the item. In other words, the latent trait **causes** the observed score (i.e., reflective model).
+:::
+
+![](../img/diagrams/4.png){fig-align="center" width="50%"}
+
+```r
+# In lavaan syntax: '=~' ("is measured by") specifies a reflective model
+# The latent trait (Depression) causes the observed scores on the items:
+model <- '
+  Depression =~ item_1 + item_2 + item_3
+'
+```
+
+## 1️⃣ Linear vs. Probabilistic {.text-slide-bg}
+
+::: {.lead}
+... and because the relationship is linear, it can be expressed as a linear regression equation. This equation is what factor analysis looks like under the hood.
+:::
+
+![](../img/diagrams/5.png){fig-align="center" width="50%"}
+
+$$Item_i = \tau + \lambda \cdot \xi + \delta$$
+
+## 1️⃣ Linear vs. Probabilistic {.text-slide-bg}
+
+![](../img/diagrams/5.png){fig-align="center" width="70%"}
+
+$$Item_i = \tau + \lambda \cdot \xi + \delta$$
+
+::: {.incremental .text-small}
+* $\tau$ (tau) — the item **intercept**: the expected item score when the latent trait is 0.
+* $\lambda$ (lambda) — the **factor loading**: how much the item is expected to change per one-unit change in the latent trait. This is our regression *slope*.
+* $\xi$ (xi) — the **latent variable** itself, here playing the role of the predictor.
+* $\delta$ (delta) — the **residual/unique factor**: the part of the item's variance not explained by the latent trait (measurement error + item-specific variance).
+:::
+
+::: {.callout-warning}
+### BUT CFA can be nonlinear too
+Standard CFA assumes continuous items and a strictly linear relationship. When items are **ordinal** or **categorical**, CFA can incorporate thresholds and non-linear link functions (e.g., categorical CFA via `WLSMV`, [see details here](https://lavaan.ugent.be/tutorial/est.html)) which, mathematically, is closely related to polytomous IRT.
+:::
+
+## 1️⃣ Linear vs. Probabilistic {.text-slide-bg}
+
+::: {.lead}
+In contrast, IRT models this relationship as a **probabilistic function**, so the relationship between the latent trait and the observed score is non-linear.
+:::
+
+::: columns
+::: {.column width="55%"}
+![](../img/diagrams/icc_sigmoid.png){fig-align="center"}
+:::
+
+::: {.column width="45%"}
+$$P(X_i = 1 \mid \theta) = \frac{1}{1 + e^{-a_i(\theta - b_i)}}$$
+
+. . .
+
+::: {.incremental}
+* $\theta$ (theta) — the **latent trait** of the participant (predictor, *analogous to* $\xi$ in CFA).
+* $b_i$ — the item **difficulty/threshold**: the trait level where the probability of endorsement is 50% ($P = 0.50$).
+* $a_i$ — the item **discrimination**: the slope at the inflection point, showing how sharply the item differentiates (*analogous to* loading $\lambda$ in CFA).
+:::
+:::
+:::
+
+## 2️⃣ Single Reliability Coefficient vs. A Spectrum {.text-slide-bg}
+
+::: {.lead}
+CTT gives **one** reliability coefficient for the whole sample.
+:::
+
+::: {.content-box}
+::: {.incremental}
+- It assumes measurement error is the same for everyone, regardless of their trait level.
+- A discrimination-experience scale might sharply distinguish people with *very high* exposure, but tell us almost nothing about people in the moderate range.
+  + In some contexts, this is exactly where policy-relevant nuance often lives.
+- CTT can't show *where* on the scale our instrument is weak, but **item response theory (IRT) can**.
+:::
+:::
+
+## 2️⃣ Single Reliability Coefficient vs. A Spectrum {.text-slide-bg}
+
+::: {.lead}
+These **conditional reliability** curves illustrate how measurement precision varies across different levels of the latent trait ($\theta$).
+:::
+
+![](../img/diagrams/rel1.png){fig-align="center" width="80%"}
+
+## 2️⃣ Single Reliability Coefficient vs. A Spectrum {.text-slide-bg}
+
+::: {.lead}
+Notice that along certain parts of the spectrum, very little information is available, leading to higher measurement error and lower reliability. These regions are exactly the **blindspots** that the scale cannot optimally capture.
+:::
+
+![](../img/diagrams/rel2.png){fig-align="center" width="70%"}
+
+## 3️⃣ Scale- vs. Item-level Invariance {.text-slide-bg}
+
+::: {.lead}
+As we saw earlier in multigroup CFA, measurement invariance tests whether an instrument behaves equivalently across groups.
+:::
+
+::: {.content-box}
+::: {.incremental}
+- **CFA/CTT:** Primarily tests invariance step-by-step across the entire scale (configural → metric → scalar) by checking changes in global model fit.
+- **IRT (DIF & DTF):** Directly pinpoints **Differential Item Functioning (DIF)** at the individual item level along the trait continuum $\theta$:
+  - *Uniform DIF:* An item is systematically easier/harder for one group across all trait levels (difference in threshold $b$).
+  - *Non-uniform DIF:* An item discriminates differently across groups (difference in slope $a$).
+- **Differential Test Functioning (DTF):** Aggregates item-level DIF to assess whether **item biases cancel out or compound** across the overall scale score.
+:::
+:::
+
+## {.section-slide}
+<!-- Zwischentitelfolie 02 -->
+
+::: {.section-number}
+02
+:::
+
+::: {.section-bubble}
+Meet the IRT Family
+:::
+
+## The IRT Family {.text-slide-bg}
+
+::: {.lead}
+1PL, 2PL and 3PL models are built for **binary** data (correct/incorrect, yes/no). We are primarily interested in **Likert-type** (i.e., polytomous), and that's what GRM is for.
+:::
+
+::: {.content-box}
+| Model | Data type | What it estimates |
+|---|---|---|
+| 1PL / Rasch | Dichotomous | item difficulty only (equal discrimination assumed) |
+| 2PL | Dichotomous | item difficulty **and** discrimination |
+| 3PL | Dichotomous | item difficulty and discrimination + pseudo-guessing params |
+| **GRM** | **Polytomous (ordered categories)** | **discrimination *a* + multiple thresholds *b* per item** |
+
+:::
+
+::: aside
+...and many other variants that are specifically calibrated to estimate models with *n* of dimensions, *n* of response categories, response format, response styles, etc.
+:::
+
+## {.section-slide}
+<!-- Zwischentitelfolie 03 -->
+
+::: {.section-number}
+03
+:::
+
+::: {.section-bubble}
+Item and Model Parameters of the Graded Response Model (GRM)
+:::
+
+## The Staircase Illustration {.text-slide-bg}
+
+::: columns
+::: {.column width="60%"}
+![](../img/diagrams/staircase.png){fig-align="center" width="90%"}
+:::
+::: {.column width="40%"}
+For an item with 5 response categories, GRM estimates **4 thresholds** ($b_1$–$b_4$).
+
+Each threshold is the point on $\theta$ where a participant is equally likely to pick one category or the next, as in a staircase they "step up" as their trait level rises.
+
+The mean of $\theta$ is usually centered around 0, so a threshold like $b_1 = -1.2$ means: people about 1.2 *SD* below the mean are the ones flipping between the two lowest categories.
+:::
+:::
+
+## Reading Item Probability Curves {.text-slide-bg}
+
+::: {.lead}
+Plot the probability of endorsing each category against $\theta$: each threshold represents the transition boundary between two adjacent categories.
+:::
+
+::: columns
+::: {.column width="60%"}
+![](../img/diagrams/ipf.png)
+:::
+::: {.column width="40%"}
+::: {.incremental}
+- The two **extreme** categories ("Never"/"Very often") are cumulative boundary categories, which means their curves plateau rather than peak as in the others.
+- The **middle** categories peak in a bell shape between two thresholds.
+- Steep, well-separated curves = an item that sharply distinguishes people near that threshold.
+- Flat, overlapping curves = an item that isn't telling us much at that part of the scale.
+:::
+:::
+:::
+
+## Two Item Parameters: *a* and *b* {.text-slide-bg}
+
+::: {.lead}
+Every item in a GRM gets **one discrimination parameter (*a*)** and **several thresholds (*b*)**.
+:::
+
+::: {.content-box}
+* **$b$ (threshold):** *where* on $\theta$ the item is doing its work. The number of *b* we get depends on how many response categories are there.
+* **$a$ (discrimination):** *how strongly* it distinguishes people around that point. Steeper curves reflect more informative item.
+* Rule of thumb ([Baker & Kim, 2017](https://link.springer.com/book/10.1007/978-3-319-54205-8)): 
+  + $a$ less than 0.35 = very low 
+  + 0.35 – 0.65 = low
+  + 0.65 – 1.35 = moderate 
+  + 1.35 – 1.70 = high 
+  + more than 1.70 = very high
+:::
+
+## Three Assumptions {.columns-slide}
+
+::: {.lead}
+Before intrepreting GRM model and item parameters, three core construct assumptions need to hold, which closely mirroring those in factor analysis:
+:::
+
+::: {.columns-area}
+::: {.col-item .text-center}
+[]{.col-icon .fa-solid .fa-arrow-trend-up}
+
+### Monotonicity
+
+Higher $\theta$ → higher probability of endorsing a stronger response category.
+:::
+
+::: {.col-item .text-center}
+[]{.col-icon .fa-solid .fa-layer-group}
+
+### Unidimensionality
+
+One $\theta$ underlies the item pool, we already checked this in this morning's factor analysis session.
+:::
+
+::: {.col-item .text-center}
+[]{.col-icon .fa-solid .fa-link-slash}
+
+### Local Independence
+
+Once $\theta$ is accounted for, items shouldn't still correlate with each other. In practice, expect *some* residual dependence, but the question is whether its severity is still within our tolerance.
+:::
+:::
+
+::: aside
+These assumptions aren't absolute. There are some advanced IRT models that don't explicitly make one or more of the above assumptions.
+:::
+
+## {.section-slide}
+<!-- Zwischentitelfolie 04 -->
+
+::: {.section-number}
+04
+:::
+
+::: {.section-bubble}
+Hands-On: Fitting a GRM
+:::
+
+## Today's Exercise {.text-slide-bg}
+
+::: {.lead}
+We'll fit a GRM together on a 7-item scale from the NaDiRA survey measuring discrimination experience.
+:::
+
+::: {.content-box}
+- **Items:** 7 discrimination items (`ker_diskerf_*`), 6-point frequency scale (*Täglich*/Daily → *Nie* / Never)
+- **Data:** Teaching extract of the NaDiRA dataset (*N* = 1,000; 972 complete cases), with a calibrated simulated option as fallback
+- **Document (two options):** `exercise.qmd` or `exercise.Rmd` — open it now in RStudio and follow along
+:::
+
+## Open `exercise.qmd` {.text-slide-bg}
+
+::: {.lead .text-center}
+Let's switch to RStudio.
+
+[Click on this link to be redirected to the rendered `html`](../files/exercise.html)
+:::
+
+::: {.content-box .text-center}
+We'll walk through Steps 1–9 together: meet the data → dimensionality → fit GRM → item &amp; test information → reliability → model fit → residual correlations ($Q_3$).
+:::
+
+## {.section-slide}
+<!-- Zwischentitelfolie 05 -->
+
+::: {.section-number}
+05
+:::
+
+::: {.section-bubble}
+Reading &amp; Using the Results
+:::
+
+## When (Not) to Reach for GRM {.columns-slide}
+
+::: {.columns-area}
+::: {.col-item .text-center}
+[]{.col-icon .fa-solid .fa-users}
+
+### Sample size
+
+Stable item parameters generally need a few hundred participants or more, so it is not a good option for a 30-person pilot.
+:::
+
+::: {.col-item .text-center}
+[]{.col-icon .fa-solid .fa-shapes}
+
+### Unidimensionality
+
+If our EFA/CFA suggests multiple factors, a unidimensional GRM is the wrong choice. In this case, consider multidimensional GRM instead.
+:::
+
+::: {.col-item .text-center}
+[]{.col-icon .fa-solid .fa-comments}
+
+### Not a replacement
+
+GRM tells us about *statistical* precision. It doesn't and cannot replace the focus groups, coding, and content validity work that we already learned on Day 1.
+:::
+:::
+
+## {.section-slide}
+<!-- Zwischentitelfolie 06 -->
+
+::: {.section-number}
+06
+:::
+
+::: {.section-bubble}
+Wrap-Up &amp; Discussion
+:::
+
+## Resources &amp; Contact {.text-slide-bg}
+
+::: {.content-box}
+- **Tutorial paper:** Zein, R. A., &amp; Akhtar, H. (2025). *Getting started with the graded response model: An introduction and tutorial in R.* International Journal of Psychology, 60(1), e13265. <https://doi.org/10.1002/ijop.13265>
+- **Questions afterwards:** [amelia.zein@cais-research.de](mailto:amelia.zein@cais-research.de) or [amelia.zein@psikologi.unair.ac.id](mailto:amelia.zein@psikologi.unair.ac.id).
+:::
+
+## {.closing-slide .no-footer}
+
+::: {.closing-left}
+::: {.closing-contact-box}
+**Dr. Rizqy Amelia Zein**\
+Center for Advanced Internet Studies (CAIS) & Universitas Airlangga\
+E-mail: [amelia.zein@cais-research.de](mailto:amelia.zein@cais-research.de) · Homepage: [rameliaz.github.io](https://rameliaz.github.io/)
+:::
+
+::: {.closing-cais-logo}
+![](../img/Transparent.png)
+
+![](../img/logo.png)
+:::
+:::
+
+::: {.closing-right}
+::: {.closing-text}
+Thank you!
+:::
+
+::: {.closing-bottom}
+::: {.closing-org}
+Center for Advanced Internet Studies (CAIS) gGmbH
+
+Konrad-Zuse-Str. 2a, 44801 Bochum
+:::
+
+::: {.closing-contact-info}
+[info@cais-research.de](mailto:info@cais-research.de)\
++49 234 9531 5000\
+[www.cais-research.de](https://www.cais-research.de)
+:::
+
+::: {.closing-social}
+<a href="https://www.linkedin.com/company/center-for-advanced-internet-studies" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+<a href="https://bsky.app/profile/cais-research.bsky.social" title="Bluesky"><i class="fa-brands fa-bluesky"></i></a>
+<a href="https://www.instagram.com/caisnrw/" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+<a href="https://mastodon.social/@CAISnrw" title="Mastodon"><i class="fa-brands fa-mastodon"></i></a>
+<a href="https://www.facebook.com/CenterforAdvancedInternetStudies" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+<a href="https://www.youtube.com/channel/UClCqAar9lGav5spwJOJgrUw" title="YouTube"><i class="fa-brands fa-youtube"></i></a>
+:::
+:::
+:::

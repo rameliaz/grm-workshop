@@ -1,0 +1,88 @@
+project:
+  type: website
+  output-dir: docs
+  resources:
+    - img/
+    - files/
+  render:
+    - index.qmd
+    - files/intro.qmd
+    - files/exercise.qmd
+
+website:
+  title: "Intro to IRT's Graded Response Model (GRM)"
+  repo-url: https://github.com/rameliaz/grm-workshop
+  repo-branch: master
+  repo-actions: [edit, source, issue]  
+  sidebar:
+    style: docked
+    contents:
+      - text: "Home"
+        href: index.qmd
+      - text: "Slide Deck"
+        href: files/intro.html  
+      - text: "Download `quarto` exercise"
+        href: files/exercise.qmd
+      - text: "Download `rmarkdown` exercise"
+        href: files/exercise.Rmd
+      - text: "Rendered `html` of the exercise"
+        href: files/exercise.html        
+      - section: "Sources"
+        contents:
+          - text: Tutorial Paper (Zein & Akhtar, 2025)
+            href: https://onlinelibrary.wiley.com/doi/abs/10.1002/ijop.13265
+          - text: Github Repository of Zein & Akhtar (2025)
+            href: https://github.com/rameliaz/grm-tutorial-paper
+          - text: Amini-Nejad, et al. (2025)
+            href: https://econtent.hogrefe.com/doi/10.1027/2698-1866/a000110  
+  navbar:
+    left:
+      - href: https://rameliaz.github.io/
+        icon: house-heart
+        text: "by Amelia Zein"
+    right:
+      - icon: envelope
+        href: "mailto:amelia.zein@psikologi.unair.ac.id"
+      - icon: github
+        href: https://github.com/rameliaz
+      - icon: discord
+        href: https://discord.com/users/807046335613632555
+      - icon: keybase
+        href: https://keybase.io/rameliaz  
+  search:
+    location: navbar
+    type: overlay
+  page-footer:
+      left: |
+        Made by [![](https://quarto.org/quarto.png){fig-alt="Quarto" width=65px}](https://quarto.org/)
+      center: |
+        <a class="link-dark me-1" href="https://github.com/rameliaz" title="github" target="_blank" rel="noopener"><i class="fa-brands fa-github"></i></a>
+        <a class="link-dark me-1" href="mailto:amelia.zein@psikologi.unair.ac.id" title="Email" target="_blank" rel="noopener"><i class="fa-solid fa-envelope"></i></a>
+        <a class="link-dark me-1" href="https://bsky.app/profile/ameliazein.bsky.social" title="Bluesky" target="_blank" rel="noopener"><i class="fa-brands fa-bluesky"></i></a>
+        <a class="link-dark me-1" href="https://discord.com/users/807046335613632555" title="Discord" target="_blank" rel="noopener"><i class="fa-brands fa-discord"></i></a>
+        <a class="link-dark me-1" href="https://keybase.io/rameliaz" title="Keybase" target="_blank" rel="noopener"><i class="fa-brands fa-keybase"></i></a>
+      right: | 
+         &#169; 2026 Rizqy Amelia Zein <br>
+         Center for Advanced Internet Studies (CAIS) & Universitas Airlangga
+format:
+  html:
+    theme:
+      light: cosmo
+      dark: darkly
+    toc: true
+    toc-float: true
+    toc-depth: 3
+    df-print: paged
+    highlight-style: github
+    include-in-header:
+      - text: |
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    include-after-body:
+      - text: |
+          <script>
+          document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll('a[href$=".Rmd"]').forEach(function (a) {
+              a.setAttribute("download", "");
+            });
+          });
+          </script>

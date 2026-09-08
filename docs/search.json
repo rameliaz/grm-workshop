@@ -1,0 +1,497 @@
+[
+  {
+    "objectID": "files/exercise.html",
+    "href": "files/exercise.html",
+    "title": "Hands-On: Fitting a Graded Response Model",
+    "section": "",
+    "text": "This is the hands-on companion to “Introduction to IRT’s Graded Response Model” (Workshop Itemkonstruktion, Uni Duisburg-Essen, 28.–29. September 2026). It mirrors the workflow from the tutorial paper this workshop is based on: Zein & Akhtar (2025), Getting started with the graded response model: An introduction and tutorial in R, but on a different dataset.\n\n\n\n\n\n\nNoteTwo ways to run this document\n\n\n\nThis document can run on the snippet of real NaDiRA dataset (for the workshop room) or on simulated data calibrated to resemble it.\n\nIn the workshop: setting USE_SIMULATED_DATA &lt;- FALSE — will read the real dataset.\n\nBefore running .qmd or .Rmd document with the real dataset, please create a new folder data/ in your project root, then keep the dataset there.\n\nIf you don’t have any access to the dataset: USE_SIMULATED_DATA &lt;- TRUE, which generates a synthetic dataset from item parameters estimated on the real data, so the shape and difficulty of the exercise carry over, but every response is simulated with mirt package. There is no real participants’ data is in it.\n\n\n\nWe’ll go through 9 short steps together: meet the dataset, check dimensionality, fit the GRM, read its output, inspect residual correlations, and think about what it means for your own scales.\n\n\n\n\n\n\nWarningIf you’re running the simulated dataset\n\n\n\nThe numbers and conclusions quoted in Steps 8 and 9 describe the real NaDiRA data and won’t replicate under USE_SIMULATED_DATA &lt;- TRUE. simdata() generates responses that exactly satisfy the fitted GRM, so the simulated model and item fit (Step 8) comes out essentially perfect (no misfitting items at all), and it has no genuine local dependence built in (the positive \\(Q_3\\) pair highlighted in Step 9 won’t appear). Steps 2–7 will look similar, though not identical, either way.",
+    "crumbs": [
+      "by Amelia Zein",
+      "Download `quarto` exercise"
+    ]
+  },
+  {
+    "objectID": "files/exercise.html#welcome",
+    "href": "files/exercise.html#welcome",
+    "title": "Hands-On: Fitting a Graded Response Model",
+    "section": "",
+    "text": "This is the hands-on companion to “Introduction to IRT’s Graded Response Model” (Workshop Itemkonstruktion, Uni Duisburg-Essen, 28.–29. September 2026). It mirrors the workflow from the tutorial paper this workshop is based on: Zein & Akhtar (2025), Getting started with the graded response model: An introduction and tutorial in R, but on a different dataset.\n\n\n\n\n\n\nNoteTwo ways to run this document\n\n\n\nThis document can run on the snippet of real NaDiRA dataset (for the workshop room) or on simulated data calibrated to resemble it.\n\nIn the workshop: setting USE_SIMULATED_DATA &lt;- FALSE — will read the real dataset.\n\nBefore running .qmd or .Rmd document with the real dataset, please create a new folder data/ in your project root, then keep the dataset there.\n\nIf you don’t have any access to the dataset: USE_SIMULATED_DATA &lt;- TRUE, which generates a synthetic dataset from item parameters estimated on the real data, so the shape and difficulty of the exercise carry over, but every response is simulated with mirt package. There is no real participants’ data is in it.\n\n\n\nWe’ll go through 9 short steps together: meet the dataset, check dimensionality, fit the GRM, read its output, inspect residual correlations, and think about what it means for your own scales.\n\n\n\n\n\n\nWarningIf you’re running the simulated dataset\n\n\n\nThe numbers and conclusions quoted in Steps 8 and 9 describe the real NaDiRA data and won’t replicate under USE_SIMULATED_DATA &lt;- TRUE. simdata() generates responses that exactly satisfy the fitted GRM, so the simulated model and item fit (Step 8) comes out essentially perfect (no misfitting items at all), and it has no genuine local dependence built in (the positive \\(Q_3\\) pair highlighted in Step 9 won’t appear). Steps 2–7 will look similar, though not identical, either way.",
+    "crumbs": [
+      "by Amelia Zein",
+      "Download `quarto` exercise"
+    ]
+  },
+  {
+    "objectID": "files/exercise.html#step-0-setup-packages",
+    "href": "files/exercise.html#step-0-setup-packages",
+    "title": "Hands-On: Fitting a Graded Response Model",
+    "section": "Step 0: Setup — packages",
+    "text": "Step 0: Setup — packages\nIf you already have these installed, skip this chunk.\n\ninstall.packages(\n    c(\"tidyverse\", # data wrangling\n      \"psych\", # descriptive stats & unidimensionality checks\n      \"pak\", # to install a GitHub-only package (ggmirt)\n      \"mirt\", # the main GRM engine\n      \"caret\", # flagging large residual correlations\n      \"skimr\", # quick look at data distributions\n      \"haven\", # to import the NaDiRA STATA .dta file\n    ), \n    dependencies = TRUE\n)\n\npak::pak(\"masurp/ggmirt\") # ggmirt available only on github\n\nNow activate them.\n\nlibrary(tidyverse)\nlibrary(psych)\nlibrary(mirt)\nlibrary(ggmirt)\nlibrary(caret)\nlibrary(skimr)\nlibrary(haven)",
+    "crumbs": [
+      "by Amelia Zein",
+      "Download `quarto` exercise"
+    ]
+  },
+  {
+    "objectID": "files/exercise.html#step-1-meet-the-dataset",
+    "href": "files/exercise.html#step-1-meet-the-dataset",
+    "title": "Hands-On: Fitting a Graded Response Model",
+    "section": "Step 1: Meet the dataset",
+    "text": "Step 1: Meet the dataset\n\nThe swap-in code chunk\nEverything dataset-specific lives here. This is the only chunk you should need to touch to move between the real data and the simulated version.\n\nUSE_SIMULATED_DATA &lt;- FALSE # set TRUE if you don't have an access to the dataset\n\nDATA_PATH &lt;- \"../data/NaDiRa_Teaching_w0.dta\" # path to the dataset don't forget to create a new folder `data/` in your project root, then keep the dataset file there\n\nITEM_COLS &lt;- c(\n    \"ker_diskerf_service\", \"ker_diskerf_respekt\", \"ker_diskerf_nernst\",\n    \"ker_diskerf_angst\", \"ker_diskerf_bedbel\", \"ker_diskerf_beleid\",\n    \"ker_diskerf_angriff\"\n)\n\nN_CATEGORIES &lt;- 6 # response categories per item (1-6)\n\n\n\nThe items\nThis is question 3 of the NaDiRA survey instrument: “Kommen wir nun zu Ihren Erfahrungen im täglichen Leben. Wie häufig passieren Ihnen in Ihrem Alltag die folgenden Dinge?” (“Now let’s turn to your everyday experiences. How often do the following things happen to you in your daily life?”)\n\n\n\n\n\n\n\n\nVariable name\n🇩🇪 German original\n🇬🇧 English\n\n\n\n\nker_diskerf_service\nSie erhalten schlechteren Service als andere.\nYou receive poorer service than other people.\n\n\nker_diskerf_respekt\nSie werden mit weniger Respekt behandelt als andere.\nYou are treated with less respect than other people.\n\n\nker_diskerf_nernst\nJemand verhält sich so, als würde sie/er Sie nicht ernst nehmen.\nSomeone acts as if they don’t take you seriously.\n\n\nker_diskerf_angst\nJemand verhält sich so, als habe sie/er Angst vor Ihnen.\nSomeone acts as if they’re afraid of you.\n\n\nker_diskerf_bedbel\nSie werden bedroht/belästigt.\nYou are threatened/harassed.\n\n\nker_diskerf_beleid\nSie werden beleidigt/beschimpft.\nYou are insulted/being called names.\n\n\nker_diskerf_angriff\nSie werden körperlich angegriffen.\nYou are physically attacked.\n\n\n\nThe response options in the questionnaire run left to right: Daily/Täglich (1) · At least once per week/Mindestens einmal in der Woche (2) · At least once per month/Mindestens einmal im Monat (3) · Several times a year/Mehrmals im Jahr (4) · Less often/Seltener (5) · Never/Nie (6).\n\n\n\n\n\n\nNoteNo need to reverse the scores\n\n\n\nYou are given a cleaned dataset in which all the scale data has been reversed. So, the larger scores now reflect more intense experience of discrimination, and vice versa.\n\n\n\n\nImporting and cleaning the dataset\nRun this code chunk to simulate/generate a synthetic dataset. If you have access to a real dataset, you can also run this code chunk to clean and prepare it for analysis.\n\nif (USE_SIMULATED_DATA) {\n    # ---- calibrated simulation: parameters estimated once on the real data ----\n    # (a = discrimination, d = intercepts; this array reproduces the item\n    # difficulty/discrimination pattern of the real dataset without using any\n    # real participants' answers)\n    set.seed(2026)\n\n    a_par &lt;- c(2.34, 3.43, 2.75, 1.42, 1.75, 2.13, 1.51)\n    d_par &lt;- matrix(\n        c(\n            1.80, -1.44, -2.99, -5.04, -6.60,\n            2.46, -1.72, -3.84, -5.54, -7.84,\n            2.65, -0.80, -2.79, -4.41, -6.49,\n            -0.48, -2.49, -3.37, -3.99, -5.20,\n            -0.62, -3.12, -4.44, -5.53, -6.70,\n            0.19, -2.49, -3.85, -5.07, -6.86,\n            -2.30, -4.73, -5.43, -6.49, -7.93\n        ),\n        nrow = length(ITEM_COLS), ncol = N_CATEGORIES - 1, byrow = TRUE\n    )\n\n    raw &lt;- simdata(a = a_par, d = d_par, N = 970, itemtype = \"graded\") + 1\n    raw &lt;- as.data.frame(raw)\n    colnames(raw) &lt;- ITEM_COLS\n} else {\n    raw &lt;- read_dta(DATA_PATH) %&gt;%\n        select(all_of(ITEM_COLS)) %&gt;%\n        mutate(across(everything(), as.numeric)) # drop haven_labelled class, keep plain numeric codes\n}\n\nstr(raw)\n\ntibble [1,000 × 7] (S3: tbl_df/tbl/data.frame)\n $ ker_diskerf_service: num [1:1000] 1 2 4 3 1 2 2 3 1 3 ...\n $ ker_diskerf_respekt: num [1:1000] 1 2 3 2 1 4 2 2 1 2 ...\n $ ker_diskerf_nernst : num [1:1000] 1 3 4 4 2 5 1 1 1 4 ...\n $ ker_diskerf_angst  : num [1:1000] 1 1 3 1 1 1 1 1 1 1 ...\n $ ker_diskerf_bedbel : num [1:1000] 1 1 2 3 2 1 1 1 1 1 ...\n $ ker_diskerf_beleid : num [1:1000] 1 1 2 2 2 2 1 1 1 2 ...\n $ ker_diskerf_angriff: num [1:1000] 1 1 1 1 1 1 1 1 1 1 ...\n\n\n\n\nChecking for missing data\nRun this chunk especially if you use the real dataset, because we have several missing values in the real dataset.\n\nn_total &lt;- nrow(raw)\nn_complete &lt;- sum(complete.cases(raw))\ncat(\n    n_complete, \"of\", n_total, \"respondents have complete responses on all\", length(ITEM_COLS),\n    \"items (\", round(100 * n_complete / n_total, 1), \"%).\\n\"\n)\n\n972 of 1000 respondents have complete responses on all 7 items ( 97.2 %).\n\ndata &lt;- raw %&gt;% filter(complete.cases(.))\n\nWe use complete cases here (N = 972) for simplicity. With well under 5% missing, listwise deletion costs us very little.\n\n\n\n\n\n\nmirt can also model missingness directly via full-information maximum likelihood (FIML), but that’s beyond today’s scope.",
+    "crumbs": [
+      "by Amelia Zein",
+      "Download `quarto` exercise"
+    ]
+  },
+  {
+    "objectID": "files/exercise.html#step-2-quick-data-check",
+    "href": "files/exercise.html#step-2-quick-data-check",
+    "title": "Hands-On: Fitting a Graded Response Model",
+    "section": "Step 2: Quick data check",
+    "text": "Step 2: Quick data check\n\ndescribe(data)\n\n\n  \n\n\nskim(data)\n\n\nData summary\n\n\nName\ndata\n\n\nNumber of rows\n972\n\n\nNumber of columns\n7\n\n\n_______________________\n\n\n\nColumn type frequency:\n\n\n\nnumeric\n7\n\n\n________________________\n\n\n\nGroup variables\nNone\n\n\n\nVariable type: numeric\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nskim_variable\nn_missing\ncomplete_rate\nmean\nsd\np0\np25\np50\np75\np100\nhist\n\n\n\n\nker_diskerf_service\n0\n1\n2.24\n1.11\n1\n1\n2\n3\n6\n▇▂▁▁▁\n\n\nker_diskerf_respekt\n0\n1\n2.33\n1.21\n1\n1\n2\n3\n6\n▇▂▁▁▁\n\n\nker_diskerf_nernst\n0\n1\n2.51\n1.23\n1\n2\n2\n3\n6\n▇▃▂▁▁\n\n\nker_diskerf_angst\n0\n1\n1.65\n1.03\n1\n1\n1\n2\n6\n▇▁▁▁▁\n\n\nker_diskerf_bedbel\n0\n1\n1.55\n0.84\n1\n1\n1\n2\n6\n▇▁▁▁▁\n\n\nker_diskerf_beleid\n0\n1\n1.84\n1.03\n1\n1\n2\n2\n6\n▇▁▁▁▁\n\n\nker_diskerf_angriff\n0\n1\n1.19\n0.53\n1\n1\n1\n1\n6\n▇▁▁▁▁\n\n\n\n\n\nLook at the hist column — frequency-of-negative-experience items like these are typically right-skewed (most people report “Nie”/“Seltener”). ker_diskerf_angriff (physical attack) should look the most extreme; the everyday-slight items (nernst, respekt, service) should look comparatively less skewed.\nThat skew is exactly why we’ll use a polychoric correlation matrix (instead of Pearson’s or Spearman) for the dimensionality check below.\nAnd that’s exactly what we see: ker_diskerf_angriff is by far the most skewed item (skew = 3.90, mean = 1.19, so almost everyone answers “Nie”), while ker_diskerf_nernst is the mildest (skew = 0.83, mean = 2.51).\nThe severe/rare items and the everyday/common items sit at opposite ends, which is a good sign the item set spans a real range of severity rather than all measuring the same narrow slice of experience.",
+    "crumbs": [
+      "by Amelia Zein",
+      "Download `quarto` exercise"
+    ]
+  },
+  {
+    "objectID": "files/exercise.html#step-3-dimensionality-a-quick-glance",
+    "href": "files/exercise.html#step-3-dimensionality-a-quick-glance",
+    "title": "Hands-On: Fitting a Graded Response Model",
+    "section": "Step 3: Dimensionality — a quick glance",
+    "text": "Step 3: Dimensionality — a quick glance\nYou already ran this exact logic this morning in the factor analysis session. We will do a fast check to confirm a single \\(\\theta\\) underlies this item pool.\nWith only 6 response categories, Pearson’s/Spearman correlations understate how strongly these items actually relate to each other, so a polychoric correlation matrix is the more appropriate input here for factor analysis (De Ayala & Hertzog, 1991; recommended specifically for 4–7 category Likert data by Guo & Choi, 2023). psych::irt.fa() computes it for us automatically:\n\nefa &lt;- irt.fa(data, nfactors = 1, fm = \"minres\", plot = FALSE)\nprint(efa$fa)\n\nFactor Analysis using method =  minres\nCall: fa(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, \n    fm = fm)\nStandardized loadings (pattern matrix) based upon correlation matrix\n                     MR1   h2   u2 com\nker_diskerf_service 0.72 0.52 0.48   1\nker_diskerf_respekt 0.84 0.71 0.29   1\nker_diskerf_nernst  0.80 0.65 0.35   1\nker_diskerf_angst   0.62 0.38 0.62   1\nker_diskerf_bedbel  0.73 0.53 0.47   1\nker_diskerf_beleid  0.80 0.64 0.36   1\nker_diskerf_angriff 0.65 0.42 0.58   1\n\n                MR1\nSS loadings    3.85\nProportion Var 0.55\n\nMean item complexity =  1\nTest of the hypothesis that 1 factor is sufficient.\n\ndf null model =  21  with the objective function =  3.9 with Chi Square =  3773.91\ndf of  the model are 14  and the objective function was  0.45 \n\nThe root mean square of the residuals (RMSR) is  0.05 \nThe df corrected root mean square of the residuals is  0.06 \n\nThe harmonic n.obs is  972 with the empirical chi square  94.82  with prob &lt;  4.6e-14 \nThe total n.obs was  972  with Likelihood Chi Square =  430.61  with prob &lt;  4.4e-83 \n\nTucker Lewis Index of factoring reliability =  0.833\nRMSEA index =  0.175  and the 90 % confidence intervals are  0.161 0.189\nBIC =  334.3\nFit based upon off diagonal values = 0.99\nMeasures of factor score adequacy             \n                                                   MR1\nCorrelation of (regression) scores with factors   0.95\nMultiple R square of scores with factors          0.91\nMinimum correlation of possible factor scores     0.81\n\n\n\nplot(efa$fa$values, type = \"b\", main = \"Scree Plot\", xlab = \"Factor\", ylab = \"Eigenvalue\")\nabline(h = 1, col = \"red\", lty = 2)\n\n\n\n\n\n\n\n\nIf the proportion of variance explained by the first factor is comfortably above 50% and the scree plot elbows sharply after one factor, unidimensionality is reasonably supported, so we can proceed to the GRM.\nHere, it shows that Proportion Var = .55, with loadings between .62 and .84. Every item is solidly on the one factor, none of them weak or borderline. The scree plot backs this up (eigenvalues 3.85 then a sharp drop to 0.38). Comfortably unidimensional, so we can go on to the GRM.",
+    "crumbs": [
+      "by Amelia Zein",
+      "Download `quarto` exercise"
+    ]
+  },
+  {
+    "objectID": "files/exercise.html#step-4-fit-the-grm",
+    "href": "files/exercise.html#step-4-fit-the-grm",
+    "title": "Hands-On: Fitting a Graded Response Model",
+    "section": "Step 4: Fit the GRM",
+    "text": "Step 4: Fit the GRM\n\nmodel &lt;- paste0(\"theta = 1-\", length(ITEM_COLS))\nfit &lt;- mirt(data = data, 1, model = model, itemtype = \"graded\", SE = TRUE, verbose = FALSE)\n\ncoefs &lt;- coef(fit, IRTpars = TRUE, simplify = TRUE)\nprint(coefs)\n\n$items\n                        a     b1    b2    b3    b4    b5\nker_diskerf_service 2.338 -0.771 0.615 1.278 2.154 2.823\nker_diskerf_respekt 3.430 -0.719 0.501 1.118 1.615 2.285\nker_diskerf_nernst  2.755 -0.964 0.292 1.014 1.601 2.356\nker_diskerf_angst   1.415  0.338 1.758 2.381 2.817 3.672\nker_diskerf_bedbel  1.752  0.356 1.783 2.533 3.157 3.821\nker_diskerf_beleid  2.127 -0.088 1.172 1.810 2.384 3.226\nker_diskerf_angriff 1.507  1.528 3.137 3.600 4.303 5.264\n\n$means\ntheta \n    0 \n\n$cov\n      theta\ntheta     1\n\n\na is discrimination; b1–b5 are the five thresholds (six categories → five boundaries). Higher a = an item that differentiates people more sharply; the spread of b values tells you where on \\(\\theta\\) each item is doing its work.\nIn this scale, ker_diskerf_respekt (“less respect”) has the highest discrimination (a = 3.43), which makes it the sharpest differentiator of the seven, while ker_diskerf_angst (“afraid of you”) has the lowest (a = 1.42).\nker_diskerf_angriff (“physically attacked”) stands out on its thresholds instead: they run from 1.53 up to 5.26, far higher than any other item, meaning it takes an extremely high \\(\\theta\\) before “Täglich” becomes a plausible response, which tracks with how rare that experience actually is.",
+    "crumbs": [
+      "by Amelia Zein",
+      "Download `quarto` exercise"
+    ]
+  },
+  {
+    "objectID": "files/exercise.html#step-5-item-probability-functions",
+    "href": "files/exercise.html#step-5-item-probability-functions",
+    "title": "Hands-On: Fitting a Graded Response Model",
+    "section": "Step 5: Item probability functions",
+    "text": "Step 5: Item probability functions\n\ntracePlot(fit, title = \"Item Probability Functions\") + labs(color = \"Response Category\")\n\n\n\n\n\n\n\n\nWhere two curves cross is a threshold. Curves that overlap a lot, or peak only at one end of \\(\\theta\\), are telling you that item is only informative for part of the trait range.\nPick out ker_diskerf_angriff in the grid: because its thresholds sit so far to the right, the “Nie” curve dominates almost the entire visible range. The other five categories barely get a look-in until \\(\\theta\\) is very high. Compare that to ker_diskerf_nernst, whose curves are bunched much closer to the middle, it’s doing useful work across a wider, more central stretch of \\(\\theta\\).",
+    "crumbs": [
+      "by Amelia Zein",
+      "Download `quarto` exercise"
+    ]
+  },
+  {
+    "objectID": "files/exercise.html#step-6-item-and-test-information",
+    "href": "files/exercise.html#step-6-item-and-test-information",
+    "title": "Hands-On: Fitting a Graded Response Model",
+    "section": "Step 6: Item and test information",
+    "text": "Step 6: Item and test information\nThis is the information that traditional factor analysis can’t give you: where exactly your scale is precise.\n\nitemInfoPlot(fit, facet = TRUE, title = \"Item Information Functions\")\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNoteWhy some curves have multiple peaks (i.e., multimodal)?\n\n\n\nA yes/no item only has one “tipping point” i.e., the trait level where people switch from one answer to the other, so it’s only ever most useful for one type of participants. These items have six response categories, so each one has several tipping points or “steps” as in the staircase illustration (e.g., “rarely” to “sometimes”, “sometimes” to “often”, and so on). If those tipping points are spread far apart along the trait, the item ends up being especially useful for more than one type of participant, therefore showing up as more than one peak instead of just one.\n\n\n\ntestInfoPlot(fit, title = \"Test Information Function\")\n\n\n\n\n\n\n\n\nCompare the shape of the test information curve to where you’d expect your target population to actually sit on \\(\\theta\\). A curve that peaks somewhere your participants rarely fall is a scale that’s precise in the wrong place.\nHere, test information peaks around \\(\\theta \\approx 1.5\\) (info \\(\\approx 10.9\\)) and stays fairly high out to \\(\\theta \\approx 3\\), but falls off sharply below \\(\\theta \\approx -1\\) (info \\(\\approx 1\\) at \\(\\theta = -2\\), about a tenth of the peak).",
+    "crumbs": [
+      "by Amelia Zein",
+      "Download `quarto` exercise"
+    ]
+  },
+  {
+    "objectID": "files/exercise.html#step-7-reliability-across-theta",
+    "href": "files/exercise.html#step-7-reliability-across-theta",
+    "title": "Hands-On: Fitting a Graded Response Model",
+    "section": "Step 7: Reliability across \\(\\theta\\)",
+    "text": "Step 7: Reliability across \\(\\theta\\)\nMarginal reliability is the IRT analogue of classical test-theory reliability: it integrates the test information function over an assumed \\(\\theta\\) distribution (normal, by default) to get a single reliability estimate for the population as a whole.\n\nmarginal_rxx(fit)\n\n[1] 0.8670347\n\n\nEmpirical reliability instead uses the actual estimated \\(\\theta\\) scores and their standard errors for this sample, so no distributional assumption required. It’s the ratio of true-score variance to observed-score variance, computed directly from the EAP estimates (or factor scores, in CTT’s term) and their SEs.\n\ntheta_se &lt;- fscores(fit, full.scores.SE = TRUE)\nempirical_rxx(theta_se)\n\n   theta \n0.869756 \n\n\n\n# using mirt's own plot() rather than ggmirt::conRelPlot() here -- for some reason,\n# mirt/ggmirt version combination conRelPlot() crashes R outright\n# mirt's native rxx plot shows the same thing\nplot(fit, type = \"rxx\", main = \"Reliability Across the θ Continuum\")\n\n\n\n\n\n\n\n\nMarginal and empirical reliability should be close. The plot shows you where reliability holds up (commonly interpreted as adequate above ~.80) and where it doesn’t, and usually the tails.\nHere they are: marginal rxx = .867, empirical rxx = .870 — close, which is reassuring, since it means the reliability estimate isn’t an artifact of assuming a normal \\(\\theta\\) distribution. Reliability stays \\(\\geq\\) .80 across roughly \\(\\theta\\) = -1.2 to 3.35, lining up with the information plot above.\n\n\n\n\n\n\nTipWhat does this mean?\n\n\n\nIn practice: this scale is precise at telling apart people with moderate-to-high discrimination-experience levels, but has little to say about fine-grained differences among people reporting very few or no experiences, which points out exactly the “blind spot” idea from the slides.",
+    "crumbs": [
+      "by Amelia Zein",
+      "Download `quarto` exercise"
+    ]
+  },
+  {
+    "objectID": "files/exercise.html#step-8-a-quick-model-fit-check",
+    "href": "files/exercise.html#step-8-a-quick-model-fit-check",
+    "title": "Hands-On: Fitting a Graded Response Model",
+    "section": "Step 8: A quick model-fit check",
+    "text": "Step 8: A quick model-fit check\nA light-touch check of the model and item parameters.\n\nM2(fit, type = \"C2\")\n\n\n  \n\n\n\n\nitemfit(fit)\n\n\n  \n\n\n\nRough guide: RMSEA ≤ .05 and non-significant item-level tests are reassuring; don’t over-interpret significance with very large samples, since almost any model will show some misfit.\nHere the picture is mixed: RMSEA = .119 (90% CI .105–.133) is well above the ≤.05 “good fit” guideline, but SRMSR = .072 and CFI = .953 sit in the “acceptable” range, and TLI = .93 is borderline.\nAt the item level, two of seven items (ker_diskerf_service, ker_diskerf_angst) show significant misfit (p &lt; .05); with N = 972 that’s not simply a huge-sample artifact the way it would be with, say, 9,000+ respondents, so it’s worth a closer look. RMSEA tends to be an unreliable indicator with only a handful of items and few degrees of freedom (df = 14 here).\n\n\n\n\n\n\nSRMSR is the steadier signal of how much misfit there practically is, and it’s saying “some items are misfitting, but not severe.”",
+    "crumbs": [
+      "by Amelia Zein",
+      "Download `quarto` exercise"
+    ]
+  },
+  {
+    "objectID": "files/exercise.html#step-9-inspecting-residual-correlations-local-dependence",
+    "href": "files/exercise.html#step-9-inspecting-residual-correlations-local-dependence",
+    "title": "Hands-On: Fitting a Graded Response Model",
+    "section": "Step 9: Inspecting residual correlations (local dependence)",
+    "text": "Step 9: Inspecting residual correlations (local dependence)\n\n\n\n\n\n\nIf global (model) fit tells you whether there’s a problem; residual correlations tell you where the problems are.\n\n\n\nIf two items still correlate once \\(\\theta\\) is accounted for, they’re carrying some shared content the model isn’t capturing, which is also called local dependence (LD). We’ll use Yen’s \\(Q_3\\) statistic, which the tutorial paper recommends over the LD \\(\\chi^2\\) statistic specifically for polytomous data like this.\n\nq3 &lt;- residuals(fit, type = \"Q3\", verbose = FALSE)\nround(q3, 2)\n\n                    ker_diskerf_service ker_diskerf_respekt ker_diskerf_nernst\nker_diskerf_service                1.00               -0.01              -0.21\nker_diskerf_respekt               -0.01                1.00              -0.22\nker_diskerf_nernst                -0.21               -0.22               1.00\nker_diskerf_angst                 -0.13               -0.20              -0.03\nker_diskerf_bedbel                -0.28               -0.30              -0.19\nker_diskerf_beleid                -0.30               -0.27              -0.23\nker_diskerf_angriff               -0.17               -0.26              -0.11\n                    ker_diskerf_angst ker_diskerf_bedbel ker_diskerf_beleid\nker_diskerf_service             -0.13              -0.28              -0.30\nker_diskerf_respekt             -0.20              -0.30              -0.27\nker_diskerf_nernst              -0.03              -0.19              -0.23\nker_diskerf_angst                1.00              -0.06              -0.03\nker_diskerf_bedbel              -0.06               1.00               0.25\nker_diskerf_beleid              -0.03               0.25               1.00\nker_diskerf_angriff              0.03               0.13               0.10\n                    ker_diskerf_angriff\nker_diskerf_service               -0.17\nker_diskerf_respekt               -0.26\nker_diskerf_nernst                -0.11\nker_diskerf_angst                  0.03\nker_diskerf_bedbel                 0.13\nker_diskerf_beleid                 0.10\nker_diskerf_angriff                1.00\n\n\n\nfindCorrelation(q3, cutoff = 0.2, names = TRUE, verbose = TRUE)\n\nCompare row 2  and column  5 with corr  0.301 \n  Means:  0.21 vs 0.161 so flagging column 2 \nCompare row 5  and column  6 with corr  0.252 \n  Means:  0.182 vs 0.143 so flagging column 5 \nCompare row 6  and column  1 with corr  0.3 \n  Means:  0.166 vs 0.117 so flagging column 6 \nCompare row 1  and column  3 with corr  0.209 \n  Means:  0.17 vs 0.111 so flagging column 1 \nAll correlations &lt;= 0.2 \n\n\n[1] \"ker_diskerf_respekt\" \"ker_diskerf_bedbel\"  \"ker_diskerf_beleid\" \n[4] \"ker_diskerf_service\"\n\n\nA couple of things worth knowing before reading this table at face value.\nFirst, \\(Q_3\\) has a well-documented negative bias, especially with few items: because \\(\\theta\\) is estimated from the same items whose residuals are being correlated, the “no local dependence” baseline isn’t 0, it’s somewhat below zero (Yen, 1984, p. 127; Marais, 2013 in Christensen, et al., 2016, p. 121).\nHere that mean off-diagonal \\(Q_3\\) is -.119.\n\n\n\n\n\n\nImportantWhat does this imply?\n\n\n\nMost of the negative values in this residual correlation matrix are the expected statistical byproduct of a handful of strongly-loading items sharing one factor (compare each value to that -.119 baseline, not to 0), so perhaps not necessarily a red flag on their own.\n\n\nWhat’s more informative is which pairs sit further from that baseline than the rest. findCorrelation() flags ker_diskerf_respekt↔︎ker_diskerf_bedbel (\\(Q_3\\) = -.30), ker_diskerf_service↔︎ker_diskerf_beleid (\\(Q_3\\) = -.30), and a few others beyond |.2|. The one that stands out most is ker_diskerf_bedbel↔︎ker_diskerf_beleid (“threatened/harassed” and “insulted/called names”), at \\(Q_3\\) = +.25 — a positive residual correlation bucks the general negative trend, which is a stronger signal of genuine local dependence than any of the negative ones: these two items likely share something beyond \\(\\theta\\), plausibly because being threatened and being insulted often happen together in the same hostile encounter.\nHowever, none of this is severe enough to justify dropping an item on the spot.\nIf the same pattern shows up on the full NaDiRA sample, reasonable next steps are rewording one of the overlapping items, modeling them as a testlet, or, as a last resort, removing one. Removing items should stay a last resort: it can improve fit while narrowing what the scale actually measures.",
+    "crumbs": [
+      "by Amelia Zein",
+      "Download `quarto` exercise"
+    ]
+  },
+  {
+    "objectID": "files/exercise.html#try-it-yourself",
+    "href": "files/exercise.html#try-it-yourself",
+    "title": "Hands-On: Fitting a Graded Response Model",
+    "section": "Try it yourself",
+    "text": "Try it yourself\nA few things to explore in the time we have left:\n\nDrop the item with the lowest discrimination (a) from model and re-fit. How much does the test information curve change?\nker_diskerf_angriff (physical attack) should have the most extreme thresholds of the seven. Confirm that in your output, and think about why that makes substantive sense.\nIf you were designing a real NaDiRA-based discrimination battery, which part of \\(\\theta\\) would you most want it to be reliable in, and does anything here suggest you’d need more items there?\nIf you had the full NaDiRA sample instead of this teaching extract, which item pair from Step 9 would you investigate first and would you reword, parcel, or drop?",
+    "crumbs": [
+      "by Amelia Zein",
+      "Download `quarto` exercise"
+    ]
+  },
+  {
+    "objectID": "files/exercise.html#contact",
+    "href": "files/exercise.html#contact",
+    "title": "Hands-On: Fitting a Graded Response Model",
+    "section": "Contact",
+    "text": "Contact\nQuestions or feedback: amelia.zein@cais-research.de or amelia.zein@psikologi.unair.ac.id",
+    "crumbs": [
+      "by Amelia Zein",
+      "Download `quarto` exercise"
+    ]
+  },
+  {
+    "objectID": "files/exercise.html#session-info",
+    "href": "files/exercise.html#session-info",
+    "title": "Hands-On: Fitting a Graded Response Model",
+    "section": "Session Info",
+    "text": "Session Info\n\nsessionInfo()\n\nR version 4.6.1 (2026-06-24 ucrt)\nPlatform: x86_64-w64-mingw32/x64\nRunning under: Windows 11 x64 (build 26200)\n\nMatrix products: default\n  LAPACK version 3.12.1\n\nlocale:\n[1] LC_COLLATE=German_Germany.utf8  LC_CTYPE=German_Germany.utf8   \n[3] LC_MONETARY=German_Germany.utf8 LC_NUMERIC=C                   \n[5] LC_TIME=German_Germany.utf8    \n\ntime zone: Europe/Berlin\ntzcode source: internal\n\nattached base packages:\n[1] stats4    stats     graphics  grDevices utils     datasets  methods  \n[8] base     \n\nother attached packages:\n [1] haven_2.5.5     skimr_2.2.2     caret_7.0-1     ggmirt_0.1.0   \n [5] mirt_1.47       lattice_0.22-9  psych_2.6.5     lubridate_1.9.5\n [9] forcats_1.0.1   stringr_1.6.0   dplyr_1.2.1     purrr_1.2.2    \n[13] readr_2.2.0     tidyr_1.3.2     tibble_3.3.1    ggplot2_4.0.3  \n[17] tidyverse_2.0.0\n\nloaded via a namespace (and not attached):\n [1] mnormt_2.1.2         pROC_1.19.1          pbapply_1.7-5       \n [4] gridExtra_2.3.1      permute_0.9-10       testthat_3.3.2      \n [7] rlang_1.3.0          magrittr_2.0.5       otel_0.2.0          \n[10] e1071_1.7-17         compiler_4.6.1       mgcv_1.9-4          \n[13] vctrs_0.7.3          reshape2_1.4.5       pkgconfig_2.0.3     \n[16] fastmap_1.2.0        labeling_0.4.3       rmarkdown_2.31      \n[19] prodlim_2026.03.11   sessioninfo_1.2.4    tzdb_0.5.0          \n[22] xfun_0.60            jsonlite_2.0.0       splines2_0.5.4      \n[25] recipes_1.4.0        Deriv_4.3.0          parallel_4.6.1      \n[28] cluster_2.1.8.2      R6_2.6.1             stringi_1.8.9       \n[31] RColorBrewer_1.1-3   parallelly_1.48.0    rpart_4.1.27        \n[34] brio_1.1.5           Rcpp_1.1.2           iterators_1.0.14    \n[37] knitr_1.51           future.apply_1.20.2  audio_0.1-12        \n[40] base64enc_0.1-6      R.utils_2.13.0       Matrix_1.7-5        \n[43] splines_4.6.1        nnet_7.3-20          timechange_0.4.0    \n[46] tidyselect_1.2.1     yaml_2.3.12          vegan_2.7-6         \n[49] stringfish_0.19.2    timeDate_4052.112    codetools_0.2-20    \n[52] dcurver_0.9.3        listenv_1.0.0        plyr_1.8.9          \n[55] withr_3.0.3          S7_0.2.2             evaluate_1.0.5      \n[58] future_1.75.0        survival_3.8-9       proxy_0.4-29        \n[61] RcppParallel_6.2.1   pillar_1.11.1        foreach_1.5.2       \n[64] generics_0.1.4       hms_1.1.4            scales_1.4.0        \n[67] globals_0.19.1       qs2_0.3.1            class_7.3-23        \n[70] glue_1.8.1           clipr_0.8.1          tools_4.6.1         \n[73] data.table_1.18.4    beepr_2.0            SimDesign_2.27      \n[76] ModelMetrics_1.2.2.2 gower_1.0.2          grid_4.6.1          \n[79] ipred_0.9-16         nlme_3.1-170         repr_1.1.7          \n[82] cli_3.6.6            lava_1.9.3           gtable_0.3.6        \n[85] R.methodsS3_1.8.2    digest_0.6.39        progressr_1.0.0     \n[88] GPArotation_2026.8-2 htmlwidgets_1.6.4    farver_2.1.2        \n[91] htmltools_0.5.9      R.oo_1.27.1          lifecycle_1.0.5     \n[94] hardhat_1.4.3        MASS_7.3-66",
+    "crumbs": [
+      "by Amelia Zein",
+      "Download `quarto` exercise"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Welcome!",
+    "section": "",
+    "text": "This site keeps the materials for the session Item Response Theory: Graded Response Model, as a part of the larger Workshop Itemkonstruktion, hosted by Universität Duisburg-Essen (IKG, DeZIM Nationaler Diskriminierungs- & Rassismusmonitor, DeZIM Forschungsgemeinschaft & InZentIM), 28.–29. September 2026, Campus Essen (CASINO, Reckhammerweg 3, 45141 Essen).\nThe workshop’s overall theme is “From Idea to Item Battery: The Methodology(ies) Behind Item Construction in Migration and Racism Research.”\n\n\n\n\n\n\nVortrag II mit Praxis in RStudio: Item Response Theory, Graded Response Model Day 2 (29 September), 14:45–16:15\n\n\n\n\nOutline\n\nWhat does IRT add on top of classical test theory (CTT)?\nCore ideas of the Graded Response Model (GRM)\nHands-on: fitting a GRM in R\nInterpreting model and item parameters\nWrap-up, discussion & Q&A\n\n\n\nFinding your way around this site\n\nSlide Deck - the content of the talk\nDownload quarto exercise/Download rmarkdown exercise — the hands-on document, in whichever format suits your setup, to open and run in RStudio\nRendered html of the exercise — a read-only walkthrough of the hands-on exercise, handy if you’d rather follow along on screen than run R yourself\nSources - the tutorial paper this session is based on, plus further reading\n\nThe tutorial paper that I and my collaborator wrote on GRM: Zein & Akhtar (2025).\nA published paper that examines factor structure of Everyday’s Discrimination scale in Austrian sample. You can compare the results of the exercise with this published paper: Amini-Nejad, et al. (2025).\n\n\n\n\nGetting ready for the hands-on part\n\nBring a laptop with  (preferebly the latest 4.6.1 version) and RStudio already installed.\nI would highly recommend to install quarto in your device before the session, as working with a quarto document is more fun than .Rmd 😊\nInstall these packages ahead of time so we don’t lose workshop time to it:\n\ninstall.packages(c(\"tidyverse\", \"psych\", \"pak\", \"mirt\", \"caret\", \"skimr\", \"haven\"), dependencies = TRUE)\n\npak::pak(\"masurp/ggmirt\")  # ggmirt package only available on GitHub\n\nThe exercise NaDiRA dataset itself will be provided in the room by the organizer.\n\n\n\n\n\n\n\nNoteHow to download the slides 🖨️\n\n\n\nClick the icon ☰ in the lower-left corner of the slide → click Tools in the upper-left corner → select PDF Export Mode → press Ctrl + P until a pop-up window appears to print the slide, then print it as a PDF file.\nAlternatively, you can press the e key as a shortcut, then print the slide as a PDF file.\n\n\n\n\nQuestions?\nGet in touch anytime before or after the workshop — amelia.zein@cais-research.de or amelia.zein@psikologi.unair.ac.id.\n\n\n\n\n\n\nNoteLicense\n\n\n\nAll workshop materials are licensed as  BY 4.0. This means you are free to reuse the materials, but the original source must be properly cited.\n\n\n\n\n\n\n\n\nI used Gemini 3.8 Flash to generate images (i.e., staircase illustration and the ICC plot) and Claude Sonnet 5 to troubleshoot quarto and git bugs.",
+    "crumbs": [
+      "by Amelia Zein",
+      "Home"
+    ]
+  },
+  {
+    "objectID": "files/intro.html#agenda",
+    "href": "files/intro.html#agenda",
+    "title": "Introduction to IRT’s Graded Response Model",
+    "section": "AGENDA",
+    "text": "AGENDA\n\n\nWhat makes IRT different from “default” factor analysis (classical test theory - CTT)?\nMeet the IRT family\nItem and model parameters of the Graded Response Model (GRM)\nHands-On: Fitting a GRM\nInterpreting model and item parameters\nWrap-up, discussion, and Q&A",
+    "crumbs": [
+      "by Amelia Zein",
+      "Slide Deck"
+    ]
+  },
+  {
+    "objectID": "files/intro.html#section",
+    "href": "files/intro.html#section",
+    "title": "Introduction to IRT’s Graded Response Model",
+    "section": "",
+    "text": "01\n\n\nWhat makes IRT different from CTT?",
+    "crumbs": [
+      "by Amelia Zein",
+      "Slide Deck"
+    ]
+  },
+  {
+    "objectID": "files/intro.html#three-points-of-divergence",
+    "href": "files/intro.html#three-points-of-divergence",
+    "title": "Introduction to IRT’s Graded Response Model",
+    "section": "Three points of divergence",
+    "text": "Three points of divergence\n\nAlthough CTT and IRT share similar fundamental assumptions, they differ in at least three aspects below.\n\n\n\n\nItem-Latent Variable Relationship: Linear vs. Probabilistic\n IRT models the relationship between items and the latent variable using probabilistic function.   CTT primarily expresses this relationship as a linear term.\n\n\n\nReliability: A “one-for-all” coefficient vs. A spectrum\n IRT allows reliability to vary along with the latent trait spectrum.   CTT strongly assumes that reliability (thus measurement error) remains similar for the whole sample.\n\n\n\nInvariance: Scale- vs. Item-level\n IRT enables estimation of invariance at both item- (i.e., “differential item functioning” or DIF) and scale-level (i.e., “differential test functioning” or DTF).   CTT primarily focuses on estimating measurement invariance at the scale-level.",
+    "crumbs": [
+      "by Amelia Zein",
+      "Slide Deck"
+    ]
+  },
+  {
+    "objectID": "files/intro.html#linear-vs.-probabilistic",
+    "href": "files/intro.html#linear-vs.-probabilistic",
+    "title": "Introduction to IRT’s Graded Response Model",
+    "section": "1️⃣ Linear vs. Probabilistic",
+    "text": "1️⃣ Linear vs. Probabilistic\n\nSuppose that we want to measure how much a participant experiences symptoms of depression.",
+    "crumbs": [
+      "by Amelia Zein",
+      "Slide Deck"
+    ]
+  },
+  {
+    "objectID": "files/intro.html#linear-vs.-probabilistic-1",
+    "href": "files/intro.html#linear-vs.-probabilistic-1",
+    "title": "Introduction to IRT’s Graded Response Model",
+    "section": "1️⃣ Linear vs. Probabilistic",
+    "text": "1️⃣ Linear vs. Probabilistic\n\nSuppose that we want to measure how much a participant experiences symptoms of depression using a self-report scale.",
+    "crumbs": [
+      "by Amelia Zein",
+      "Slide Deck"
+    ]
+  },
+  {
+    "objectID": "files/intro.html#linear-vs.-probabilistic-2",
+    "href": "files/intro.html#linear-vs.-probabilistic-2",
+    "title": "Introduction to IRT’s Graded Response Model",
+    "section": "1️⃣ Linear vs. Probabilistic",
+    "text": "1️⃣ Linear vs. Probabilistic\n\nLet us zoom in here.",
+    "crumbs": [
+      "by Amelia Zein",
+      "Slide Deck"
+    ]
+  },
+  {
+    "objectID": "files/intro.html#linear-vs.-probabilistic-3",
+    "href": "files/intro.html#linear-vs.-probabilistic-3",
+    "title": "Introduction to IRT’s Graded Response Model",
+    "section": "1️⃣ Linear vs. Probabilistic",
+    "text": "1️⃣ Linear vs. Probabilistic\n\nIn CTT terms, every increase in the latent trait (i.e., “Depression”) is associated with a constant increase in the expected score on the item. In other words, the latent trait causes the observed score (i.e., reflective model).\n\n\n\n\n\n\n# In lavaan syntax: '=~' (\"is measured by\") specifies a reflective model\n# The latent trait (Depression) causes the observed scores on the items:\nmodel &lt;- '\n  Depression =~ item_1 + item_2 + item_3\n'",
+    "crumbs": [
+      "by Amelia Zein",
+      "Slide Deck"
+    ]
+  },
+  {
+    "objectID": "files/intro.html#linear-vs.-probabilistic-4",
+    "href": "files/intro.html#linear-vs.-probabilistic-4",
+    "title": "Introduction to IRT’s Graded Response Model",
+    "section": "1️⃣ Linear vs. Probabilistic",
+    "text": "1️⃣ Linear vs. Probabilistic\n\n… and because the relationship is linear, it can be expressed as a linear regression equation. This equation is what factor analysis looks like under the hood.\n\n\n\n\n\n\n\\[Item_i = \\tau + \\lambda \\cdot \\xi + \\delta\\]",
+    "crumbs": [
+      "by Amelia Zein",
+      "Slide Deck"
+    ]
+  },
+  {
+    "objectID": "files/intro.html#linear-vs.-probabilistic-5",
+    "href": "files/intro.html#linear-vs.-probabilistic-5",
+    "title": "Introduction to IRT’s Graded Response Model",
+    "section": "1️⃣ Linear vs. Probabilistic",
+    "text": "1️⃣ Linear vs. Probabilistic\n\n\n\n\n\n\\[Item_i = \\tau + \\lambda \\cdot \\xi + \\delta\\]\n\n\n\\(\\tau\\) (tau) — the item intercept: the expected item score when the latent trait is 0.\n\\(\\lambda\\) (lambda) — the factor loading: how much the item is expected to change per one-unit change in the latent trait. This is our regression slope.\n\\(\\xi\\) (xi) — the latent variable itself, here playing the role of the predictor.\n\\(\\delta\\) (delta) — the residual/unique factor: the part of the item’s variance not explained by the latent trait (measurement error + item-specific variance).\n\n\n\n\n\n\n\n\nBUT CFA can be nonlinear too\n\n\nStandard CFA assumes continuous items and a strictly linear relationship. When items are ordinal or categorical, CFA can incorporate thresholds and non-linear link functions (e.g., categorical CFA via WLSMV, see details here) which, mathematically, is closely related to polytomous IRT.",
+    "crumbs": [
+      "by Amelia Zein",
+      "Slide Deck"
+    ]
+  },
+  {
+    "objectID": "files/intro.html#linear-vs.-probabilistic-6",
+    "href": "files/intro.html#linear-vs.-probabilistic-6",
+    "title": "Introduction to IRT’s Graded Response Model",
+    "section": "1️⃣ Linear vs. Probabilistic",
+    "text": "1️⃣ Linear vs. Probabilistic\n\nIn contrast, IRT models this relationship as a probabilistic function, so the relationship between the latent trait and the observed score is non-linear.\n\n\n\n\n\n\n\n\n\n\\[P(X_i = 1 \\mid \\theta) = \\frac{1}{1 + e^{-a_i(\\theta - b_i)}}\\]\n\n\n\\(\\theta\\) (theta) — the latent trait of the participant (predictor, analogous to \\(\\xi\\) in CFA).\n\\(b_i\\) — the item difficulty/threshold: the trait level where the probability of endorsement is 50% (\\(P = 0.50\\)).\n\\(a_i\\) — the item discrimination: the slope at the inflection point, showing how sharply the item differentiates (analogous to loading \\(\\lambda\\) in CFA).",
+    "crumbs": [
+      "by Amelia Zein",
+      "Slide Deck"
+    ]
+  },
+  {
+    "objectID": "files/intro.html#single-reliability-coefficient-vs.-a-spectrum",
+    "href": "files/intro.html#single-reliability-coefficient-vs.-a-spectrum",
+    "title": "Introduction to IRT’s Graded Response Model",
+    "section": "2️⃣ Single Reliability Coefficient vs. A Spectrum",
+    "text": "2️⃣ Single Reliability Coefficient vs. A Spectrum\n\nCTT gives one reliability coefficient for the whole sample.\n\n\n\nIt assumes measurement error is the same for everyone, regardless of their trait level.\nA discrimination-experience scale might sharply distinguish people with very high exposure, but tell us almost nothing about people in the moderate range.\n\nIn some contexts, this is exactly where policy-relevant nuance often lives.\n\nCTT can’t show where on the scale our instrument is weak, but item response theory (IRT) can.",
+    "crumbs": [
+      "by Amelia Zein",
+      "Slide Deck"
+    ]
+  },
+  {
+    "objectID": "files/intro.html#single-reliability-coefficient-vs.-a-spectrum-1",
+    "href": "files/intro.html#single-reliability-coefficient-vs.-a-spectrum-1",
+    "title": "Introduction to IRT’s Graded Response Model",
+    "section": "2️⃣ Single Reliability Coefficient vs. A Spectrum",
+    "text": "2️⃣ Single Reliability Coefficient vs. A Spectrum\n\nThese conditional reliability curves illustrate how measurement precision varies across different levels of the latent trait (\\(\\theta\\)).",
+    "crumbs": [
+      "by Amelia Zein",
+      "Slide Deck"
+    ]
+  },
+  {
+    "objectID": "files/intro.html#single-reliability-coefficient-vs.-a-spectrum-2",
+    "href": "files/intro.html#single-reliability-coefficient-vs.-a-spectrum-2",
+    "title": "Introduction to IRT’s Graded Response Model",
+    "section": "2️⃣ Single Reliability Coefficient vs. A Spectrum",
+    "text": "2️⃣ Single Reliability Coefficient vs. A Spectrum\n\nNotice that along certain parts of the spectrum, very little information is available, leading to higher measurement error and lower reliability. These regions are exactly the blindspots that the scale cannot optimally capture.",
+    "crumbs": [
+      "by Amelia Zein",
+      "Slide Deck"
+    ]
+  },
+  {
+    "objectID": "files/intro.html#scale--vs.-item-level-invariance",
+    "href": "files/intro.html#scale--vs.-item-level-invariance",
+    "title": "Introduction to IRT’s Graded Response Model",
+    "section": "3️⃣ Scale- vs. Item-level Invariance",
+    "text": "3️⃣ Scale- vs. Item-level Invariance\n\nAs we saw earlier in multigroup CFA, measurement invariance tests whether an instrument behaves equivalently across groups.\n\n\n\nCFA/CTT: Primarily tests invariance step-by-step across the entire scale (configural → metric → scalar) by checking changes in global model fit.\nIRT (DIF & DTF): Directly pinpoints Differential Item Functioning (DIF) at the individual item level along the trait continuum \\(\\theta\\):\n\nUniform DIF: An item is systematically easier/harder for one group across all trait levels (difference in threshold \\(b\\)).\nNon-uniform DIF: An item discriminates differently across groups (difference in slope \\(a\\)).\n\nDifferential Test Functioning (DTF): Aggregates item-level DIF to assess whether item biases cancel out or compound across the overall scale score.",
+    "crumbs": [
+      "by Amelia Zein",
+      "Slide Deck"
+    ]
+  },
+  {
+    "objectID": "files/intro.html#section-1",
+    "href": "files/intro.html#section-1",
+    "title": "Introduction to IRT’s Graded Response Model",
+    "section": "",
+    "text": "02\n\n\nMeet the IRT Family",
+    "crumbs": [
+      "by Amelia Zein",
+      "Slide Deck"
+    ]
+  },
+  {
+    "objectID": "files/intro.html#the-irt-family",
+    "href": "files/intro.html#the-irt-family",
+    "title": "Introduction to IRT’s Graded Response Model",
+    "section": "The IRT Family",
+    "text": "The IRT Family\n\n1PL, 2PL and 3PL models are built for binary data (correct/incorrect, yes/no). We are primarily interested in Likert-type (i.e., polytomous), and that’s what GRM is for.\n\n\n\n\n\n\n\n\n\n\nModel\nData type\nWhat it estimates\n\n\n\n\n1PL / Rasch\nDichotomous\nitem difficulty only (equal discrimination assumed)\n\n\n2PL\nDichotomous\nitem difficulty and discrimination\n\n\n3PL\nDichotomous\nitem difficulty and discrimination + pseudo-guessing params\n\n\nGRM\nPolytomous (ordered categories)\ndiscrimination a + multiple thresholds b per item\n\n\n\n\n\n\n…and many other variants that are specifically calibrated to estimate models with n of dimensions, n of response categories, response format, response styles, etc.",
+    "crumbs": [
+      "by Amelia Zein",
+      "Slide Deck"
+    ]
+  },
+  {
+    "objectID": "files/intro.html#section-2",
+    "href": "files/intro.html#section-2",
+    "title": "Introduction to IRT’s Graded Response Model",
+    "section": "",
+    "text": "03\n\n\nItem and Model Parameters of the Graded Response Model (GRM)",
+    "crumbs": [
+      "by Amelia Zein",
+      "Slide Deck"
+    ]
+  },
+  {
+    "objectID": "files/intro.html#the-staircase-illustration",
+    "href": "files/intro.html#the-staircase-illustration",
+    "title": "Introduction to IRT’s Graded Response Model",
+    "section": "The Staircase Illustration",
+    "text": "The Staircase Illustration\n\n\n\n\n\n\n\n\nFor an item with 5 response categories, GRM estimates 4 thresholds (\\(b_1\\)–\\(b_4\\)).\nEach threshold is the point on \\(\\theta\\) where a participant is equally likely to pick one category or the next, as in a staircase they “step up” as their trait level rises.\nThe mean of \\(\\theta\\) is usually centered around 0, so a threshold like \\(b_1 = -1.2\\) means: people about 1.2 SD below the mean are the ones flipping between the two lowest categories.",
+    "crumbs": [
+      "by Amelia Zein",
+      "Slide Deck"
+    ]
+  },
+  {
+    "objectID": "files/intro.html#reading-item-probability-curves",
+    "href": "files/intro.html#reading-item-probability-curves",
+    "title": "Introduction to IRT’s Graded Response Model",
+    "section": "Reading Item Probability Curves",
+    "text": "Reading Item Probability Curves\n\nPlot the probability of endorsing each category against \\(\\theta\\): each threshold represents the transition boundary between two adjacent categories.\n\n\n\n\n\n\nThe two extreme categories (“Never”/“Very often”) are cumulative boundary categories, which means their curves plateau rather than peak as in the others.\nThe middle categories peak in a bell shape between two thresholds.\nSteep, well-separated curves = an item that sharply distinguishes people near that threshold.\nFlat, overlapping curves = an item that isn’t telling us much at that part of the scale.",
+    "crumbs": [
+      "by Amelia Zein",
+      "Slide Deck"
+    ]
+  },
+  {
+    "objectID": "files/intro.html#two-item-parameters-a-and-b",
+    "href": "files/intro.html#two-item-parameters-a-and-b",
+    "title": "Introduction to IRT’s Graded Response Model",
+    "section": "Two Item Parameters: a and b",
+    "text": "Two Item Parameters: a and b\n\nEvery item in a GRM gets one discrimination parameter (a) and several thresholds (b).\n\n\n\n\\(b\\) (threshold): where on \\(\\theta\\) the item is doing its work. The number of b we get depends on how many response categories are there.\n\\(a\\) (discrimination): how strongly it distinguishes people around that point. Steeper curves reflect more informative item.\nRule of thumb (Baker & Kim, 2017):\n\n\\(a\\) less than 0.35 = very low\n0.35 – 0.65 = low\n0.65 – 1.35 = moderate\n1.35 – 1.70 = high\nmore than 1.70 = very high",
+    "crumbs": [
+      "by Amelia Zein",
+      "Slide Deck"
+    ]
+  },
+  {
+    "objectID": "files/intro.html#three-assumptions",
+    "href": "files/intro.html#three-assumptions",
+    "title": "Introduction to IRT’s Graded Response Model",
+    "section": "Three Assumptions",
+    "text": "Three Assumptions\n\nBefore intrepreting GRM model and item parameters, three core construct assumptions need to hold, which closely mirroring those in factor analysis:\n\n\n\n\nMonotonicity\nHigher \\(\\theta\\) → higher probability of endorsing a stronger response category.\n\n\n\nUnidimensionality\nOne \\(\\theta\\) underlies the item pool, we already checked this in this morning’s factor analysis session.\n\n\n\nLocal Independence\nOnce \\(\\theta\\) is accounted for, items shouldn’t still correlate with each other. In practice, expect some residual dependence, but the question is whether its severity is still within our tolerance.\n\n\n\n\nThese assumptions aren’t absolute. There are some advanced IRT models that don’t explicitly make one or more of the above assumptions.",
+    "crumbs": [
+      "by Amelia Zein",
+      "Slide Deck"
+    ]
+  },
+  {
+    "objectID": "files/intro.html#section-3",
+    "href": "files/intro.html#section-3",
+    "title": "Introduction to IRT’s Graded Response Model",
+    "section": "",
+    "text": "04\n\n\nHands-On: Fitting a GRM",
+    "crumbs": [
+      "by Amelia Zein",
+      "Slide Deck"
+    ]
+  },
+  {
+    "objectID": "files/intro.html#todays-exercise",
+    "href": "files/intro.html#todays-exercise",
+    "title": "Introduction to IRT’s Graded Response Model",
+    "section": "Today’s Exercise",
+    "text": "Today’s Exercise\n\nWe’ll fit a GRM together on a 7-item scale from the NaDiRA survey measuring discrimination experience.\n\n\n\nItems: 7 discrimination items (ker_diskerf_*), 6-point frequency scale (Täglich/Daily → Nie / Never)\nData: Teaching extract of the NaDiRA dataset (N = 1,000; 972 complete cases), with a calibrated simulated option as fallback\nDocument (two options): exercise.qmd or exercise.Rmd — open it now in RStudio and follow along",
+    "crumbs": [
+      "by Amelia Zein",
+      "Slide Deck"
+    ]
+  },
+  {
+    "objectID": "files/intro.html#open-exercise.qmd",
+    "href": "files/intro.html#open-exercise.qmd",
+    "title": "Introduction to IRT’s Graded Response Model",
+    "section": "Open exercise.qmd",
+    "text": "Open exercise.qmd\n\nLet’s switch to RStudio.\nClick on this link to be redirected to the rendered html\n\n\nWe’ll walk through Steps 1–9 together: meet the data → dimensionality → fit GRM → item & test information → reliability → model fit → residual correlations (\\(Q_3\\)).",
+    "crumbs": [
+      "by Amelia Zein",
+      "Slide Deck"
+    ]
+  },
+  {
+    "objectID": "files/intro.html#section-4",
+    "href": "files/intro.html#section-4",
+    "title": "Introduction to IRT’s Graded Response Model",
+    "section": "",
+    "text": "05\n\n\nReading & Using the Results",
+    "crumbs": [
+      "by Amelia Zein",
+      "Slide Deck"
+    ]
+  },
+  {
+    "objectID": "files/intro.html#when-not-to-reach-for-grm",
+    "href": "files/intro.html#when-not-to-reach-for-grm",
+    "title": "Introduction to IRT’s Graded Response Model",
+    "section": "When (Not) to Reach for GRM",
+    "text": "When (Not) to Reach for GRM\n\n\n\nSample size\nStable item parameters generally need a few hundred participants or more, so it is not a good option for a 30-person pilot.\n\n\n\nUnidimensionality\nIf our EFA/CFA suggests multiple factors, a unidimensional GRM is the wrong choice. In this case, consider multidimensional GRM instead.\n\n\n\nNot a replacement\nGRM tells us about statistical precision. It doesn’t and cannot replace the focus groups, coding, and content validity work that we already learned on Day 1.",
+    "crumbs": [
+      "by Amelia Zein",
+      "Slide Deck"
+    ]
+  },
+  {
+    "objectID": "files/intro.html#section-5",
+    "href": "files/intro.html#section-5",
+    "title": "Introduction to IRT’s Graded Response Model",
+    "section": "",
+    "text": "06\n\n\nWrap-Up & Discussion",
+    "crumbs": [
+      "by Amelia Zein",
+      "Slide Deck"
+    ]
+  },
+  {
+    "objectID": "files/intro.html#resources-contact",
+    "href": "files/intro.html#resources-contact",
+    "title": "Introduction to IRT’s Graded Response Model",
+    "section": "Resources & Contact",
+    "text": "Resources & Contact\n\n\nTutorial paper: Zein, R. A., & Akhtar, H. (2025). Getting started with the graded response model: An introduction and tutorial in R. International Journal of Psychology, 60(1), e13265. https://doi.org/10.1002/ijop.13265\nQuestions afterwards: amelia.zein@cais-research.de or amelia.zein@psikologi.unair.ac.id.",
+    "crumbs": [
+      "by Amelia Zein",
+      "Slide Deck"
+    ]
+  },
+  {
+    "objectID": "files/intro.html#section-6",
+    "href": "files/intro.html#section-6",
+    "title": "Introduction to IRT’s Graded Response Model",
+    "section": "",
+    "text": "Dr. Rizqy Amelia Zein\nCenter for Advanced Internet Studies (CAIS) & Universitas Airlangga\nE-mail: amelia.zein@cais-research.de · Homepage: rameliaz.github.io\n\n\n\n\n\n\n\n\nThank you!\n\n\n\nCenter for Advanced Internet Studies (CAIS) gGmbH\nKonrad-Zuse-Str. 2a, 44801 Bochum\n\n\ninfo@cais-research.de\n+49 234 9531 5000\nwww.cais-research.de",
+    "crumbs": [
+      "by Amelia Zein",
+      "Slide Deck"
+    ]
+  }
+]

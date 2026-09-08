@@ -1,0 +1,65 @@
+---
+title: "Welcome!"
+---
+
+This site keeps the materials for the session **Item Response Theory: Graded Response Model**, as a part of the larger **Workshop Itemkonstruktion**, hosted by Universität Duisburg-Essen (IKG, DeZIM Nationaler Diskriminierungs- & Rassismusmonitor, DeZIM Forschungsgemeinschaft & InZentIM), 28.–29. September 2026, Campus Essen (CASINO, Reckhammerweg 3, 45141 Essen). 
+
+The workshop's overall theme is *"From Idea to Item Battery: The Methodology(ies) Behind Item Construction in Migration and Racism Research."*
+
+::: {.callout-important appearance="simple"}
+**Vortrag II mit Praxis in RStudio: Item Response Theory, Graded Response Model**
+Day 2 (29 September), 14:45–16:15
+:::
+
+### Outline
+
+1. What does IRT add on top of classical test theory (CTT)?
+2. Core ideas of the Graded Response Model (GRM)
+3. Hands-on: fitting a GRM in R
+4. Interpreting model and item parameters
+5. Wrap-up, discussion & Q&A
+
+### Finding your way around this site
+
+- [**Slide Deck**](../files/intro.html) - the content of the talk
+- [**Download `quarto` exercise**](../files/exercise.qmd)/[**Download `rmarkdown` exercise**](../files/exercise.Rmd) — the hands-on document, in whichever format suits your setup, to open and run in RStudio
+- [**Rendered `html` of the exercise**](../files/exercise.html) — a read-only walkthrough of the hands-on exercise, handy if you'd rather follow along on screen than run R yourself
+- **Sources** - the tutorial paper this session is based on, plus further reading
+    + The tutorial paper that I and my collaborator wrote on GRM: [Zein & Akhtar (2025)](https://onlinelibrary.wiley.com/doi/full/10.1002/ijop.13265).
+    + A published paper that examines factor structure of Everyday's Discrimination scale in Austrian sample. You can compare the results of the exercise with this published paper: [Amini-Nejad, et al. (2025)](https://econtent.hogrefe.com/doi/10.1027/2698-1866/a000110).
+
+### Getting ready for the hands-on part
+
+- Bring a laptop with <i class="fa-brands fa-r-project"></i> (preferebly [the latest `4.6.1` version](https://cran.r-project.org/bin/windows/base/)) and [**RStudio**](https://posit.co/downloads) already installed.
+- I would highly recommend to [install `quarto`](https://quarto.org/docs/download/) in your device before the session, as working with a `quarto` document is more fun than `.Rmd` 😊
+- Install these packages ahead of time so we don't lose workshop time to it:
+
+```r
+install.packages(c("tidyverse", "psych", "pak", "mirt", "caret", "skimr", "haven"), dependencies = TRUE)
+
+pak::pak("masurp/ggmirt")  # ggmirt package only available on GitHub
+```
+
+- The exercise NaDiRA dataset itself will be provided in the room by the organizer.
+
+::: {.callout-note}
+## How to download the slides 🖨️
+Click the *icon* ☰ in the lower-left corner of the *slide* → click `Tools` in the upper-left corner → select `PDF Export Mode` → press `Ctrl` + `P` until a *pop-up window* appears to print the *slide*, then *print* it as a `PDF` *file*.
+
+Alternatively, you can press the `e` key as a *shortcut*, then print the *slide* as a `PDF` *file*.
+:::
+
+### Questions?
+
+Get in touch anytime before or after the workshop — [amelia.zein@cais-research.de](mailto:amelia.zein@cais-research.de) or [amelia.zein@psikologi.unair.ac.id](mailto:amelia.zein@psikologi.unair.ac.id).
+
+::: {.callout-note}
+## License
+
+All workshop materials are licensed as [<i class="fab fa-creative-commons"><i class="fa fa-universal-access"></i></i> BY 4.0](https://creativecommons.org/licenses/by/4.0/). This means **you are free to reuse the materials, but the original source must be properly cited**.
+
+:::
+
+::: {.callout-note collapse="true" appearance="simple"}
+I used Gemini 3.8 Flash to generate images (i.e., [staircase illustration](../img/diagrams/staircase.png) and the [ICC plot]((../img/diagrams/ICC_sigmoid.png))) and Claude Sonnet 5 to troubleshoot `quarto` and `git` bugs.
+:::

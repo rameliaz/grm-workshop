@@ -1,0 +1,7 @@
+{
+  "files.associations": {
+    "*.qmd": "quarto"
+  },
+  "editor.semanticHighlighting.enabled": true,
+  "r.rmarkdown.chunkBackgroundColor": "rgba(128, 128, 128, 0.08)"
+}

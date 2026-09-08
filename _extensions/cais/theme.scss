@@ -1,0 +1,1135 @@
+/*-- scss:defaults --*/
+
+// NOTE on image paths in this SCSS:
+// The compiled CSS lands at template_files/libs/revealjs/dist/theme/*.css
+// so ../../../../ resolves back to the project root where img/ lives.
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+
+// ── CAIS Farbpalette ─────────────────────────────────────────
+$cais-blue:       #009dd2;
+$cais-hellgrau:   #ebeae4;
+$cais-dunkelgrau: #858585;
+$cais-rot:        #de7b73;
+$cais-navy:       #0a1628;
+
+// ── Quarto / RevealJS Variablen ──────────────────────────────
+$font-family-sans-serif:           'Roboto', sans-serif;
+$presentation-heading-font:        'Roboto', sans-serif;
+$presentation-heading-color:       $cais-blue;
+$presentation-heading-font-weight: 700;
+$presentation-heading-line-height: 1.15;
+$body-color:                       #333333;
+$link-color:                       $cais-blue;
+$body-bg:                          #ffffff;
+$presentation-font-size-root:      28px;
+$presentation-h1-font-size:        2.2em;
+$presentation-h2-font-size:        1.4em;
+$presentation-h3-font-size:        1.0em;
+$presentation-slide-text-align:    left;
+$presentation-line-height:         1.45;
+
+/*-- scss:rules --*/
+
+// ════════════════════════════════════════════════════════════
+// GLOBAL
+// ════════════════════════════════════════════════════════════
+
+.reveal {
+  font-family: 'Roboto', sans-serif;
+}
+
+// All slides: explicit top/left so no slide ever relies on `top: auto`.
+// `top: auto` on position:absolute resolves to the element's "static position"
+// in normal flow. Any sibling with position:relative (e.g. old section-slide)
+// would push subsequent slides' static positions to ~900px — below the visible
+// area — making them appear blank. Explicit top:0/left:0 eliminates that risk.
+// RevealJS inline styles (e.g. centering the title slide) still win because
+// they are applied via element.style and override CSS without !important.
+.reveal .slides section {
+  top: 0;
+  left: 0;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 2.5em 2em 2em;
+}
+
+// Guarantee the current slide is always visible.
+// RevealJS's unload() writes style.display="none" as an inline style.
+// CSS !important overrides inline styles, so this acts as a safety net.
+.reveal .slides section.present {
+  display: block !important;
+}
+
+.reveal a { color: $cais-blue; }
+
+// Kein Border/Trennstrich unter Überschriften
+.reveal h1, .reveal h2, .reveal h3 {
+  border: none !important;
+  text-transform: none !important;
+}
+
+// Logo: fest oben rechts — eng am Rand damit kein Inhalt darunter liegt
+.slide-logo {
+  position: fixed !important;
+  top: 0.4em !important;
+  right: 0.5em !important;
+  bottom: auto !important;
+  max-height: 44px !important;
+  max-width: none !important;
+}
+
+// Titelfolie: kein Slide-Logo, kein Footer, keine Foliennummer
+.reveal:has(#title-slide.present) .slide-logo,
+.reveal:has(#title-slide.present) .footer,
+.reveal:has(#title-slide.present) .slide-number {
+  display: none !important;
+}
+
+// Schlussfolie: kein Slide-Logo, kein Footer, keine Foliennummer
+.reveal:has(.closing-slide.present) .slide-logo,
+.reveal:has(.closing-slide.present) .footer,
+.reveal:has(.closing-slide.present) .slide-number {
+  display: none !important;
+}
+
+// Zwischentitelfolien (hell + dunkel): kein Logo, keine Foliennummer
+.reveal:has(.section-slide.present) .slide-logo,
+.reveal:has(.section-slide.present) .slide-number,
+.reveal:has(.section-slide-dark.present) .slide-logo,
+.reveal:has(.section-slide-dark.present) .slide-number {
+  display: none !important;
+}
+
+// Foliennummer: Quarto verschiebt sie nach oben rechts wenn ein Logo vorhanden
+// ist (rule: .reveal.has-logo .slide-number { top:8px }). Wir setzen sie
+// wieder nach unten rechts und passen die Größe an den Footer an.
+.reveal .slide-number,
+.reveal.has-logo .slide-number {
+  top: auto !important;
+  bottom: 0.55em !important;
+  right: 0.55em !important;
+  font-size: 0.50em !important;
+  color: $cais-dunkelgrau;
+  background-color: transparent;
+}
+
+// Footer — untere rechte Ecke, links der Foliennummer
+// Gleiche font-size wie die Foliennummer; bottom auf 0.60em gesetzt damit
+// die Grundlinie beider Texte optisch auf gleicher Höhe liegt.
+.reveal .footer {
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.50em !important;
+  color: $cais-dunkelgrau;
+  width: auto !important;
+  left: auto !important;
+  right: 6em !important;
+  bottom: 0.60em !important;
+  margin: 0 !important;
+  text-align: right !important;
+}
+
+// H2 auf Inhaltsfolien
+.reveal .slides section:not(#title-slide) > h2 {
+  color: $cais-blue;
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 0.4em;
+  border: none !important;
+}
+
+// Globale Border-Entfernung (auch für Infografik-Folien)
+.reveal .slides section h1,
+.reveal .slides section h2,
+.reveal .slides section h3 {
+  border-top: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+}
+
+// ════════════════════════════════════════════════════════════
+// TITELFOLIE – Titelfolie-V2 (CAIS-Blau Muster-Hintergrund)
+// Verwendet das custom title-slide.html partial
+// ════════════════════════════════════════════════════════════
+
+// Only force flex when the title slide is the *current* slide.
+// If unconditional, the CSS !important overrides RevealJS's JS-injected
+// display:none on past/future slides, causing the title to stack on top
+// of every other slide and blank them out.
+#title-slide.present {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: stretch;
+  padding: 0 !important;
+  text-align: left !important;
+
+  // Linke weiße Spalte (35%)
+  .cais-title-left {
+    width: 35%;
+    flex-shrink: 0;
+    background: #ffffff;
+    padding: 6% 5% 5%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    // Logo-Bereich: CAIS-Logo + optionales Partner-Logo
+    .cais-logos {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2em;
+      margin-bottom: auto;
+    }
+
+    // CAIS-Logo: 2× größer als zuvor
+    .cais-logo-img {
+      width: clamp(180px, 75%, 300px);
+      height: auto;
+      display: block;
+    }
+
+    // Optionales Partner-/Veranstaltungslogo
+    .cais-partner-logo {
+      width: clamp(80px, 55%, 200px);
+      height: auto;
+      display: block;
+    }
+
+    // Meta-Informationen
+    // display:flex + order steuert die visuelle Reihenfolge unabhängig von
+    // der Reihenfolge im title-slide.html-Markup (dort bleibt die klassische
+    // Pandoc-Feldreihenfolge institute/department/event/author/date erhalten).
+    .cais-title-meta {
+      margin-top: auto;
+      padding-top: 1.2em;
+      display: flex;
+      flex-direction: column;
+    }
+
+    // Vortragende (CAIS-Blau, hervorgehoben) – zuerst
+    .cais-author {
+      order: 1;
+      color: $cais-blue;
+      font-size: 0.78em;
+      font-weight: 700;
+      line-height: 1.4;
+      margin: 0 0 0.2em;
+    }
+
+    // Abteilung (dunkelgrau) – zweitens
+    .cais-department {
+      order: 2;
+      color: $cais-dunkelgrau;
+      font-size: 0.72em;
+      font-weight: 400;
+      line-height: 1.4;
+      margin: 0 0 0.6em;
+    }
+
+    // Institut (dunkelgrau) – drittens
+    .cais-institute {
+      order: 3;
+      color: $cais-dunkelgrau;
+      font-size: 0.72em;
+      font-weight: 400;
+      line-height: 1.4;
+      margin: 0 0 0.4em;
+    }
+
+    // Veranstaltungsname (dunkelgrau, wie Institut/Abteilung) – viertens
+    .cais-event {
+      order: 4;
+      color: $cais-dunkelgrau;
+      font-size: 0.72em;
+      font-weight: 400;
+      line-height: 1.4;
+      margin: 0 0 0.2em;
+    }
+
+    // Datum (CAIS-Blau) – zuletzt
+    .cais-date {
+      order: 5;
+      color: $cais-blue;
+      font-size: 0.72em;
+      font-weight: 400;
+      margin: 0;
+    }
+  }
+
+  // Rechte Spalte (65%): CAIS-Blau Muster-Hintergrund
+  .cais-title-right {
+    width: 65%;
+    background-color: $cais-blue;
+    background-image: url('../../../../../img/background.png');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 5% 12%;
+    box-sizing: border-box;
+
+    h1.title {
+      color: #ffffff !important;
+      font-size: 2.3em !important;
+      font-weight: 700 !important;
+      line-height: 1.15;
+      margin: 0 0 0.3em;
+      text-align: left;
+    }
+
+    p.subtitle {
+      color: rgba(255, 255, 255, 0.88) !important;
+      font-size: 0.9em;
+      font-weight: 300;
+      margin: 0;
+      text-align: left;
+    }
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+// AGENDA-FOLIE
+// Verwendung: ## AGENDA {.agenda-slide}
+//             gefolgt von einer ol-Liste
+// ════════════════════════════════════════════════════════════
+
+.reveal .slides section.agenda-slide {
+  background: #ffffff;
+  padding: 0 !important;
+  // NOTE: no position:relative here — RevealJS already gives sections
+  // position:absolute, which is itself a valid containing block for the
+  // absolutely-positioned ::before, h2, and ol children below.
+  // Adding position:relative would put this slide into the normal flow,
+  // which shifts every subsequent slide's natural (static) position down
+  // by ~900px, breaking their top:0 layout.
+
+  // Linker grauer Streifen
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 28%;
+    height: 100%;
+    background-color: $cais-hellgrau;
+    z-index: 0;
+  }
+
+  // H2 als "AGENDA"-Beschriftung im linken Streifen
+  h2 {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 28%;
+    padding: 6% 7%;
+    box-sizing: border-box;
+    color: $cais-dunkelgrau !important;
+    font-size: 0.72em;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    z-index: 1;
+    background: none;
+    margin: 0;
+  }
+
+  // Agenda-Liste (rechte Seite)
+  ol {
+    position: absolute;
+    left: 32%;
+    top: 10%;
+    right: 5%;
+    bottom: 8%;
+    z-index: 1;
+    list-style: none !important;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    counter-reset: agenda-ctr;
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: 0.8em;
+      padding: 0.55em 0;
+      font-size: 0.82em;
+      color: #333;
+      border-bottom: 1px solid rgba($cais-dunkelgrau, 0.2);
+      counter-increment: agenda-ctr;
+
+      &:last-child { border-bottom: none; }
+
+      &::before {
+        content: counter(agenda-ctr, decimal-leading-zero);
+        color: $cais-blue;
+        font-size: 1.9em;
+        font-weight: 700;
+        font-style: italic;
+        min-width: 1.5em;
+        text-align: right;
+        flex-shrink: 0;
+        line-height: 1;
+      }
+    }
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+// ZWISCHENTITELFOLIE – hell (ohne Foto)
+// Verwendung:
+//   ::: {.section-slide}
+//   ::: {.section-number}01:::
+//   ::: {.section-bubble}Überschrift:::
+//   :::
+// ════════════════════════════════════════════════════════════
+
+.reveal .slides section.section-slide {
+  background-color: $cais-hellgrau;
+  padding: 0 !important;
+  overflow: hidden !important;
+  // No position:relative — same reason as .agenda-slide above.
+  // RevealJS gives sections position:absolute; that is already a positioned
+  // element and creates the containing block for the children below.
+
+  // Linker weißer Bereich
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 30%;
+    height: 100%;
+    background: #ffffff;
+    z-index: 0;
+  }
+
+  // Große Nummer (Hintergrund, unten links)
+  .section-number {
+    position: absolute;
+    bottom: -5%;
+    left: 1%;
+    font-size: 13em;
+    font-weight: 700;
+    font-style: italic;
+    color: rgba(0, 0, 0, 0.06);
+    line-height: 1;
+    z-index: 1;
+    user-select: none;
+  }
+
+  // Sprechblase (CAIS-Blau), absolut zentriert im rechten Bereich
+  .section-bubble {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 5%;
+    width: 60%;
+    z-index: 2;
+    background: $cais-blue;
+    border-radius: 20px;
+    padding: 7% 8%;
+    color: #ffffff;
+    font-size: 1.35em;
+    font-weight: 700;
+    line-height: 1.2;
+    box-sizing: border-box;
+
+    // Pfeil unten-rechts
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -34px;
+      right: 22%;
+      width: 0;
+      height: 0;
+      border-left: 34px solid transparent;
+      border-right: 0;
+      border-top: 34px solid $cais-blue;
+    }
+  }
+}
+
+// ── Zwischentitelfolie dunkel (mit Foto-Hintergrund) ────────
+// Verwendung: ::: {.section-slide-dark}
+//   Füge data-background-image="..." dem Folien-Header hinzu
+// ────────────────────────────────────────────────────────────
+
+.reveal .slides section.section-slide-dark.present {
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center;
+  overflow: hidden !important;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 35%;
+    height: 100%;
+    background: $cais-blue;
+    z-index: 1;
+  }
+
+  .section-number {
+    position: absolute;
+    bottom: -8%;
+    left: 1%;
+    font-size: 13em;
+    font-weight: 700;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.18);
+    line-height: 1;
+    z-index: 2;
+    user-select: none;
+  }
+
+  .section-bubble {
+    position: relative;
+    z-index: 2;
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 7% 8%;
+    margin-left: 40%;
+    width: 50%;
+    color: $cais-blue;
+    font-size: 1.35em;
+    font-weight: 700;
+    line-height: 1.2;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -34px;
+      right: 22%;
+      border-left: 34px solid transparent;
+      border-right: 0;
+      border-top: 34px solid #ffffff;
+    }
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+// TEXT + BILD – Text-Bild-V1 (Text links, Bild blutet rechts)
+// Verwendung: ## Überschrift {.text-image}
+//   ::: columns
+//   ::: {.column width="55%"} Text :::
+//   ::: {.column width="45%"} ![](bild.jpg) :::
+//   :::
+// ════════════════════════════════════════════════════════════
+
+.reveal .slides section.text-image.present {
+  padding: 0 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+
+  // Überschrift: natürliche Höhe oben links
+  > h2 {
+    flex-shrink: 0;
+    padding: 4% 5% 1% 5%;
+    margin: 0;
+    font-size: 1.25em;
+    line-height: 1.2;
+    border: none !important;
+    width: 55%;
+    box-sizing: border-box;
+  }
+
+  // Spalten füllen den verbleibenden Raum
+  .columns {
+    flex: 1;
+    min-height: 0;
+    display: flex !important;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 0;
+
+    .column:first-child {
+      flex: 0 0 55%;
+      width: 55%;
+      padding: 0 4% 4% 5%;
+      box-sizing: border-box;
+
+      p  { font-size: 0.75em; line-height: 1.5; margin-top: 0; }
+      ul, ol { font-size: 0.72em; }
+    }
+
+    .column:last-child {
+      flex: 1;
+      overflow: hidden;
+      padding: 0 !important;
+
+      // Bild-Wrapper (p oder figure) füllt gesamten Raum
+      p, figure {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        display: flex;
+        align-items: stretch;
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        flex: 1;
+      }
+    }
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+// BILD + TEXT – Bild-Text (Bild blutet links, Text rechts)
+// Verwendung: ## Überschrift {.image-text}
+//   ::: columns
+//   ::: {.column width="45%"} ![](bild.jpg) :::
+//   ::: {.column width="55%"} Text :::
+//   :::
+// ════════════════════════════════════════════════════════════
+
+.reveal .slides section.image-text.present {
+  padding: 0 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: stretch;
+
+  // Slide-Überschrift ausblenden — Überschrift kommt aus der rechten Spalte
+  > h2 { display: none; }
+
+  .columns {
+    flex: 1;
+    min-height: 0;
+    display: flex !important;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 0;
+
+    .column:first-child {
+      // Bildspalte (links, blutet zum Rand)
+      overflow: hidden;
+      padding: 0 !important;
+
+      p, figure {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        display: flex;
+        align-items: stretch;
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        flex: 1;
+      }
+    }
+
+    .column:last-child {
+      // Textspalte (rechts)
+      flex: 1;
+      padding: 7% 6% 5% 4%;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+
+      // Überschrift innerhalb der Textspalte
+      h2 {
+        color: $cais-blue;
+        font-weight: 700;
+        font-size: 1.25em;
+        margin-top: 0;
+        margin-bottom: 0.4em;
+        line-height: 1.2;
+        border: none !important;
+      }
+
+      p  { font-size: 0.75em; line-height: 1.5; }
+      ul, ol { font-size: 0.72em; }
+    }
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+// TEXTFOLIE V2 – hinterlegt (grauer Inhalts-Bereich)
+// Verwendung: ## Überschrift {.text-slide-bg}
+//   ::: {.lead} Einleitung :::
+//   ::: {.content-box} Inhalt :::
+// ════════════════════════════════════════════════════════════
+
+.reveal .slides section.text-slide-bg {
+  padding: 5% 6% !important;
+
+  h2 { margin-bottom: 0.3em; }
+
+  .lead {
+    font-size: 1.05em;
+    font-weight: 300;
+    line-height: 1.5;
+    color: #333;
+    margin-bottom: 0.8em;
+  }
+
+  .content-box {
+    background: $cais-hellgrau;
+    border-radius: 6px;
+    padding: 4% 5%;
+    font-size: 0.75em;
+    line-height: 1.55;
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+// 3 SPALTEN – 3 Columns V2 (Icons + Text)
+// Verwendung: ## Überschrift {.columns-slide}
+//   ::: {.columns-area}
+//   ::: {.col-item} [Icon]{.col-icon} ### Titel Text :::
+//   :::
+// ════════════════════════════════════════════════════════════
+
+.reveal .slides section.columns-slide {
+  padding: 5% 6% !important;
+
+  h2 { margin-bottom: 0.5em; }
+
+  .lead {
+    font-size: 0.82em;
+    font-weight: 300;
+    color: #333;
+    margin-bottom: 1em;
+    max-width: 70%;
+  }
+
+  .columns-area {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2em;
+    background: $cais-hellgrau;
+    padding: 4%;
+    border-radius: 6px;
+
+    .col-item {
+      .col-icon {
+        font-size: 2em;
+        margin-bottom: 0.3em;
+        display: block;
+        color: $cais-rot;
+      }
+      h3 {
+        color: $cais-dunkelgrau;
+        font-size: 0.78em;
+        font-weight: 400;
+        margin: 0.2em 0 0.3em;
+      }
+      p {
+        font-size: 0.62em;
+        color: #444;
+        line-height: 1.45;
+        margin: 0;
+      }
+    }
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+// ÜBERBLICK-FOLIE – 3 Bilder mit Beschriftung (8 Columns V1)
+// Verwendung: ## Überschrift {.overview-slide}
+//   ::: {.overview-grid}
+//   ::: {.overview-item} ![](bild.jpg) Text :::
+//   :::
+// ════════════════════════════════════════════════════════════
+
+.reveal .slides section.overview-slide {
+  padding: 0 !important;
+
+  h2 {
+    background: $cais-blue;
+    color: #ffffff !important;
+    padding: 3% 5%;
+    margin: 0;
+    text-align: center;
+    font-size: 1.2em;
+  }
+
+  .overview-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    background: #ffffff;
+    padding: 3% 5% 4%;
+
+    .overview-item {
+      padding: 1em;
+      text-align: center;
+
+      img {
+        width: 100%;
+        height: 160px;
+        object-fit: cover;
+        display: block;
+        margin-bottom: 0.6em;
+      }
+      p {
+        font-size: 0.68em;
+        color: #333;
+        margin: 0;
+        line-height: 1.35;
+      }
+    }
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+// ZITAT-FOLIE 1 – Zitat_02 (heller Muster-Hintergrund)
+// Verwendung: ## {.quote-slide}
+//   ::: {.quote-bubble}
+//   > Zitat-Text
+//   ::: {.quote-author}Name, Funktion :::
+//   :::
+// ════════════════════════════════════════════════════════════
+
+.reveal .slides section.quote-slide.present {
+  background: $cais-hellgrau;
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden !important;
+
+  h2 { display: none; }
+
+  .quote-bubble {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 6% 7%;
+    max-width: 70%;
+    position: relative;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+
+    &::before {
+      content: '\201C\201C';
+      position: absolute;
+      top: 0.1em;
+      left: 0.4em;
+      font-size: 2.8em;
+      color: $cais-blue;
+      line-height: 1;
+      font-family: Georgia, 'Times New Roman', serif;
+    }
+
+    blockquote {
+      margin: 0.5em 0 0;
+      padding: 0;
+      border: none;
+      background: none;
+      font-size: 0.82em;
+      font-weight: 300;
+      color: #333;
+      line-height: 1.65;
+    }
+
+    .quote-author {
+      margin-top: 1.1em;
+      font-size: 0.6em;
+      color: $cais-blue;
+      font-weight: 400;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -30px;
+      left: 38%;
+      border-left: 30px solid transparent;
+      border-right: 30px solid transparent;
+      border-top: 30px solid #ffffff;
+    }
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+// ZITAT-FOLIE 2 – Zitat_01 (mit dunklem Foto-Hintergrund)
+// Verwendung: ## {.quote-slide-dark data-background-image="foto.jpg"}
+//   ::: {.quote-bubble} ... :::
+// ════════════════════════════════════════════════════════════
+
+.reveal .slides section.quote-slide-dark.present {
+  padding: 0 !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden !important;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 22, 40, 0.45);
+    z-index: 0;
+  }
+
+  h2 { display: none; }
+
+  .quote-bubble {
+    position: relative;
+    z-index: 1;
+    background: rgba(255, 255, 255, 0.93);
+    border-radius: 20px;
+    padding: 6% 7%;
+    max-width: 70%;
+    box-shadow: 0 4px 32px rgba(0, 0, 0, 0.2);
+
+    &::before {
+      content: '\201C\201C';
+      position: absolute;
+      top: 0.1em;
+      left: 0.4em;
+      font-size: 2.8em;
+      color: $cais-blue;
+      line-height: 1;
+      font-family: Georgia, 'Times New Roman', serif;
+    }
+
+    blockquote {
+      margin: 0.5em 0 0;
+      padding: 0;
+      border: none;
+      background: none;
+      font-size: 0.82em;
+      font-weight: 300;
+      color: #333;
+      line-height: 1.65;
+    }
+
+    .quote-author {
+      margin-top: 1.1em;
+      font-size: 0.6em;
+      color: $cais-blue;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -30px;
+      left: 38%;
+      border-left: 30px solid transparent;
+      border-right: 30px solid transparent;
+      border-top: 30px solid rgba(255, 255, 255, 0.93);
+    }
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+// SCHLUSSFOLIE / KONTAKT CAIS
+// Verwendung: ## {.closing-slide}
+//   Struktur: .closing-left | .closing-right
+//   Siehe template.qmd für vollständiges Beispiel
+// ════════════════════════════════════════════════════════════
+
+.reveal .slides section.closing-slide.present {
+  padding: 0 !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: stretch;
+
+  > h2 { display: none; }
+  &::after { display: none; } // kein Pseudo-Element mehr
+
+  // ── Linke weiße Spalte (35%) ──────────────────────────────
+  .closing-left {
+    width: 35%;
+    flex-shrink: 0;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    padding: 5% 5% 4%;
+    box-sizing: border-box;
+    gap: 1em;
+
+    // Profilfoto — kein fester Hintergrund, Bild wird natürlich dargestellt
+    .closing-photo {
+      width: 100%;
+      flex: 0 0 auto;
+      overflow: hidden;
+
+      p { margin: 0; line-height: 0; }
+
+      img {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+    }
+
+    // Ansprechpersonen-Box
+    .closing-contact-box {
+      flex: 1;
+      padding: 0.7em 0.9em;
+      font-size: 0.57em;
+      color: $cais-dunkelgrau;
+      line-height: 1.6;
+
+      strong, b { display: block; font-weight: 700; }
+    }
+
+    // CAIS Logo unten
+    .closing-cais-logo {
+      flex-shrink: 0;
+      margin-top: auto;
+
+      img {
+        width: 65%;
+        height: auto;
+        display: block;
+      }
+    }
+  }
+
+  // ── Rechte CAIS-Blau Spalte (65%) ─────────────────────────
+  .closing-right {
+    flex: 1;
+    background-color: $cais-blue;
+    background-image: url('../../../../../img/background.png');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    flex-direction: column;
+
+    // Großer Platzhaltertext oben rechts
+    .closing-text {
+      flex: 1;
+      padding: 8% 8% 4%;
+      color: #ffffff;
+      font-size: 1.5em;
+      font-weight: 700;
+      line-height: 1.2;
+    }
+
+    // Dunklere Info-Leiste am unteren Rand
+    .closing-bottom {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 3% 5% 4.5%; // Puffer unten für Footer-Zeile
+      gap: 2em;
+      background: rgba(0, 0, 0, 0.18);
+
+      .closing-org,
+      .closing-contact-info {
+        flex: 1;
+        font-size: 0.48em;
+        color: rgba(255, 255, 255, 0.92);
+        line-height: 1.6;
+        white-space: nowrap;
+
+        a {
+          color: rgba(255, 255, 255, 0.92);
+          text-decoration: underline;
+          display: inline;
+        }
+
+        p { margin: 0; }
+      }
+
+      .closing-social {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.4em;
+
+        a {
+          color: #ffffff;
+          text-decoration: none;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 2em;
+          height: 2em;
+          border: 1.5px solid rgba(255, 255, 255, 0.7);
+          border-radius: 4px;
+          font-size: 0.6em;
+          transition: background 0.15s;
+
+          i { font-size: 1em; }
+
+          &:hover { background: rgba(255, 255, 255, 0.2); }
+        }
+      }
+    }
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+// INFOGRAFIKEN
+// ════════════════════════════════════════════════════════════
+
+.reveal .slides section .infographic {
+  background: $cais-hellgrau;
+  border-radius: 6px;
+  padding: 3% 4%;
+  margin-top: 0.5em;
+
+  .infographic-cols {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 2em;
+    align-items: start;
+
+    .infographic-item {
+      text-align: center;
+      .stat {
+        font-size: 2.5em;
+        font-weight: 700;
+        color: $cais-blue;
+        line-height: 1;
+      }
+      p { font-size: 0.62em; color: #444; margin-top: 0.4em; }
+    }
+  }
+}
+
+// ════════════════════════════════════════════════════════════
+// HILFSKLASSEN
+// ════════════════════════════════════════════════════════════
+
+.text-blue   { color: $cais-blue !important; }
+.text-grey   { color: $cais-dunkelgrau !important; }
+.text-red    { color: $cais-rot !important; }
+.text-white  { color: #ffffff !important; }
+.text-light  { font-weight: 300; }
+.text-small  { font-size: 0.7em; }
+.text-center { text-align: center !important; }
+
+.bg-blue  { background-color: $cais-blue !important; }
+.bg-grey  { background-color: $cais-hellgrau !important; }
+.bg-dark  { background-color: $cais-navy !important; }
+
+// Inhalt-Einleitung
+.lead {
+  font-size: 1.05em;
+  font-weight: 300;
+  line-height: 1.5;
+  color: #333;
+  margin-bottom: 0.8em;
+}
+
+// Partner-Logos Reihe
+.partner-logos {
+  display: flex;
+  align-items: center;
+  gap: 1.5em;
+  flex-wrap: wrap;
+  margin-top: 1em;
+  img { height: 36px; width: auto; object-fit: contain; }
+}

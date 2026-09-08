@@ -1,0 +1,359 @@
+---
+title: "Hands-On: Fitting a Graded Response Model"
+subtitle: "with NaDiRA dataset"
+author: "Rizqy Amelia Zein"
+date: today
+format:
+  html:
+    toc: true
+    toc-float: true
+    toc-depth: 3
+    code-fold: false
+    df-print: paged
+---
+
+## Welcome!
+
+This is the hands-on companion to *"Introduction to IRT's Graded Response Model"* (Workshop Itemkonstruktion, Uni Duisburg-Essen, 28.–29. September 2026). It mirrors the workflow from the tutorial paper this workshop is based on: [Zein & Akhtar (2025), *Getting started with the graded response model: An introduction and tutorial in R*](https://onlinelibrary.wiley.com/doi/abs/10.1002/ijop.13265), but on a different dataset.
+
+::: {.callout-note}
+## Two ways to run this document
+
+This document can run on the **snippet of real NaDiRA dataset** (for the workshop room) or on **simulated data calibrated to resemble it**.
+
+- **In the workshop:** setting `USE_SIMULATED_DATA <- FALSE` — will read the real dataset.
+  - Before running `.qmd` or `.Rmd` document with the real dataset, please create a new folder `data/` in your project root, then keep the dataset there.
+- **If you don't have any access to the dataset:** `USE_SIMULATED_DATA <- TRUE`, which generates a synthetic dataset from item parameters estimated on the real data, so the shape and difficulty of the exercise carry over, but every response is simulated with `mirt` package. There is no real participants' data is in it.
+:::
+
+We'll go through 9 short steps together: meet the dataset, check dimensionality, fit the GRM, read its output, inspect residual correlations, and think about what it means for your own scales.
+
+::: {.callout-warning}
+### If you're running the simulated dataset
+
+The numbers and conclusions quoted in Steps 8 and 9 describe the **real NaDiRA data** and won't replicate under `USE_SIMULATED_DATA <- TRUE`. `simdata()` generates responses that exactly satisfy the fitted GRM, so the simulated model and item fit (Step 8) comes out essentially perfect (no misfitting items at all), and it has no genuine local dependence built in (the positive $Q_3$ pair highlighted in Step 9 won't appear). Steps 2–7 will look similar, though not identical, either way.
+:::
+
+## Step 0: Setup — packages
+
+If you already have these installed, skip this chunk.
+
+```{r, eval=FALSE}
+install.packages(
+    c("tidyverse", # data wrangling
+      "psych", # descriptive stats & unidimensionality checks
+      "pak", # to install a GitHub-only package (ggmirt)
+      "mirt", # the main GRM engine
+      "caret", # flagging large residual correlations
+      "skimr", # quick look at data distributions
+      "haven", # to import the NaDiRA STATA .dta file
+    ), 
+    dependencies = TRUE
+)
+
+pak::pak("masurp/ggmirt") # ggmirt available only on github
+```
+
+Now activate them.
+
+```{r, message=FALSE}
+library(tidyverse)
+library(psych)
+library(mirt)
+library(ggmirt)
+library(caret)
+library(skimr)
+library(haven)
+```
+
+## Step 1: Meet the dataset
+
+### The swap-in code chunk
+
+Everything dataset-specific lives here. This is the only chunk you should need to touch to move between the real data and the simulated version.
+
+```{r}
+USE_SIMULATED_DATA <- FALSE # set TRUE if you don't have an access to the dataset
+
+DATA_PATH <- "../data/NaDiRa_Teaching_w0.dta" # path to the dataset don't forget to create a new folder `data/` in your project root, then keep the dataset file there
+
+ITEM_COLS <- c(
+    "ker_diskerf_service", "ker_diskerf_respekt", "ker_diskerf_nernst",
+    "ker_diskerf_angst", "ker_diskerf_bedbel", "ker_diskerf_beleid",
+    "ker_diskerf_angriff"
+)
+
+N_CATEGORIES <- 6 # response categories per item (1-6)
+```
+
+### The items
+
+This is question 3 of the NaDiRA survey instrument: *"Kommen wir nun zu Ihren Erfahrungen im täglichen Leben. Wie häufig passieren Ihnen in Ihrem Alltag die folgenden Dinge?"* ("Now let's turn to your everyday experiences. How often do the following things happen to you in your daily life?")
+
+| Variable name | 🇩🇪 German original | 🇬🇧 English |
+|------------------------|------------------------|------------------------|
+| `ker_diskerf_service` | Sie erhalten schlechteren Service als andere. | You receive poorer service than other people. |
+| `ker_diskerf_respekt` | Sie werden mit weniger Respekt behandelt als andere. | You are treated with less respect than other people. |
+| `ker_diskerf_nernst` | Jemand verhält sich so, als würde sie/er Sie nicht ernst nehmen. | Someone acts as if they don't take you seriously. |
+| `ker_diskerf_angst` | Jemand verhält sich so, als habe sie/er Angst vor Ihnen. | Someone acts as if they're afraid of you. |
+| `ker_diskerf_bedbel` | Sie werden bedroht/belästigt. | You are threatened/harassed. |
+| `ker_diskerf_beleid` | Sie werden beleidigt/beschimpft. | You are insulted/being called names. |
+| `ker_diskerf_angriff` | Sie werden körperlich angegriffen. | You are physically attacked. |
+
+The response options in the questionnaire run left to right: **Daily/*Täglich* (1) · At least once per week/*Mindestens einmal in der Woche* (2) · At least once per month/*Mindestens einmal im Monat* (3) · Several times a year/*Mehrmals im Jahr* (4) · Less often/*Seltener* (5) · Never/*Nie* (6)**.
+
+::: callout-note
+### No need to reverse the scores
+
+You are given a cleaned dataset in which all the scale data has been reversed. So, the larger scores now reflect more intense experience of discrimination, and *vice versa*.
+:::
+
+### Importing and cleaning the dataset
+
+Run this code chunk to simulate/generate a synthetic dataset. If you have access to a real dataset, you can also run this code chunk to clean and prepare it for analysis.
+
+```{r}
+if (USE_SIMULATED_DATA) {
+    # ---- calibrated simulation: parameters estimated once on the real data ----
+    # (a = discrimination, d = intercepts; this array reproduces the item
+    # difficulty/discrimination pattern of the real dataset without using any
+    # real participants' answers)
+    set.seed(2026)
+
+    a_par <- c(2.34, 3.43, 2.75, 1.42, 1.75, 2.13, 1.51)
+    d_par <- matrix(
+        c(
+            1.80, -1.44, -2.99, -5.04, -6.60,
+            2.46, -1.72, -3.84, -5.54, -7.84,
+            2.65, -0.80, -2.79, -4.41, -6.49,
+            -0.48, -2.49, -3.37, -3.99, -5.20,
+            -0.62, -3.12, -4.44, -5.53, -6.70,
+            0.19, -2.49, -3.85, -5.07, -6.86,
+            -2.30, -4.73, -5.43, -6.49, -7.93
+        ),
+        nrow = length(ITEM_COLS), ncol = N_CATEGORIES - 1, byrow = TRUE
+    )
+
+    raw <- simdata(a = a_par, d = d_par, N = 970, itemtype = "graded") + 1
+    raw <- as.data.frame(raw)
+    colnames(raw) <- ITEM_COLS
+} else {
+    raw <- read_dta(DATA_PATH) %>%
+        select(all_of(ITEM_COLS)) %>%
+        mutate(across(everything(), as.numeric)) # drop haven_labelled class, keep plain numeric codes
+}
+
+str(raw)
+```
+
+### Checking for missing data
+
+Run this chunk especially if you use the real dataset, because we have several missing values in the real dataset.
+
+```{r}
+n_total <- nrow(raw)
+n_complete <- sum(complete.cases(raw))
+cat(
+    n_complete, "of", n_total, "respondents have complete responses on all", length(ITEM_COLS),
+    "items (", round(100 * n_complete / n_total, 1), "%).\n"
+)
+
+data <- raw %>% filter(complete.cases(.))
+```
+
+We use complete cases here (*N* = 972) for simplicity. With well under 5% missing, listwise deletion costs us very little.
+
+::: {.callout-note appearance="simple"}
+`mirt` can also model missingness directly via full-information maximum likelihood (`FIML`), but that's beyond today's scope.
+:::
+
+## Step 2: Quick data check
+
+```{r}
+describe(data)
+skim(data)
+```
+
+Look at the `hist` column — frequency-of-negative-experience items like these are typically right-skewed (most people report "Nie"/"Seltener"). `ker_diskerf_angriff` (physical attack) should look the most extreme; the everyday-slight items (`nernst`, `respekt`, `service`) should look comparatively less skewed. 
+
+That skew is exactly why we'll use a **polychoric correlation matrix** (instead of Pearson's or Spearman) for the dimensionality check below.
+
+And that's exactly what we see: `ker_diskerf_angriff` is by far the most skewed item (skew = 3.90, mean = 1.19, so almost everyone answers "Nie"), while `ker_diskerf_nernst` is the mildest (skew = 0.83, mean = 2.51). 
+
+The severe/rare items and the everyday/common items sit at opposite ends, which is a good sign the item set spans a real range of severity rather than all measuring the same narrow slice of experience.
+
+## Step 3: Dimensionality — a quick glance
+
+You already ran this exact logic this morning in the factor analysis session. We will do a fast check to confirm a single $\theta$ underlies this item pool.
+
+With only 6 response categories, Pearson's/Spearman correlations understate how strongly these items actually relate to each other, so a **polychoric** correlation matrix is the more appropriate input here for factor analysis ([De Ayala & Hertzog, 1991](https://www.tandfonline.com/doi/abs/10.1207/s15327906mbr2604_9); recommended specifically for 4–7 category Likert data by [Guo & Choi, 2023](https://journals.sagepub.com/doi/10.1177/00131644221111838)). `psych::irt.fa()` computes it for us automatically:
+
+```{r}
+efa <- irt.fa(data, nfactors = 1, fm = "minres", plot = FALSE)
+print(efa$fa)
+```
+
+```{r}
+plot(efa$fa$values, type = "b", main = "Scree Plot", xlab = "Factor", ylab = "Eigenvalue")
+abline(h = 1, col = "red", lty = 2)
+```
+
+If the proportion of variance explained by the first factor is comfortably above 50% and the scree plot elbows sharply after one factor, unidimensionality is reasonably supported, so we can proceed to the GRM.
+
+Here, it shows that Proportion Var = .55, with loadings between .62 and .84. Every item is solidly on the one factor, none of them weak or borderline. The scree plot backs this up (eigenvalues 3.85 then a sharp drop to 0.38). Comfortably unidimensional, so we can go on to the GRM.
+
+## Step 4: Fit the GRM
+
+```{r}
+model <- paste0("theta = 1-", length(ITEM_COLS))
+fit <- mirt(data = data, 1, model = model, itemtype = "graded", SE = TRUE, verbose = FALSE)
+
+coefs <- coef(fit, IRTpars = TRUE, simplify = TRUE)
+print(coefs)
+```
+
+`a` is discrimination; `b1`–`b5` are the five thresholds (six categories → five boundaries). Higher `a` = an item that differentiates people more sharply; the spread of `b` values tells you *where* on $\theta$ each item is doing its work.
+
+In this scale, `ker_diskerf_respekt` ("less respect") has the highest discrimination (*a* = 3.43), which makes it the sharpest differentiator of the seven, while `ker_diskerf_angst` ("afraid of you") has the lowest (*a* = 1.42).
+
+`ker_diskerf_angriff` ("physically attacked") stands out on its thresholds instead: they run from 1.53 up to 5.26, far higher than any other item, meaning it takes an extremely high $\theta$ before "Täglich" becomes a plausible response, which tracks with how rare that experience actually is.
+
+## Step 5: Item probability functions
+
+```{r}
+tracePlot(fit, title = "Item Probability Functions") + labs(color = "Response Category")
+```
+
+Where two curves cross is a threshold. Curves that overlap a lot, or peak only at one end of $\theta$, are telling you that item is only informative for part of the trait range.
+
+Pick out `ker_diskerf_angriff` in the grid: because its thresholds sit so far to the right, the "Nie" curve dominates almost the entire visible range. The other five categories barely get a look-in until $\theta$ is very high. Compare that to `ker_diskerf_nernst`, whose curves are bunched much closer to the middle, it's doing useful work across a wider, more central stretch of $\theta$.
+
+## Step 6: Item and test information
+
+This is the information that traditional factor analysis can't give you: *where* exactly your scale is precise.
+
+```{r}
+itemInfoPlot(fit, facet = TRUE, title = "Item Information Functions")
+```
+
+::: {.callout-note}
+### Why some curves have multiple peaks (i.e., multimodal)?
+
+A yes/no item only has one "tipping point" i.e., the trait level where people switch from one answer to the other, so it's only ever most useful for one type of participants. These items have six response categories, so each one has several tipping points or "steps" as in [the staircase illustration](.../files/intro.html#/the-staircase-illustration) (e.g., "rarely" to "sometimes", "sometimes" to "often", and so on). If those tipping points are spread far apart along the trait, the item ends up being especially useful for more than one type of participant, therefore showing up as more than one peak instead of just one.
+:::
+
+```{r}
+testInfoPlot(fit, title = "Test Information Function")
+```
+
+Compare the shape of the test information curve to where you'd expect your target population to actually sit on $\theta$. A curve that peaks somewhere your participants rarely fall is a scale that's precise in the wrong place.
+
+Here, test information peaks around $\theta \approx 1.5$ (info $\approx 10.9$) and stays fairly high out to $\theta \approx 3$, but falls off sharply below $\theta \approx -1$ (info $\approx 1$ at $\theta = -2$, about a tenth of the peak).
+
+## Step 7: Reliability across $\theta$
+
+**Marginal reliability** is the IRT analogue of classical test-theory reliability: it integrates the test information function over an *assumed* $\theta$ distribution (normal, by default) to get a single reliability estimate for the population as a whole.
+
+```{r}
+marginal_rxx(fit)
+```
+
+**Empirical reliability** instead uses the actual estimated $\theta$ scores and their standard errors for *this* sample, so no distributional assumption required. It's the ratio of true-score variance to observed-score variance, computed directly from the EAP estimates (or factor scores, in CTT's term) and their SEs.
+
+```{r}
+theta_se <- fscores(fit, full.scores.SE = TRUE)
+empirical_rxx(theta_se)
+```
+
+```{r}
+# using mirt's own plot() rather than ggmirt::conRelPlot() here -- for some reason,
+# mirt/ggmirt version combination conRelPlot() crashes R outright
+# mirt's native rxx plot shows the same thing
+plot(fit, type = "rxx", main = "Reliability Across the θ Continuum")
+```
+
+Marginal and empirical reliability should be close. The plot shows you *where* reliability holds up (commonly interpreted as adequate above \~.80) and where it doesn't, and usually the tails.
+
+Here they are: marginal rxx = .867, empirical rxx = .870 — close, which is reassuring, since it means the reliability estimate isn't an artifact of assuming a normal $\theta$ distribution. Reliability stays $\geq$ .80 across roughly $\theta$ = -1.2 to 3.35, lining up with the information plot above.
+
+::: callout-tip
+### What does this mean?
+
+In practice: this scale is precise at telling apart people with moderate-to-high discrimination-experience levels, but has little to say about fine-grained differences among people reporting very few or no experiences, which points out exactly the "blind spot" idea from the slides.
+:::
+
+## Step 8: A quick model-fit check
+
+A light-touch check of the model and item parameters.
+
+```{r}
+M2(fit, type = "C2")
+```
+
+```{r}
+itemfit(fit)
+```
+
+Rough guide: RMSEA ≤ .05 and non-significant item-level tests are reassuring; don't over-interpret significance with very large samples, since almost any model will show *some* misfit.
+
+Here the picture is mixed: RMSEA = .119 (90% CI .105–.133) is well above the ≤.05 "good fit" guideline, but SRMSR = .072 and CFI = .953 sit in the "acceptable" range, and TLI = .93 is borderline.
+
+At the item level, two of seven items (`ker_diskerf_service`, `ker_diskerf_angst`) show significant misfit (*p* \< .05); with *N* = 972 that's not simply a huge-sample artifact the way it would be with, say, 9,000+ respondents, so it's worth a closer look. RMSEA tends to be an unreliable indicator with only a handful of items and few degrees of freedom (df = 14 here).
+
+::: {.callout-tip appearance="simple"}
+SRMSR is the steadier signal of *how much* misfit there practically is, and it's saying "some items are misfitting, but not severe."
+:::
+
+## Step 9: Inspecting residual correlations (local dependence)
+
+::: {.callout-note appearance="simple"}
+If global (model) fit tells you *whether* there's a problem; residual correlations tell you *where* the problems are.
+:::
+
+If two items still correlate once $\theta$ is accounted for, they're carrying some shared content the model isn't capturing, which is also called **local dependence (LD)**. We'll use Yen's $Q_3$ statistic, which the tutorial paper recommends over the LD $\chi^2$ statistic specifically for polytomous data like this.
+
+```{r}
+q3 <- residuals(fit, type = "Q3", verbose = FALSE)
+round(q3, 2)
+```
+
+```{r}
+findCorrelation(q3, cutoff = 0.2, names = TRUE, verbose = TRUE)
+```
+
+A couple of things worth knowing before reading this table at face value.
+
+First, $Q_3$ has a well-documented *negative* bias, especially with few items: because $\theta$ is estimated from the same items whose residuals are being correlated, the "no local dependence" baseline isn't 0, it's somewhat below zero ([Yen, 1984, p. 127](https://journals.sagepub.com/doi/abs/10.1177/014662168400800201); [Marais, 2013 in Christensen, et al., 2016](https://journals.sagepub.com/doi/full/10.1177/0146621616677520), p. 121).
+
+Here that mean off-diagonal $Q_3$ is -.119.
+
+::: callout-important
+### What does this imply?
+
+Most of the negative values in this residual correlation matrix are the expected statistical byproduct of a handful of strongly-loading items sharing one factor (compare each value to that -.119 baseline, not to 0), so perhaps not necessarily a red flag on their own.
+:::
+
+What's more informative is which pairs sit *further* from that baseline than the rest. `findCorrelation()` flags `ker_diskerf_respekt`↔`ker_diskerf_bedbel` ($Q_3$ = -.30), `ker_diskerf_service`↔`ker_diskerf_beleid` ($Q_3$ = -.30), and a few others beyond \|.2\|. The one that stands out most is `ker_diskerf_bedbel`↔`ker_diskerf_beleid` ("threatened/harassed" and "insulted/called names"), at $Q_3$ = +.25 — a *positive* residual correlation bucks the general negative trend, which is a stronger signal of genuine local dependence than any of the negative ones: these two items likely share something beyond $\theta$, plausibly because being threatened and being insulted often happen together in the same hostile encounter.
+
+However, none of this is severe enough to justify dropping an item on the spot.
+
+If the same pattern shows up on the full NaDiRA sample, reasonable next steps are rewording one of the overlapping items, modeling them as a testlet, or, **as a last resort**, removing one. Removing items should stay a last resort: it can improve fit while narrowing what the scale actually measures.
+
+## Try it yourself
+
+A few things to explore in the time we have left:
+
+- Drop the item with the lowest discrimination (`a`) from `model` and re-fit. How much does the test information curve change?
+- `ker_diskerf_angriff` (physical attack) should have the most extreme thresholds of the seven. Confirm that in your output, and think about why that makes substantive sense.
+- If you were designing a real NaDiRA-based discrimination battery, which part of $\theta$ would you most want it to be reliable in, and does anything here suggest you'd need more items there?
+- If you had the full NaDiRA sample instead of this teaching extract, which item pair from Step 9 would you investigate first and would you reword, parcel, or drop?
+
+## Contact
+
+Questions or feedback: [amelia.zein\@cais-research.de](mailto:amelia.zein@cais-research.de) or [amelia.zein\@psikologi.unair.ac.id](mailto:amelia.zein@psikologi.unair.ac.id)
+
+## Session Info
+
+```{r}
+sessionInfo()
+```

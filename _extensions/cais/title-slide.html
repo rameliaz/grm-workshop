@@ -1,0 +1,38 @@
+<section id="$idprefix$title-slide"$for(title-slide-attributes/pairs)$ $it.key$="$it.value$"$endfor$>
+  <!-- Linke weiße Spalte: Logos, Veranstaltungsinfos -->
+  <div class="cais-title-left">
+
+    <div class="cais-logos">
+      <img src="../img/Transparent.png" alt="CAIS – Research for the Digital Age" class="cais-logo-img">
+$if(partner-logo)$
+      <img src="$partner-logo$" alt="Partner Logo" class="cais-partner-logo">
+$endif$
+    </div>
+
+    <div class="cais-title-meta">
+$for(institute)$
+      <p class="cais-institute">$institute$</p>
+$endfor$
+$if(department)$
+      <p class="cais-department">$department$</p>
+$endif$
+$if(event)$
+      <p class="cais-event">$event$</p>
+$endif$
+$for(author)$
+      <p class="cais-author">$author$</p>
+$endfor$
+$if(date)$
+      <p class="cais-date">$date$</p>
+$endif$
+    </div>
+
+  </div>
+  <!-- Rechte Spalte: Präsentationstitel auf CAIS-Blau Muster-Hintergrund -->
+  <div class="cais-title-right">
+    <h1 class="title">$title$</h1>
+$if(subtitle)$
+    <p class="subtitle">$subtitle$</p>
+$endif$
+  </div>
+</section>
