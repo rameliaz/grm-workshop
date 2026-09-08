@@ -22,7 +22,7 @@ website:
       - text: "Slide Deck"
         href: files/intro.html  
       - text: "Download `quarto` exercise"
-        href: files/exercise.qmd
+        href: https://raw.githubusercontent.com/rameliaz/grm-workshop/master/files/exercise.qmd
       - text: "Download `rmarkdown` exercise"
         href: files/exercise.Rmd
       - text: "Rendered `html` of the exercise"
