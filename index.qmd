@@ -2,14 +2,9 @@
 title: "Welcome!"
 ---
 
-This site keeps the materials for the session **Item Response Theory: Graded Response Model**, as a part of the larger **Workshop Itemkonstruktion**, hosted by Universität Duisburg-Essen (IKG, DeZIM Nationaler Diskriminierungs- & Rassismusmonitor, DeZIM Forschungsgemeinschaft & InZentIM), 28.–29. September 2026, Campus Essen (CASINO, Reckhammerweg 3, 45141 Essen). 
+This site keeps the materials for the session **Item Response Theory: Graded Response Model**, as a part of the larger **Workshop Itemkonstruktion**, hosted by Universität Duisburg-Essen (IKG, DeZIM Nationaler Diskriminierungs- & Rassismusmonitor, DeZIM Forschungsgemeinschaft & InZentIM), 28.–29. September 2026. 
 
 The workshop's overall theme is *"From Idea to Item Battery: The Methodology(ies) Behind Item Construction in Migration and Racism Research."*
-
-::: {.callout-important appearance="simple"}
-**Vortrag II mit Praxis in RStudio: Item Response Theory, Graded Response Model**
-Day 2 (29 September), 14:45–16:15
-:::
 
 ### Outline
 

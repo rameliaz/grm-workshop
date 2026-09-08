@@ -44,11 +44,11 @@ website:
       - icon: envelope
         href: "mailto:amelia.zein@psikologi.unair.ac.id"
       - icon: github
-        href: https://github.com/rameliaz
+        href: https://github.com/rameliaz/grm-workshop
       - icon: discord
         href: https://discord.com/users/807046335613632555
-      - icon: keybase
-        href: https://keybase.io/rameliaz  
+      - text: '<i class="fa-brands fa-keybase"></i>'
+        href: https://keybase.io/rameliaz
   search:
     location: navbar
     type: overlay
