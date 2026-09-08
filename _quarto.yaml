@@ -27,7 +27,7 @@ website:
         href: files/exercise.Rmd
       - text: "Rendered `html` of the exercise"
         href: files/exercise.html        
-      - section: "Sources"
+      - section: "Important Links"
         contents:
           - text: Tutorial Paper (Zein & Akhtar, 2025)
             href: https://onlinelibrary.wiley.com/doi/abs/10.1002/ijop.13265

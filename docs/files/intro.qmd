@@ -134,6 +134,8 @@ $$Item_i = \tau + \lambda \cdot \xi + \delta$$
 * $\delta$ (delta) — the **residual/unique factor**: the part of the item's variance not explained by the latent trait (measurement error + item-specific variance).
 :::
 
+. . .
+
 ::: {.callout-warning}
 ### BUT CFA can be nonlinear too
 Standard CFA assumes continuous items and a strictly linear relationship. When items are **ordinal** or **categorical**, CFA can incorporate thresholds and non-linear link functions (e.g., categorical CFA via `WLSMV`, [see details here](https://lavaan.ugent.be/tutorial/est.html)) which, mathematically, is closely related to polytomous IRT.
@@ -237,7 +239,7 @@ Meet the IRT Family
 
 :::
 
-::: aside
+::: {.callout-important appearance="simple"}
 ...and many other variants that are specifically calibrated to estimate models with *n* of dimensions, *n* of response categories, response format, response styles, etc.
 :::
 
@@ -254,17 +256,14 @@ Item and Model Parameters of the Graded Response Model (GRM)
 
 ## The Staircase Illustration {.text-slide-bg}
 
-::: columns
-::: {.column width="60%"}
-![](../img/diagrams/staircase.png){fig-align="center" width="90%"}
-:::
-::: {.column width="40%"}
-For an item with 5 response categories, GRM estimates **4 thresholds** ($b_1$–$b_4$).
+![](../img/diagrams/staircase.png){fig-align="center" width="70%"}
 
-Each threshold is the point on $\theta$ where a participant is equally likely to pick one category or the next, as in a staircase they "step up" as their trait level rises.
+::: {.incremental}
+* For an item with 5 response categories, GRM estimates **4 thresholds** ($b_1$–$b_4$).
 
-The mean of $\theta$ is usually centered around 0, so a threshold like $b_1 = -1.2$ means: people about 1.2 *SD* below the mean are the ones flipping between the two lowest categories.
-:::
+* Each threshold is the point on $\theta$ where a participant is equally likely to pick one category or the next, as in a staircase they "step up" as their trait level rises.
+
+* The mean of $\theta$ is usually centered around 0, so a threshold like $b_1 = -1.2$ means: people about 1.2 *SD* below the mean are the ones flipping between the two lowest categories.
 :::
 
 ## Reading Item Probability Curves {.text-slide-bg}
@@ -336,7 +335,7 @@ Once $\theta$ is accounted for, items shouldn't still correlate with each other.
 :::
 :::
 
-::: aside
+::: {.callout-tip appearance="simple"}
 These assumptions aren't absolute. There are some advanced IRT models that don't explicitly make one or more of the above assumptions.
 :::
 
@@ -386,7 +385,7 @@ We'll walk through Steps 1–9 together: meet the data → dimensionality → fi
 Reading &amp; Using the Results
 :::
 
-## When (Not) to Reach for GRM {.columns-slide}
+## When (Not) to Use GRM {.columns-slide}
 
 ::: {.columns-area}
 ::: {.col-item .text-center}

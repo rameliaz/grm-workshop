@@ -21,12 +21,12 @@ Day 2 (29 September), 14:45–16:15
 
 ### Finding your way around this site
 
-- [**Slide Deck**](../files/intro.html) - the content of the talk
-- [**Download `quarto` exercise**](../files/exercise.qmd)/[**Download `rmarkdown` exercise**](../files/exercise.Rmd) — the hands-on document, in whichever format suits your setup, to open and run in RStudio
-- [**Rendered `html` of the exercise**](../files/exercise.html) — a read-only walkthrough of the hands-on exercise, handy if you'd rather follow along on screen than run R yourself
-- **Sources** - the tutorial paper this session is based on, plus further reading
-    + The tutorial paper that I and my collaborator wrote on GRM: [Zein & Akhtar (2025)](https://onlinelibrary.wiley.com/doi/full/10.1002/ijop.13265).
-    + A published paper that examines factor structure of Everyday's Discrimination scale in Austrian sample. You can compare the results of the exercise with this published paper: [Amini-Nejad, et al. (2025)](https://econtent.hogrefe.com/doi/10.1027/2698-1866/a000110).
+- [**Slide Deck**](files/intro.html) - the content of the talk
+- [**Download `quarto` exercise**](files/exercise.qmd)/[**Download `rmarkdown` exercise**](files/exercise.Rmd) — the hands-on document, in whichever format suits your setup, to open and run in RStudio
+- [**Rendered `html` of the exercise**](files/exercise.html) — a read-only walkthrough of the hands-on exercise, handy if you'd rather follow along on screen than run R yourself
+- **Important link** - the tutorial paper this session is based on, plus further reading
+    + The tutorial paper: [Zein & Akhtar (2025)](https://onlinelibrary.wiley.com/doi/full/10.1002/ijop.13265).
+    + A published paper that examines factor structure of Everyday's Discrimination scale in Austrian sample. You can compare the results of the exercise with the results reported there: [Amini-Nejad, et al. (2025)](https://econtent.hogrefe.com/doi/10.1027/2698-1866/a000110).
 
 ### Getting ready for the hands-on part
 
@@ -61,5 +61,5 @@ All workshop materials are licensed as [<i class="fab fa-creative-commons"><i cl
 :::
 
 ::: {.callout-note collapse="true" appearance="simple"}
-I used Gemini 3.8 Flash to generate images (i.e., [staircase illustration](../img/diagrams/staircase.png) and the [ICC plot]((../img/diagrams/ICC_sigmoid.png))) and Claude Sonnet 5 to troubleshoot `quarto` and `git` bugs.
+I used Gemini 3.8 Flash to generate images (i.e., [staircase illustration](img/diagrams/staircase.png) and the [ICC plot](img/diagrams/icc_sigmoid.png)) and Claude Sonnet 5 to troubleshoot `quarto` and `git` bugs.
 :::

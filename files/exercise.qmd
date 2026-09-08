@@ -1,8 +1,6 @@
 ---
 title: "Hands-On: Fitting a Graded Response Model"
 subtitle: "with NaDiRA dataset"
-author: "Rizqy Amelia Zein"
-date: today
 format:
   html:
     toc: true
@@ -14,7 +12,7 @@ format:
 
 ## Welcome!
 
-This is the hands-on companion to *"Introduction to IRT's Graded Response Model"* (Workshop Itemkonstruktion, Uni Duisburg-Essen, 28.–29. September 2026). It mirrors the workflow from the tutorial paper this workshop is based on: [Zein & Akhtar (2025), *Getting started with the graded response model: An introduction and tutorial in R*](https://onlinelibrary.wiley.com/doi/abs/10.1002/ijop.13265), but on a different dataset.
+This is the hands-on companion to *"Introduction to IRT's Graded Response Model"*. It mirrors the workflow from [the tutorial paper](https://onlinelibrary.wiley.com/doi/abs/10.1002/ijop.13265) this workshop is based on, but on a different dataset.
 
 ::: {.callout-note}
 ## Two ways to run this document
@@ -239,7 +237,7 @@ itemInfoPlot(fit, facet = TRUE, title = "Item Information Functions")
 ::: {.callout-note}
 ### Why some curves have multiple peaks (i.e., multimodal)?
 
-A yes/no item only has one "tipping point" i.e., the trait level where people switch from one answer to the other, so it's only ever most useful for one type of participants. These items have six response categories, so each one has several tipping points or "steps" as in [the staircase illustration](.../files/intro.html#/the-staircase-illustration) (e.g., "rarely" to "sometimes", "sometimes" to "often", and so on). If those tipping points are spread far apart along the trait, the item ends up being especially useful for more than one type of participant, therefore showing up as more than one peak instead of just one.
+A yes/no item only has one "tipping point" i.e., the trait level where people switch from one answer to the other, so it's only ever most useful for one type of participants. These items have six response categories, so each one has several tipping points or "steps" as in [the staircase illustration](intro.html#/the-staircase-illustration) (e.g., "rarely" to "sometimes", "sometimes" to "often", and so on). If those tipping points are spread far apart along the trait, the item ends up being especially useful for more than one type of participant, therefore showing up as more than one peak instead of just one.
 :::
 
 ```{r}

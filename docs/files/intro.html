@@ -101,7 +101,7 @@
     code span.vs { color: #032f62; } /* VerbatimString */
     code span.wa { color: #ff5555; } /* Warning */
   </style>
-  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-38c13ad5200bf66fd2ec240f6b93eee4.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-099e41eaf4882ce1488aec289db59883.css">
   <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
   <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
@@ -343,6 +343,7 @@
 <li class="fragment"><span class="math inline">\(\delta\)</span> (delta) — the <strong>residual/unique factor</strong>: the part of the item’s variance not explained by the latent trait (measurement error + item-specific variance).</li>
 </ul>
 </div>
+<div class="fragment">
 <div class="callout callout-warning callout-titled callout-style-default">
 <div class="callout-body">
 <div class="callout-title">
@@ -353,6 +354,7 @@
 </div>
 <div class="callout-content">
 <p>Standard CFA assumes continuous items and a strictly linear relationship. When items are <strong>ordinal</strong> or <strong>categorical</strong>, CFA can incorporate thresholds and non-linear link functions (e.g., categorical CFA via <code>WLSMV</code>, <a href="https://lavaan.ugent.be/tutorial/est.html">see details here</a>) which, mathematically, is closely related to polytomous IRT.</p>
+</div>
 </div>
 </div>
 </div>
@@ -488,10 +490,17 @@
 </tbody>
 </table>
 </div>
-
-<aside><div>
+<div class="callout callout-important callout-style-simple">
+<div class="callout-body">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-content">
 <p>…and many other variants that are specifically calibrated to estimate models with <em>n</em> of dimensions, <em>n</em> of response categories, response format, response styles, etc.</p>
-</div></aside></section>
+</div>
+</div>
+</div>
+</section>
 <section id="section-2" class="slide level2 section-slide">
 <h2></h2>
 <!-- Zwischentitelfolie 03 -->
@@ -504,18 +513,16 @@
 </section>
 <section id="the-staircase-illustration" class="slide level2 text-slide-bg">
 <h2>The Staircase Illustration</h2>
-<div class="columns">
-<div class="column" style="width:60%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="../img/diagrams/staircase.png" class="quarto-figure quarto-figure-center" style="width:90.0%"></p>
+<p><img data-src="../img/diagrams/staircase.png" class="quarto-figure quarto-figure-center" style="width:70.0%"></p>
 </figure>
 </div>
-</div><div class="column" style="width:40%;">
-<p>For an item with 5 response categories, GRM estimates <strong>4 thresholds</strong> (<span class="math inline">\(b_1\)</span>–<span class="math inline">\(b_4\)</span>).</p>
-<p>Each threshold is the point on <span class="math inline">\(\theta\)</span> where a participant is equally likely to pick one category or the next, as in a staircase they “step up” as their trait level rises.</p>
-<p>The mean of <span class="math inline">\(\theta\)</span> is usually centered around 0, so a threshold like <span class="math inline">\(b_1 = -1.2\)</span> means: people about 1.2 <em>SD</em> below the mean are the ones flipping between the two lowest categories.</p>
-</div></div>
+<ul>
+<li class="fragment"><p>For an item with 5 response categories, GRM estimates <strong>4 thresholds</strong> (<span class="math inline">\(b_1\)</span>–<span class="math inline">\(b_4\)</span>).</p></li>
+<li class="fragment"><p>Each threshold is the point on <span class="math inline">\(\theta\)</span> where a participant is equally likely to pick one category or the next, as in a staircase they “step up” as their trait level rises.</p></li>
+<li class="fragment"><p>The mean of <span class="math inline">\(\theta\)</span> is usually centered around 0, so a threshold like <span class="math inline">\(b_1 = -1.2\)</span> means: people about 1.2 <em>SD</em> below the mean are the ones flipping between the two lowest categories.</p></li>
+</ul>
 </section>
 <section id="reading-item-probability-curves" class="slide level2 text-slide-bg">
 <h2>Reading Item Probability Curves</h2>
@@ -576,10 +583,17 @@
 <p>Once <span class="math inline">\(\theta\)</span> is accounted for, items shouldn’t still correlate with each other. In practice, expect <em>some</em> residual dependence, but the question is whether its severity is still within our tolerance.</p>
 </div>
 </div>
-
-<aside><div>
+<div class="callout callout-tip callout-style-simple">
+<div class="callout-body">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-content">
 <p>These assumptions aren’t absolute. There are some advanced IRT models that don’t explicitly make one or more of the above assumptions.</p>
-</div></aside></section>
+</div>
+</div>
+</div>
+</section>
 <section id="section-3" class="slide level2 section-slide">
 <h2></h2>
 <!-- Zwischentitelfolie 04 -->
@@ -623,8 +637,8 @@
 <p>Reading &amp; Using the Results</p>
 </div>
 </section>
-<section id="when-not-to-reach-for-grm" class="slide level2 columns-slide">
-<h2>When (Not) to Reach for GRM</h2>
+<section id="when-not-to-use-grm" class="slide level2 columns-slide">
+<h2>When (Not) to Use GRM</h2>
 <div class="columns-area">
 <div class="col-item text-center">
 <p><span class="col-icon fa-solid fa-users"></span></p>
