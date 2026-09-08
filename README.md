@@ -1,4 +1,4 @@
-# GRM Workshop
+# Graded Response Model Workshop
 
 Materials for the session **Item Response Theory: Graded Response Model (GRM)**.
 
@@ -11,17 +11,6 @@ The site is built with [Quarto](https://quarto.org/) and published to GitHub Pag
 - [`files/exercise.qmd`](files/exercise.qmd) / [`files/exercise.Rmd`](files/exercise.Rmd) — hands-on GRM exercise in R (Quarto and R Markdown versions)
 - [`data/`](data/) — teaching dataset used in the exercise (NaDiRA)
 - [`docs/`](docs/) — rendered site output (Quarto `output-dir`)
-
-## Rendering locally
-
-```r
-install.packages(c("tidyverse", "psych", "pak", "mirt", "caret", "skimr", "haven"), dependencies = TRUE)
-pak::pak("masurp/ggmirt")
-```
-
-```sh
-quarto render
-```
 
 ## License
 
