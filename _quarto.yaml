@@ -67,8 +67,8 @@ website:
 format:
   html:
     theme:
-      light: cosmo
-      dark: darkly
+      light: sandstone
+      dark: slate
     toc: true
     toc-float: true
     toc-depth: 3
