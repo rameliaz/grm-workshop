@@ -357,9 +357,10 @@ We'll fit a GRM together on a 7-item scale from the NaDiRA survey measuring disc
 :::
 
 ::: {.content-box}
-- **Items:** 7 discrimination items (`ker_diskerf_*`), 6-point frequency scale (*Täglich*/Daily → *Nie* / Never)
-- **Data:** Teaching extract of the NaDiRA dataset (*N* = 1,000; 972 complete cases), with a calibrated simulated option as fallback
-- **Document (two options):** `exercise.qmd` or `exercise.Rmd` — open it now in RStudio and follow along
+* **Items:** 7 Everyday Discrimination scale items (`ker_diskerf_*`, adapted from [Williams, et al., 1997](https://journals.sagepub.com/doi/10.1177/135910539700200305)), 6-point frequency scale (*Täglich*/Daily → *Nie*/Never).
+* **Data:** Teaching extract of the NaDiRA dataset (*N* = 1,000; 972 complete cases), with a calibrated simulated option as fallback.
+* **Document (two options):** `exercise.qmd` or `exercise.Rmd` — open it now in RStudio and follow along.
+* You can compare the results with a published paper investigating the psychometric properties of the same (but longer) scale in Austrian sample: Amini-Nejad, R., Hirsch, S., Goreis, A., Nater, U. M., & Mewes, R. (2025). Factor Structure and Validity of a German Version of the Everyday Discrimination Scale Among Immigrants From Türkiye. *Psychological Test Adaptation and Development*, 6, 216–237. <https://doi.org/10.1027/2698-1866/a000110>
 :::
 
 ## Open `exercise.qmd` {.text-slide-bg}

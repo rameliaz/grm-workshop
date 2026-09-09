@@ -19,7 +19,7 @@ The workshop's overall theme is *"From Idea to Item Battery: The Methodology(ies
 - [**Slide Deck**](files/intro.html) - the content of the talk
 - [**Download `quarto` exercise**](files/exercise.qmd?download)/[**Download `rmarkdown` exercise**](files/exercise.Rmd) — the hands-on document, in whichever format suits your setup, to open and run in RStudio
 - [**Rendered `html` of the exercise**](files/exercise.html) — a read-only walkthrough of the hands-on exercise, handy if you'd rather follow along on screen than run R yourself
-- **Important link** - the tutorial paper this session is based on, plus further reading
+- **Important links** - the tutorial paper this session is based on, plus further reading
     + The tutorial paper: [Zein & Akhtar (2025)](https://onlinelibrary.wiley.com/doi/full/10.1002/ijop.13265).
     + A published paper that examines factor structure of Everyday's Discrimination scale in Austrian sample. You can compare the results of the exercise with the results reported there: [Amini-Nejad, et al. (2025)](https://econtent.hogrefe.com/doi/10.1027/2698-1866/a000110).
 
