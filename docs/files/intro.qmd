@@ -138,7 +138,7 @@ $$Item_i = \tau + \lambda \cdot \xi + \delta$$
 
 ::: {.callout-warning}
 ### BUT CFA can be nonlinear too
-Standard CFA assumes continuous items and a strictly linear relationship. When items are **ordinal** or **categorical**, CFA can incorporate thresholds and non-linear link functions (e.g., categorical CFA via `WLSMV`, [see details here](https://lavaan.ugent.be/tutorial/est.html)) which, mathematically, is closely related to polytomous IRT.
+Standard CFA assumes continuous items and a strictly linear relationship. When items are **ordinal** or **categorical**, CFA can incorporate thresholds and non-linear link functions (e.g., categorical CFA via `WLSMV`, [see details here](https://lavaan.ugent.be/tutorial/est.html)) which is closely related to polytomous IRT.
 :::
 
 ## 1️⃣ Linear vs. Probabilistic {.text-slide-bg}
@@ -261,7 +261,7 @@ Item and Model Parameters of the Graded Response Model (GRM)
 ::: {.incremental}
 * For an item with 5 response categories, GRM estimates **4 thresholds** ($b_1$–$b_4$).
 
-* Each threshold is the point on $\theta$ where a participant is equally likely to pick one category or the next, as in a staircase they "step up" as their trait level rises.
+* Each threshold marks the point on $\theta$ where a participant becomes more likely to score at-or-above that category boundary than below it (formally, cumulative probability = 0.5), as in a staircase they "step up" as their trait level rises.
 
 * The mean of $\theta$ is usually centered around 0, so a threshold like $b_1 = -1.2$ means: people about 1.2 *SD* below the mean are the ones flipping between the two lowest categories.
 :::
@@ -278,7 +278,7 @@ Plot the probability of endorsing each category against $\theta$: each threshold
 :::
 ::: {.column width="40%"}
 ::: {.incremental}
-- The two **extreme** categories ("Never"/"Very often") are cumulative boundary categories, which means their curves plateau rather than peak as in the others.
+- The two **extreme** categories ("Never"/"Very often") are bounded by only *one* threshold instead of two, so their curves rise or fall monotonically rather than peak as in the others.
 - The **middle** categories peak in a bell shape between two thresholds.
 - Steep, well-separated curves = an item that sharply distinguishes people near that threshold.
 - Flat, overlapping curves = an item that isn't telling us much at that part of the scale.
@@ -306,7 +306,7 @@ Every item in a GRM gets **one discrimination parameter (*a*)** and **several th
 ## Three Assumptions {.columns-slide}
 
 ::: {.lead}
-Before intrepreting GRM model and item parameters, three core construct assumptions need to hold, which closely mirroring those in factor analysis:
+Before interpreting GRM model and item parameters, three core construct assumptions need to hold, which closely mirroring those in factor analysis:
 :::
 
 ::: {.columns-area}
@@ -427,8 +427,13 @@ Wrap-Up &amp; Discussion
 ## Resources &amp; Contact {.text-slide-bg}
 
 ::: {.content-box}
-- **Tutorial paper:** Zein, R. A., &amp; Akhtar, H. (2025). *Getting started with the graded response model: An introduction and tutorial in R.* International Journal of Psychology, 60(1), e13265. <https://doi.org/10.1002/ijop.13265>
-- **Questions afterwards:** [amelia.zein@cais-research.de](mailto:amelia.zein@cais-research.de) or [amelia.zein@psikologi.unair.ac.id](mailto:amelia.zein@psikologi.unair.ac.id).
+* **Textbooks (beginner → advanced):**
+  + *Beginner:* Embretson, S. E., &amp; Reise, S. P. (2000). *Item Response Theory for Psychologists.* Lawrence Erlbaum Associates.
+  + *Intermediate:* de Ayala, R. J. (2009). *The Theory and Practice of Item Response Theory.* Guilford Press.
+  + *Intermediate/Advanced:* DeMars, C. (2010). *Item Response Theory.* Oxford University Press.
+  + *Advanced:* van der Linden, W. J. (Ed.). (2016). *Handbook of Item Response Theory* (Vols. 1–3). CRC Press.
+* **Tutorial paper:** Zein, R. A., &amp; Akhtar, H. (2025). *Getting started with the graded response model: An introduction and tutorial in R.* International Journal of Psychology, 60(1), e13265. <https://doi.org/10.1002/ijop.13265>
+* **Questions afterwards:** [amelia.zein@cais-research.de](mailto:amelia.zein@cais-research.de) or [amelia.zein@psikologi.unair.ac.id](mailto:amelia.zein@psikologi.unair.ac.id).
 :::
 
 ## {.closing-slide .no-footer}

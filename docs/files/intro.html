@@ -353,7 +353,7 @@
 <p><strong>BUT CFA can be nonlinear too</strong></p>
 </div>
 <div class="callout-content">
-<p>Standard CFA assumes continuous items and a strictly linear relationship. When items are <strong>ordinal</strong> or <strong>categorical</strong>, CFA can incorporate thresholds and non-linear link functions (e.g., categorical CFA via <code>WLSMV</code>, <a href="https://lavaan.ugent.be/tutorial/est.html">see details here</a>) which, mathematically, is closely related to polytomous IRT.</p>
+<p>Standard CFA assumes continuous items and a strictly linear relationship. When items are <strong>ordinal</strong> or <strong>categorical</strong>, CFA can incorporate thresholds and non-linear link functions (e.g., categorical CFA via <code>WLSMV</code>, <a href="https://lavaan.ugent.be/tutorial/est.html">see details here</a>) which is closely related to polytomous IRT.</p>
 </div>
 </div>
 </div>
@@ -520,7 +520,7 @@
 </div>
 <ul>
 <li class="fragment"><p>For an item with 5 response categories, GRM estimates <strong>4 thresholds</strong> (<span class="math inline">\(b_1\)</span>–<span class="math inline">\(b_4\)</span>).</p></li>
-<li class="fragment"><p>Each threshold is the point on <span class="math inline">\(\theta\)</span> where a participant is equally likely to pick one category or the next, as in a staircase they “step up” as their trait level rises.</p></li>
+<li class="fragment"><p>Each threshold marks the point on <span class="math inline">\(\theta\)</span> where a participant becomes more likely to score at-or-above that category boundary than below it (formally, cumulative probability = 0.5), as in a staircase they “step up” as their trait level rises.</p></li>
 <li class="fragment"><p>The mean of <span class="math inline">\(\theta\)</span> is usually centered around 0, so a threshold like <span class="math inline">\(b_1 = -1.2\)</span> means: people about 1.2 <em>SD</em> below the mean are the ones flipping between the two lowest categories.</p></li>
 </ul>
 </section>
@@ -534,7 +534,7 @@
 <p><img data-src="../img/diagrams/ipf.png"></p>
 </div><div class="column" style="width:40%;">
 <ul>
-<li class="fragment">The two <strong>extreme</strong> categories (“Never”/“Very often”) are cumulative boundary categories, which means their curves plateau rather than peak as in the others.</li>
+<li class="fragment">The two <strong>extreme</strong> categories (“Never”/“Very often”) are bounded by only <em>one</em> threshold instead of two, so their curves rise or fall monotonically rather than peak as in the others.</li>
 <li class="fragment">The <strong>middle</strong> categories peak in a bell shape between two thresholds.</li>
 <li class="fragment">Steep, well-separated curves = an item that sharply distinguishes people near that threshold.</li>
 <li class="fragment">Flat, overlapping curves = an item that isn’t telling us much at that part of the scale.</li>
@@ -564,7 +564,7 @@
 <section id="three-assumptions" class="slide level2 columns-slide">
 <h2>Three Assumptions</h2>
 <div class="lead">
-<p>Before intrepreting GRM model and item parameters, three core construct assumptions need to hold, which closely mirroring those in factor analysis:</p>
+<p>Before interpreting GRM model and item parameters, three core construct assumptions need to hold, which closely mirroring those in factor analysis:</p>
 </div>
 <div class="columns-area">
 <div class="col-item text-center">
@@ -671,6 +671,13 @@
 <h2>Resources &amp; Contact</h2>
 <div class="content-box">
 <ul>
+<li><strong>Textbooks (beginner → advanced):</strong>
+<ul>
+<li><em>Beginner:</em> Embretson, S. E., &amp; Reise, S. P. (2000). <em>Item Response Theory for Psychologists.</em> Lawrence Erlbaum Associates.</li>
+<li><em>Intermediate:</em> de Ayala, R. J. (2009). <em>The Theory and Practice of Item Response Theory.</em> Guilford Press.</li>
+<li><em>Intermediate/Advanced:</em> DeMars, C. (2010). <em>Item Response Theory.</em> Oxford University Press.</li>
+<li><em>Advanced:</em> van der Linden, W. J. (Ed.). (2016). <em>Handbook of Item Response Theory</em> (Vols. 1–3). CRC Press.</li>
+</ul></li>
 <li><strong>Tutorial paper:</strong> Zein, R. A., &amp; Akhtar, H. (2025). <em>Getting started with the graded response model: An introduction and tutorial in R.</em> International Journal of Psychology, 60(1), e13265. <a href="https://doi.org/10.1002/ijop.13265" class="uri">https://doi.org/10.1002/ijop.13265</a></li>
 <li><strong>Questions afterwards:</strong> <a href="mailto:amelia.zein@cais-research.de">amelia.zein@cais-research.de</a> or <a href="mailto:amelia.zein@psikologi.unair.ac.id">amelia.zein@psikologi.unair.ac.id</a>.</li>
 </ul>

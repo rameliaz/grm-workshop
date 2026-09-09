@@ -195,11 +195,11 @@ Here, it shows that Proportion Var = .55, with loadings between .62 and .84. Eve
 ## Step 4: Fit the GRM
 
 ```{r}
-model <- paste0("theta = 1-", length(ITEM_COLS))
-fit <- mirt(data = data, 1, model = model, itemtype = "graded", SE = TRUE, verbose = FALSE)
-
-coefs <- coef(fit, IRTpars = TRUE, simplify = TRUE)
-print(coefs)
+model <- paste0("theta = 1-", length(ITEM_COLS)) # specifying the model
+model # we can see here the model contains one LV (theta) with 7 items
+fit <- mirt(data = data, model = model, itemtype = "graded", SE = TRUE, verbose = FALSE) # now fit the model
+coefs <- coef(fit, IRTpars = TRUE, simplify = TRUE) # keep item parameters in a vector
+print(coefs) # print item parameters
 ```
 
 `a` is discrimination; `b1`–`b5` are the five thresholds (six categories → five boundaries). Higher `a` = an item that differentiates people more sharply; the spread of `b` values tells you *where* on $\theta$ each item is doing its work.
@@ -286,7 +286,7 @@ Here the picture is mixed: RMSEA = .119 (90% CI .105–.133) is well above the �
 
 At the item level, two of seven items (`ker_diskerf_service`, `ker_diskerf_angst`) show significant misfit (*p* < .05); with *N* = 972 that's not simply a huge-sample artifact the way it would be with, say, 9,000+ respondents, so it's worth a closer look. RMSEA tends to be an unreliable indicator with only a handful of items and few degrees of freedom (df = 14 here).
 
-> SRMSR is the steadier signal of *how much* misfit there practically is, and it's saying "some items are misfitting, but not severe."
+> SRMSR is the steadier signal of *how much* misfit there practically is, and if it's less than 0.08, then it's saying "some items are misfitting, but not severe."
 
 ## Step 9: Inspecting residual correlations (local dependence)
 
@@ -295,19 +295,21 @@ At the item level, two of seven items (`ker_diskerf_service`, `ker_diskerf_angst
 If two items still correlate once $\theta$ is accounted for, they're carrying some shared content the model isn't capturing, which is also called **local dependence (LD)**. We'll use Yen's $Q_3$ statistic, which the tutorial paper recommends over the LD $\chi^2$ statistic specifically for polytomous data like this.
 
 ```{r}
-q3 <- residuals(fit, type = "Q3", verbose = FALSE)
-round(q3, 2)
+q3 <- residuals(fit, type = "Q3", verbose = FALSE) # asking mirt to compute q3 
+round(q3, 2) # round the value to only two decimals
 ```
 
+To flag pairs, we apply |$Q_3$| > 0.2 critical value ([Chen & Thissen, 1997](https://journals.sagepub.com/doi/abs/10.3102/10769986022003265)) as a first-pass screen, but see the negative-bias caveat below before treating it as a hard cutoff.
+
 ```{r}
-findCorrelation(q3, cutoff = 0.2, names = TRUE, verbose = TRUE)
+diag(q3) <- 0 # fix the diagonal to 0, avoiding na error
+findCorrelation(q3, cutoff = 0.2, names = TRUE, verbose = TRUE) # flag correlation pairs that is more than |0.2|
+mean(q3[upper.tri(q3)]) # calculating mean off-diagonal
 ```
 
 A couple of things worth knowing before reading this table at face value.
 
-First, $Q_3$ has a well-documented *negative* bias, especially with few items: because $\theta$ is estimated from the same items whose residuals are being correlated, the "no local dependence" baseline isn't 0, it's somewhat below zero ([Yen, 1984, p. 127](https://journals.sagepub.com/doi/abs/10.1177/014662168400800201); [Marais, 2013 in Christensen, et al., 2016](https://journals.sagepub.com/doi/full/10.1177/0146621616677520), p. 121).
-
-Here that mean off-diagonal $Q_3$ is -.119.
+First, $Q_3$ has a well-documented *negative* bias, especially with few items: because $\theta$ is estimated from the same items whose residuals are being correlated, the "no local dependence" baseline isn't 0, it's somewhat below zero ([Yen, 1984, p. 127](https://journals.sagepub.com/doi/abs/10.1177/014662168400800201); [Marais, 2013 in Christensen, et al., 2016](https://journals.sagepub.com/doi/full/10.1177/0146621616677520), p. 121). Here that mean off-diagonal $Q_3$ is -.119.
 
 > **What does this imply?**
 >

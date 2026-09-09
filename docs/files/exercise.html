@@ -543,8 +543,8 @@ window.Quarto = {
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>      <span class="st">"mirt"</span>, <span class="co"># the main GRM engine</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>      <span class="st">"caret"</span>, <span class="co"># flagging large residual correlations</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>      <span class="st">"skimr"</span>, <span class="co"># quick look at data distributions</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>      <span class="st">"haven"</span>, <span class="co"># to import the NaDiRA STATA .dta file</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    ), </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>      <span class="st">"haven"</span> <span class="co"># to import the NaDiRA STATA .dta file</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    ),</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">dependencies =</span> <span class="cn">TRUE</span></span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
@@ -970,11 +970,14 @@ Minimum correlation of possible factor scores     0.81</code></pre>
 <section id="step-4-fit-the-grm" class="level2">
 <h2 class="anchored" data-anchor-id="step-4-fit-the-grm">Step 4: Fit the GRM</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"theta = 1-"</span>, <span class="fu">length</span>(ITEM_COLS))</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">mirt</span>(<span class="at">data =</span> data, <span class="dv">1</span>, <span class="at">model =</span> model, <span class="at">itemtype =</span> <span class="st">"graded"</span>, <span class="at">SE =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>coefs <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit, <span class="at">IRTpars =</span> <span class="cn">TRUE</span>, <span class="at">simplify =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(coefs)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"theta = 1-"</span>, <span class="fu">length</span>(ITEM_COLS)) <span class="co"># specifying the model</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>model <span class="co"># we can see here the model contains one LV (theta) with 7 items</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "theta = 1-7"</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">mirt</span>(<span class="at">data =</span> data, <span class="at">model =</span> model, <span class="at">itemtype =</span> <span class="st">"graded"</span>, <span class="at">SE =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>) <span class="co"># now fit the model</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>coefs <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit, <span class="at">IRTpars =</span> <span class="cn">TRUE</span>, <span class="at">simplify =</span> <span class="cn">TRUE</span>) <span class="co"># keep item parameters in a vector</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(coefs) <span class="co"># print item parameters</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$items
                         a     b1    b2    b3    b4    b5
@@ -1002,7 +1005,7 @@ theta     1</code></pre>
 <section id="step-5-item-probability-functions" class="level2">
 <h2 class="anchored" data-anchor-id="step-5-item-probability-functions">Step 5: Item probability functions</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tracePlot</span>(fit, <span class="at">title =</span> <span class="st">"Item Probability Functions"</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">color =</span> <span class="st">"Response Category"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tracePlot</span>(fit, <span class="at">title =</span> <span class="st">"Item Probability Functions"</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">color =</span> <span class="st">"Response Category"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1018,7 +1021,7 @@ theta     1</code></pre>
 <h2 class="anchored" data-anchor-id="step-6-item-and-test-information">Step 6: Item and test information</h2>
 <p>This is the information that traditional factor analysis can’t give you: <em>where</em> exactly your scale is precise.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">itemInfoPlot</span>(fit, <span class="at">facet =</span> <span class="cn">TRUE</span>, <span class="at">title =</span> <span class="st">"Item Information Functions"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">itemInfoPlot</span>(fit, <span class="at">facet =</span> <span class="cn">TRUE</span>, <span class="at">title =</span> <span class="st">"Item Information Functions"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1041,7 +1044,7 @@ theta     1</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">testInfoPlot</span>(fit, <span class="at">title =</span> <span class="st">"Test Information Function"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">testInfoPlot</span>(fit, <span class="at">title =</span> <span class="st">"Test Information Function"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1057,25 +1060,25 @@ theta     1</code></pre>
 <h2 class="anchored" data-anchor-id="step-7-reliability-across-theta">Step 7: Reliability across <span class="math inline">\(\theta\)</span></h2>
 <p><strong>Marginal reliability</strong> is the IRT analogue of classical test-theory reliability: it integrates the test information function over an <em>assumed</em> <span class="math inline">\(\theta\)</span> distribution (normal, by default) to get a single reliability estimate for the population as a whole.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">marginal_rxx</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">marginal_rxx</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.8670347</code></pre>
 </div>
 </div>
 <p><strong>Empirical reliability</strong> instead uses the actual estimated <span class="math inline">\(\theta\)</span> scores and their standard errors for <em>this</em> sample, so no distributional assumption required. It’s the ratio of true-score variance to observed-score variance, computed directly from the EAP estimates (or factor scores, in CTT’s term) and their SEs.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>theta_se <span class="ot">&lt;-</span> <span class="fu">fscores</span>(fit, <span class="at">full.scores.SE =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">empirical_rxx</span>(theta_se)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>theta_se <span class="ot">&lt;-</span> <span class="fu">fscores</span>(fit, <span class="at">full.scores.SE =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">empirical_rxx</span>(theta_se)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   theta 
 0.869756 </code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># using mirt's own plot() rather than ggmirt::conRelPlot() here -- for some reason,</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># mirt/ggmirt version combination conRelPlot() crashes R outright</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># mirt's native rxx plot shows the same thing</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fit, <span class="at">type =</span> <span class="st">"rxx"</span>, <span class="at">main =</span> <span class="st">"Reliability Across the θ Continuum"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># using mirt's own plot() rather than ggmirt::conRelPlot() here -- for some reason,</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># mirt/ggmirt version combination conRelPlot() crashes R outright</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co"># mirt's native rxx plot shows the same thing</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fit, <span class="at">type =</span> <span class="st">"rxx"</span>, <span class="at">main =</span> <span class="st">"Reliability Across the θ Continuum"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1104,7 +1107,7 @@ theta     1</code></pre>
 <h2 class="anchored" data-anchor-id="step-8-a-quick-model-fit-check">Step 8: A quick model-fit check</h2>
 <p>A light-touch check of the model and item parameters.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">M2</span>(fit, <span class="at">type =</span> <span class="st">"C2"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">M2</span>(fit, <span class="at">type =</span> <span class="st">"C2"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
@@ -1114,7 +1117,7 @@ theta     1</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">itemfit</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">itemfit</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
@@ -1132,7 +1135,7 @@ theta     1</code></pre>
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<p>SRMSR is the steadier signal of <em>how much</em> misfit there practically is, and it’s saying “some items are misfitting, but not severe.”</p>
+<p>SRMSR is the steadier signal of <em>how much</em> misfit there practically is, and if it’s less than 0.08, then it’s saying “some items are misfitting, but not severe.”</p>
 </div>
 </div>
 </div>
@@ -1151,8 +1154,8 @@ theta     1</code></pre>
 </div>
 <p>If two items still correlate once <span class="math inline">\(\theta\)</span> is accounted for, they’re carrying some shared content the model isn’t capturing, which is also called <strong>local dependence (LD)</strong>. We’ll use Yen’s <span class="math inline">\(Q_3\)</span> statistic, which the tutorial paper recommends over the LD <span class="math inline">\(\chi^2\)</span> statistic specifically for polytomous data like this.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>q3 <span class="ot">&lt;-</span> <span class="fu">residuals</span>(fit, <span class="at">type =</span> <span class="st">"Q3"</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(q3, <span class="dv">2</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>q3 <span class="ot">&lt;-</span> <span class="fu">residuals</span>(fit, <span class="at">type =</span> <span class="st">"Q3"</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>) <span class="co"># asking mirt to compute q3 </span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(q3, <span class="dv">2</span>) <span class="co"># round the value to only two decimals</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                    ker_diskerf_service ker_diskerf_respekt ker_diskerf_nernst
 ker_diskerf_service                1.00               -0.01              -0.21
@@ -1180,8 +1183,10 @@ ker_diskerf_beleid                 0.10
 ker_diskerf_angriff                1.00</code></pre>
 </div>
 </div>
+<p>To flag pairs, we apply |<span class="math inline">\(Q_3\)</span>| &gt; 0.2 critical value (<a href="https://journals.sagepub.com/doi/abs/10.3102/10769986022003265">Chen &amp; Thissen, 1997</a>) as a first-pass screen, but see the negative-bias caveat below before treating it as a hard cutoff.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">findCorrelation</span>(q3, <span class="at">cutoff =</span> <span class="fl">0.2</span>, <span class="at">names =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(q3) <span class="ot">&lt;-</span> <span class="dv">0</span> <span class="co"># fix the diagonal to 0, avoiding na error</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="fu">findCorrelation</span>(q3, <span class="at">cutoff =</span> <span class="fl">0.2</span>, <span class="at">names =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">TRUE</span>) <span class="co"># flag correlation pairs that is more than |0.2|</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Compare row 2  and column  5 with corr  0.301 
   Means:  0.21 vs 0.161 so flagging column 2 
@@ -1197,10 +1202,13 @@ All correlations &lt;= 0.2 </code></pre>
 <pre><code>[1] "ker_diskerf_respekt" "ker_diskerf_bedbel"  "ker_diskerf_beleid" 
 [4] "ker_diskerf_service"</code></pre>
 </div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(q3[<span class="fu">upper.tri</span>(q3)]) <span class="co"># calculating mean off-diagonal</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.1185788</code></pre>
+</div>
 </div>
 <p>A couple of things worth knowing before reading this table at face value.</p>
-<p>First, <span class="math inline">\(Q_3\)</span> has a well-documented <em>negative</em> bias, especially with few items: because <span class="math inline">\(\theta\)</span> is estimated from the same items whose residuals are being correlated, the “no local dependence” baseline isn’t 0, it’s somewhat below zero (<a href="https://journals.sagepub.com/doi/abs/10.1177/014662168400800201">Yen, 1984, p.&nbsp;127</a>; <a href="https://journals.sagepub.com/doi/full/10.1177/0146621616677520">Marais, 2013 in Christensen, et al., 2016</a>, p.&nbsp;121).</p>
-<p>Here that mean off-diagonal <span class="math inline">\(Q_3\)</span> is -.119.</p>
+<p>First, <span class="math inline">\(Q_3\)</span> has a well-documented <em>negative</em> bias, especially with few items: because <span class="math inline">\(\theta\)</span> is estimated from the same items whose residuals are being correlated, the “no local dependence” baseline isn’t 0, it’s somewhat below zero (<a href="https://journals.sagepub.com/doi/abs/10.1177/014662168400800201">Yen, 1984, p.&nbsp;127</a>; <a href="https://journals.sagepub.com/doi/full/10.1177/0146621616677520">Marais, 2013 in Christensen, et al., 2016</a>, p.&nbsp;121). Here that mean off-diagonal <span class="math inline">\(Q_3\)</span> is -.119.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1235,7 +1243,7 @@ All correlations &lt;= 0.2 </code></pre>
 <section id="session-info" class="level2">
 <h2 class="anchored" data-anchor-id="session-info">Session Info</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>R version 4.6.1 (2026-06-24 ucrt)
 Platform: x86_64-w64-mingw32/x64
