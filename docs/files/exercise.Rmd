@@ -26,7 +26,7 @@ We'll go through 9 short steps together: meet the dataset, check dimensionality,
 
 > **If you're running the simulated dataset**
 >
-> The numbers and conclusions quoted in Steps 8 and 9 describe the **real NaDiRA data** and won't replicate under `USE_SIMULATED_DATA <- TRUE`. `simdata()` generates responses that exactly satisfy the fitted GRM, so the simulated model and item fit (Step 8) comes out essentially perfect (no misfitting items at all), and it has no genuine local dependence built in (the positive $Q_3$ pair highlighted in Step 9 won't appear). Steps 2–7 will look similar, though not identical, either way.
+> The numbers and conclusions quoted in Steps 8 and 9 describe the **real NaDiRA data** and won't replicate under `USE_SIMULATED_DATA <- TRUE`. `simdata()` generates responses that exactly satisfy the fitted GRM, so the simulated model and item fit (Step 8) comes out essentially perfect (no misfitting model or items at all), and it has no local dependence built in at all (the problematic $Q_3$ pair highlighted in Step 9 won't appear). Steps 2–7 will look similar, though not identical, either way.
 
 ## Step 0: Setup — packages
 
@@ -304,26 +304,31 @@ To flag pairs, we apply |$Q_3$| > 0.2 critical value ([Chen & Thissen, 1997](htt
 ```{r}
 diag(q3) <- 0 # fix the diagonal to 0, avoiding na error
 findCorrelation(q3, cutoff = 0.2, names = TRUE, verbose = TRUE) # flag correlation pairs that is more than |0.2|
-mean(q3[upper.tri(q3)]) # calculating mean off-diagonal
+mean(q3[upper.tri(q3)]) # calculating mean off-diagonal, to see the "no-LD" baseline
 ```
 
 A couple of things worth knowing before reading this table at face value.
 
-First, $Q_3$ has a well-documented *negative* bias, especially with few items: because $\theta$ is estimated from the same items whose residuals are being correlated, the "no local dependence" baseline isn't 0, it's somewhat below zero ([Yen, 1984, p. 127](https://journals.sagepub.com/doi/abs/10.1177/014662168400800201); [Marais, 2013 in Christensen, et al., 2016](https://journals.sagepub.com/doi/full/10.1177/0146621616677520), p. 121). Here that mean off-diagonal $Q_3$ is -.119.
+First, $Q_3$ has a well-documented *negative* bias, especially with few items: because $\theta$ is estimated from the same items whose residuals are being correlated, the "no local dependence" baseline isn't *exactly* 0, but it's somewhat below zero ([Yen, 1984, p. 127](https://journals.sagepub.com/doi/abs/10.1177/014662168400800201); [Marais, 2013 in Christensen, et al., 2016](https://journals.sagepub.com/doi/full/10.1177/0146621616677520), p. 121). Here that mean off-diagonal $Q_3$ is -.119.
 
 > **What does this imply?**
 >
 > Most of the negative values in this residual correlation matrix are the expected statistical byproduct of a handful of strongly-loading items sharing one factor (compare each value to that -.119 baseline, not to 0), so perhaps not necessarily a red flag on their own.
 
-What's more informative is which pairs sit *further* from that baseline than the rest. `findCorrelation()` flags `ker_diskerf_respekt`↔`ker_diskerf_bedbel` ($Q_3$ = -.30), `ker_diskerf_service`↔`ker_diskerf_beleid` ($Q_3$ = -.30), and a few others beyond |.2|. The one that stands out most is `ker_diskerf_bedbel`↔`ker_diskerf_beleid` ("threatened/harassed" and "insulted/called names"), at $Q_3$ = +.25 — a *positive* residual correlation bucks the general negative trend, which is a stronger signal of genuine local dependence than any of the negative ones: these two items likely share something beyond $\theta$, plausibly because being threatened and being insulted often happen together in the same hostile encounter.
+What's more informative is which pairs sit *further* from that baseline than the rest. `findCorrelation()` flags `ker_diskerf_respekt`↔`ker_diskerf_bedbel` ($Q_3$ = -.30), `ker_diskerf_service`↔`ker_diskerf_beleid` ($Q_3$ = -.30), and a few others beyond |.2|. The one that stands out most is `ker_diskerf_bedbel`↔`ker_diskerf_beleid` ("threatened/harassed" and "insulted/called names"), at $Q_3$ = +.25 — a *positive* residual correlation bucks the general negative trend, which is a stronger signal of local dependence than any of the negative ones: these two items likely share something beyond $\theta$, plausibly because being threatened and being insulted often happen together in the same hostile encounter.
 
 However, none of this is severe enough to justify dropping an item on the spot.
 
-If the same pattern shows up on the full NaDiRA sample, reasonable next steps are rewording one of the overlapping items, modeling them as a testlet, or, **as a last resort**, removing one. Removing items should stay a last resort: it can improve fit while narrowing what the scale actually measures.
+If the same pattern shows up on the full NaDiRA sample, reasonable next steps are:
+* rewording one of the overlapping items 
+* modeling them as a testlet, o,
+* **as a last resort**, removing one. 
+
+Removing items should stay a last resort, because while it can improve model fit it also narrows the scope of what the scale actually measures.
 
 ## Try it yourself
 
-A few things to explore in the time we have left:
+A few things to explore in the time we have left, or you could just explore this independently after this session:
 
 - Drop the item with the lowest discrimination (`a`) from `model` and re-fit. How much does the test information curve change?
 - `ker_diskerf_angriff` (physical attack) should have the most extreme thresholds of the seven. Confirm that in your output, and think about why that makes substantive sense.
