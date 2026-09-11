@@ -160,7 +160,7 @@ $$P(X_i = 1 \mid \theta) = \frac{1}{1 + e^{-a_i(\theta - b_i)}}$$
 ::: {.incremental}
 * $\theta$ (theta) — the **latent trait** of the participant (predictor, *analogous to* $\xi$ in CFA).
 * $b_i$ — the item **difficulty/threshold**: the trait level where the probability of endorsement is 50% ($P = 0.50$).
-* $a_i$ — the item **discrimination**: the slope at the inflection point, showing how sharply the item differentiates (*analogous to* loading $\lambda$ in CFA).
+* $a_i$ — the item **discrimination**: the slope at the inflection point, showing how sharply the item differentiates (*similar but not identical to* loading $\lambda$ in CFA).
 :::
 :::
 :::
@@ -174,9 +174,9 @@ CTT gives **one** reliability coefficient for the whole sample.
 ::: {.content-box}
 ::: {.incremental}
 - It assumes measurement error is the same for everyone, regardless of their trait level.
-- A discrimination-experience scale might sharply distinguish people with *very high* exposure, but tell us almost nothing about people in the moderate range.
+- A scale measuring people's everyday discrimination experiences might sharply distinguish people with *very high* exposure of discrimination, but may be less optimal to capture people in the moderate range.
   + In some contexts, this is exactly where policy-relevant nuance often lives.
-- CTT can't show *where* on the scale our instrument is weak, but **item response theory (IRT) can**.
+- CTT can't show *where* exactly on the latent trait spectrum our instrument is less or more optimal, but **item response theory (IRT) can**.
 :::
 :::
 
@@ -206,7 +206,7 @@ As we saw earlier in multigroup CFA, measurement invariance tests whether an ins
 ::: {.incremental}
 - **CFA/CTT:** Primarily tests invariance step-by-step across the entire scale (configural → metric → scalar) by checking changes in global model fit.
 - **IRT (DIF & DTF):** Directly pinpoints **Differential Item Functioning (DIF)** at the individual item level along the trait continuum $\theta$:
-  - *Uniform DIF:* An item is systematically easier/harder for one group across all trait levels (difference in threshold $b$).
+  - *Uniform DIF:* An item is systematically easier/harder to endorse for one group across all trait levels (difference in threshold $b$).
   - *Non-uniform DIF:* An item discriminates differently across groups (difference in slope $a$).
 - **Differential Test Functioning (DTF):** Aggregates item-level DIF to assess whether **item biases cancel out or compound** across the overall scale score.
 :::

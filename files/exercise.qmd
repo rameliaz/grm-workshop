@@ -272,7 +272,7 @@ plot(fit, type = "rxx", main = "Reliability Across the θ Continuum")
 
 Marginal and empirical reliability should be close. The plot shows you *where* reliability holds up (commonly interpreted as adequate above \~.80) and where it doesn't, and usually the tails.
 
-Here they are: marginal rxx = .867, empirical rxx = .870 — close, which is reassuring, since it means the reliability estimate isn't an artifact of assuming a normal $\theta$ distribution. Reliability stays $\geq$ .80 across roughly $\theta$ = -1.2 to 3.35, lining up with the information plot above.
+Here they are: marginal rxx = .867, empirical rxx = .870 — close, which is reassuring, since it means the reliability estimate isn't an artifact of assuming a normal $\theta$ distribution. Reliability stays $\geq$ .80 across roughly $\theta$ = -1.35 to 3.67, lining up with the information plot above.
 
 ::: callout-tip
 ### What does this mean?
