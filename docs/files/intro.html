@@ -430,8 +430,8 @@
 <li class="fragment"><strong>CFA/CTT:</strong> Primarily tests invariance step-by-step across the entire scale (configural → metric → scalar) by checking changes in global model fit.</li>
 <li class="fragment"><strong>IRT (DIF &amp; DTF):</strong> Directly pinpoints <strong>Differential Item Functioning (DIF)</strong> at the individual item level along the trait continuum <span class="math inline">\(\theta\)</span>:
 <ul>
-<li class="fragment"><em>Uniform DIF:</em> An item is systematically easier/harder to endorse for one group across all trait levels (difference in threshold <span class="math inline">\(b\)</span>).</li>
-<li class="fragment"><em>Non-uniform DIF:</em> An item discriminates differently across groups (difference in slope <span class="math inline">\(a\)</span>).</li>
+<li class="fragment"><em>Uniform DIF:</em> An item is systematically easier/harder to endorse for one group across all trait levels (difference in threshold parameter - <span class="math inline">\(b\)</span>).</li>
+<li class="fragment"><em>Non-uniform DIF:</em> An item discriminates differently across groups (difference in discrimination parameter - <span class="math inline">\(a\)</span>).</li>
 </ul></li>
 <li class="fragment"><strong>Differential Test Functioning (DTF):</strong> Aggregates item-level DIF to assess whether <strong>item biases cancel out or compound</strong> across the overall scale score.</li>
 </ul>
@@ -445,6 +445,26 @@
 </div>
 <div class="section-bubble">
 <p>Meet the IRT Family</p>
+</div>
+</section>
+<section id="item-parameters-a-and-b" class="slide level2 text-slide-bg">
+<h2>Item Parameters: <em>a</em> and <em>b</em></h2>
+<div class="lead">
+<p>In a typical IRT model, each item get at least <strong>one threshold parameter (<em>b</em>)</strong>. Some models allow an item to have <strong>one discrimination parameter (<em>a</em>)</strong> plus <strong>one or several</strong> thresholds (<em>b</em>).</p>
+</div>
+<div class="content-box">
+<ul>
+<li><strong><span class="math inline">\(b\)</span> (threshold):</strong> <em>where</em> on <span class="math inline">\(\theta\)</span> the item is doing its work. The number of <em>b</em> we get depends on how many response categories are there.</li>
+<li><strong><span class="math inline">\(a\)</span> (discrimination):</strong> <em>how strongly</em> it distinguishes people around that point. Larger discrimination parameters means steeper probability curves, which reflect more informative item.</li>
+<li>Rule of thumbs (<a href="https://link.springer.com/book/10.1007/978-3-319-54205-8">Baker &amp; Kim, 2017</a>):
+<ul>
+<li><span class="math inline">\(a\)</span> less than 0.35 = very low</li>
+<li>0.35 – 0.64 = low</li>
+<li>0.65 – 1.34 = moderate</li>
+<li>1.35 – 1.69 = high</li>
+<li>1.70 or more = very high</li>
+</ul></li>
+</ul>
 </div>
 </section>
 <section id="the-irt-family" class="slide level2 text-slide-bg">
@@ -468,7 +488,7 @@
 </thead>
 <tbody>
 <tr class="odd">
-<td>1PL / Rasch</td>
+<td>1PL/Rasch</td>
 <td>Dichotomous</td>
 <td>item difficulty only (equal discrimination assumed)</td>
 </tr>
@@ -496,7 +516,7 @@
 <i class="callout-icon"></i>
 </div>
 <div class="callout-content">
-<p>…and many other variants that are specifically calibrated to estimate models with <em>n</em> of dimensions, <em>n</em> of response categories, response format, response styles, etc.</p>
+<p>The 3PL adds a third item parameter, <em>c</em> (<a href="https://assess.com/irt-item-pseudo-guessing-parameter/">pseudo-guessing</a>), to capture the chance of endorsement at very low trait levels. <br> In addition to the examples shown above, there are many other IRT variants that are specifically calibrated to estimate models with <em>n</em> dimensions, <em>n</em> response categories, response formats and response styles.</p>
 </div>
 </div>
 </div>
@@ -540,26 +560,6 @@
 <li class="fragment">Flat, overlapping curves = an item that isn’t telling us much at that part of the scale.</li>
 </ul>
 </div></div>
-</section>
-<section id="two-item-parameters-a-and-b" class="slide level2 text-slide-bg">
-<h2>Two Item Parameters: <em>a</em> and <em>b</em></h2>
-<div class="lead">
-<p>Every item in a GRM gets <strong>one discrimination parameter (<em>a</em>)</strong> and <strong>several thresholds (<em>b</em>)</strong>.</p>
-</div>
-<div class="content-box">
-<ul>
-<li><strong><span class="math inline">\(b\)</span> (threshold):</strong> <em>where</em> on <span class="math inline">\(\theta\)</span> the item is doing its work. The number of <em>b</em> we get depends on how many response categories are there.</li>
-<li><strong><span class="math inline">\(a\)</span> (discrimination):</strong> <em>how strongly</em> it distinguishes people around that point. Steeper curves reflect more informative item.</li>
-<li>Rule of thumb (<a href="https://link.springer.com/book/10.1007/978-3-319-54205-8">Baker &amp; Kim, 2017</a>):
-<ul>
-<li><span class="math inline">\(a\)</span> less than 0.35 = very low</li>
-<li>0.35 – 0.65 = low</li>
-<li>0.65 – 1.35 = moderate</li>
-<li>1.35 – 1.70 = high</li>
-<li>more than 1.70 = very high</li>
-</ul></li>
-</ul>
-</div>
 </section>
 <section id="three-assumptions" class="slide level2 columns-slide">
 <h2>Three Assumptions</h2>

@@ -206,8 +206,8 @@ As we saw earlier in multigroup CFA, measurement invariance tests whether an ins
 ::: {.incremental}
 - **CFA/CTT:** Primarily tests invariance step-by-step across the entire scale (configural → metric → scalar) by checking changes in global model fit.
 - **IRT (DIF & DTF):** Directly pinpoints **Differential Item Functioning (DIF)** at the individual item level along the trait continuum $\theta$:
-  - *Uniform DIF:* An item is systematically easier/harder to endorse for one group across all trait levels (difference in threshold $b$).
-  - *Non-uniform DIF:* An item discriminates differently across groups (difference in slope $a$).
+  - *Uniform DIF:* An item is systematically easier/harder to endorse for one group across all trait levels (difference in threshold parameter - $b$).
+  - *Non-uniform DIF:* An item discriminates differently across groups (difference in discrimination parameter - $a$).
 - **Differential Test Functioning (DTF):** Aggregates item-level DIF to assess whether **item biases cancel out or compound** across the overall scale score.
 :::
 :::
@@ -223,6 +223,23 @@ As we saw earlier in multigroup CFA, measurement invariance tests whether an ins
 Meet the IRT Family
 :::
 
+## Item Parameters: *a* and *b* {.text-slide-bg}
+
+::: {.lead}
+In a typical IRT model, each item get at least **one threshold parameter (*b*)**. Some models allow an item to have **one discrimination parameter (*a*)** plus **one or several** thresholds (*b*).
+:::
+
+::: {.content-box}
+* **$b$ (threshold):** *where* on $\theta$ the item is doing its work. The number of *b* we get depends on how many response categories are there.
+* **$a$ (discrimination):** *how strongly* it distinguishes people around that point. Larger discrimination parameters means steeper probability curves, which reflect more informative item.
+* Rule of thumbs ([Baker & Kim, 2017](https://link.springer.com/book/10.1007/978-3-319-54205-8)): 
+  + $a$ less than 0.35 = very low
+  + 0.35 – 0.64 = low
+  + 0.65 – 1.34 = moderate
+  + 1.35 – 1.69 = high
+  + 1.70 or more = very high
+:::
+
 ## The IRT Family {.text-slide-bg}
 
 ::: {.lead}
@@ -232,7 +249,7 @@ Meet the IRT Family
 ::: {.content-box}
 | Model | Data type | What it estimates |
 |---|---|---|
-| 1PL / Rasch | Dichotomous | item difficulty only (equal discrimination assumed) |
+| 1PL/Rasch | Dichotomous | item difficulty only (equal discrimination assumed) |
 | 2PL | Dichotomous | item difficulty **and** discrimination |
 | 3PL | Dichotomous | item difficulty and discrimination + pseudo-guessing params |
 | **GRM** | **Polytomous (ordered categories)** | **discrimination *a* + multiple thresholds *b* per item** |
@@ -240,7 +257,8 @@ Meet the IRT Family
 :::
 
 ::: {.callout-important appearance="simple"}
-...and many other variants that are specifically calibrated to estimate models with *n* of dimensions, *n* of response categories, response format, response styles, etc.
+The 3PL adds a third item parameter, *c* ([pseudo-guessing](https://assess.com/irt-item-pseudo-guessing-parameter/)), to capture the chance of endorsement at very low trait levels. <br>
+In addition to the examples shown above, there are many other IRT variants that are specifically calibrated to estimate models with *n* dimensions, *n* response categories, response formats and response styles.
 :::
 
 ## {.section-slide}
@@ -284,23 +302,6 @@ Plot the probability of endorsing each category against $\theta$: each threshold
 - Flat, overlapping curves = an item that isn't telling us much at that part of the scale.
 :::
 :::
-:::
-
-## Two Item Parameters: *a* and *b* {.text-slide-bg}
-
-::: {.lead}
-Every item in a GRM gets **one discrimination parameter (*a*)** and **several thresholds (*b*)**.
-:::
-
-::: {.content-box}
-* **$b$ (threshold):** *where* on $\theta$ the item is doing its work. The number of *b* we get depends on how many response categories are there.
-* **$a$ (discrimination):** *how strongly* it distinguishes people around that point. Steeper curves reflect more informative item.
-* Rule of thumb ([Baker & Kim, 2017](https://link.springer.com/book/10.1007/978-3-319-54205-8)): 
-  + $a$ less than 0.35 = very low 
-  + 0.35 – 0.65 = low
-  + 0.65 – 1.35 = moderate 
-  + 1.35 – 1.70 = high 
-  + more than 1.70 = very high
 :::
 
 ## Three Assumptions {.columns-slide}

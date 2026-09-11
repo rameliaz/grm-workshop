@@ -323,7 +323,7 @@
     "href": "files/intro.html#scale--vs.-item-level-invariance",
     "title": "Introduction to IRT’s Graded Response Model",
     "section": "3️⃣ Scale- vs. Item-level Invariance",
-    "text": "3️⃣ Scale- vs. Item-level Invariance\n\nAs we saw earlier in multigroup CFA, measurement invariance tests whether an instrument behaves equivalently across groups.\n\n\n\nCFA/CTT: Primarily tests invariance step-by-step across the entire scale (configural → metric → scalar) by checking changes in global model fit.\nIRT (DIF & DTF): Directly pinpoints Differential Item Functioning (DIF) at the individual item level along the trait continuum \\(\\theta\\):\n\nUniform DIF: An item is systematically easier/harder to endorse for one group across all trait levels (difference in threshold \\(b\\)).\nNon-uniform DIF: An item discriminates differently across groups (difference in slope \\(a\\)).\n\nDifferential Test Functioning (DTF): Aggregates item-level DIF to assess whether item biases cancel out or compound across the overall scale score.",
+    "text": "3️⃣ Scale- vs. Item-level Invariance\n\nAs we saw earlier in multigroup CFA, measurement invariance tests whether an instrument behaves equivalently across groups.\n\n\n\nCFA/CTT: Primarily tests invariance step-by-step across the entire scale (configural → metric → scalar) by checking changes in global model fit.\nIRT (DIF & DTF): Directly pinpoints Differential Item Functioning (DIF) at the individual item level along the trait continuum \\(\\theta\\):\n\nUniform DIF: An item is systematically easier/harder to endorse for one group across all trait levels (difference in threshold parameter - \\(b\\)).\nNon-uniform DIF: An item discriminates differently across groups (difference in discrimination parameter - \\(a\\)).\n\nDifferential Test Functioning (DTF): Aggregates item-level DIF to assess whether item biases cancel out or compound across the overall scale score.",
     "crumbs": [
       "by Amelia Zein",
       "Slide Deck"
@@ -341,11 +341,22 @@
     ]
   },
   {
+    "objectID": "files/intro.html#item-parameters-a-and-b",
+    "href": "files/intro.html#item-parameters-a-and-b",
+    "title": "Introduction to IRT’s Graded Response Model",
+    "section": "Item Parameters: a and b",
+    "text": "Item Parameters: a and b\n\nIn a typical IRT model, each item get at least one threshold parameter (b). Some models allow an item to have one discrimination parameter (a) plus one or several thresholds (b).\n\n\n\n\\(b\\) (threshold): where on \\(\\theta\\) the item is doing its work. The number of b we get depends on how many response categories are there.\n\\(a\\) (discrimination): how strongly it distinguishes people around that point. Larger discrimination parameters means steeper probability curves, which reflect more informative item.\nRule of thumbs (Baker & Kim, 2017):\n\n\\(a\\) less than 0.35 = very low\n0.35 – 0.64 = low\n0.65 – 1.34 = moderate\n1.35 – 1.69 = high\n1.70 or more = very high",
+    "crumbs": [
+      "by Amelia Zein",
+      "Slide Deck"
+    ]
+  },
+  {
     "objectID": "files/intro.html#the-irt-family",
     "href": "files/intro.html#the-irt-family",
     "title": "Introduction to IRT’s Graded Response Model",
     "section": "The IRT Family",
-    "text": "The IRT Family\n\n1PL, 2PL and 3PL models are built for binary data (correct/incorrect, yes/no). We are primarily interested in Likert-type (i.e., polytomous), and that’s what GRM is for.\n\n\n\n\n\n\n\n\n\n\nModel\nData type\nWhat it estimates\n\n\n\n\n1PL / Rasch\nDichotomous\nitem difficulty only (equal discrimination assumed)\n\n\n2PL\nDichotomous\nitem difficulty and discrimination\n\n\n3PL\nDichotomous\nitem difficulty and discrimination + pseudo-guessing params\n\n\nGRM\nPolytomous (ordered categories)\ndiscrimination a + multiple thresholds b per item\n\n\n\n\n\n\n\n\n\n\n…and many other variants that are specifically calibrated to estimate models with n of dimensions, n of response categories, response format, response styles, etc.",
+    "text": "The IRT Family\n\n1PL, 2PL and 3PL models are built for binary data (correct/incorrect, yes/no). We are primarily interested in Likert-type (i.e., polytomous), and that’s what GRM is for.\n\n\n\n\n\n\n\n\n\n\nModel\nData type\nWhat it estimates\n\n\n\n\n1PL/Rasch\nDichotomous\nitem difficulty only (equal discrimination assumed)\n\n\n2PL\nDichotomous\nitem difficulty and discrimination\n\n\n3PL\nDichotomous\nitem difficulty and discrimination + pseudo-guessing params\n\n\nGRM\nPolytomous (ordered categories)\ndiscrimination a + multiple thresholds b per item\n\n\n\n\n\n\n\n\n\n\nThe 3PL adds a third item parameter, c (pseudo-guessing), to capture the chance of endorsement at very low trait levels.  In addition to the examples shown above, there are many other IRT variants that are specifically calibrated to estimate models with n dimensions, n response categories, response formats and response styles.",
     "crumbs": [
       "by Amelia Zein",
       "Slide Deck"
@@ -379,17 +390,6 @@
     "title": "Introduction to IRT’s Graded Response Model",
     "section": "Reading Item Probability Curves",
     "text": "Reading Item Probability Curves\n\nPlot the probability of endorsing each category against \\(\\theta\\): each threshold represents the transition boundary between two adjacent categories.\n\n\n\n\n\n\nThe two extreme categories (“Never”/“Very often”) are bounded by only one threshold instead of two, so their curves rise or fall monotonically rather than peak as in the others.\nThe middle categories peak in a bell shape between two thresholds.\nSteep, well-separated curves = an item that sharply distinguishes people near that threshold.\nFlat, overlapping curves = an item that isn’t telling us much at that part of the scale.",
-    "crumbs": [
-      "by Amelia Zein",
-      "Slide Deck"
-    ]
-  },
-  {
-    "objectID": "files/intro.html#two-item-parameters-a-and-b",
-    "href": "files/intro.html#two-item-parameters-a-and-b",
-    "title": "Introduction to IRT’s Graded Response Model",
-    "section": "Two Item Parameters: a and b",
-    "text": "Two Item Parameters: a and b\n\nEvery item in a GRM gets one discrimination parameter (a) and several thresholds (b).\n\n\n\n\\(b\\) (threshold): where on \\(\\theta\\) the item is doing its work. The number of b we get depends on how many response categories are there.\n\\(a\\) (discrimination): how strongly it distinguishes people around that point. Steeper curves reflect more informative item.\nRule of thumb (Baker & Kim, 2017):\n\n\\(a\\) less than 0.35 = very low\n0.35 – 0.65 = low\n0.65 – 1.35 = moderate\n1.35 – 1.70 = high\nmore than 1.70 = very high",
     "crumbs": [
       "by Amelia Zein",
       "Slide Deck"
