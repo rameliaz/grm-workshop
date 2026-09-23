@@ -4,15 +4,14 @@ title: "Welcome!"
 
 This site keeps the materials for the session **Item Response Theory: Graded Response Model**, as a part of the larger **Workshop Itemkonstruktion**, hosted by Universität Duisburg-Essen (IKG, DeZIM Nationaler Diskriminierungs- & Rassismusmonitor, DeZIM Forschungsgemeinschaft & InZentIM), 28.–29. September 2026. 
 
-The workshop's overall theme is *"From Idea to Item Battery: The Methodology(ies) Behind Item Construction in Migration and Racism Research."*
-
 ### Outline
 
-1. What does IRT add on top of classical test theory (CTT)?
-2. Core ideas of the Graded Response Model (GRM)
-3. Hands-on: fitting a GRM in R
-4. Interpreting model and item parameters
-5. Wrap-up, discussion & Q&A
+1. What makes IRT different from Classical Test Theory?
+2. Meet the IRT family
+3. Item and model parameters of the Graded Response Model (GRM)
+4. Hands-On: Fitting a GRM 
+5. Using the results
+6. Wrap-up, discussion, and Q&A
 
 ### Finding your way around this site
 
@@ -26,8 +25,9 @@ The workshop's overall theme is *"From Idea to Item Battery: The Methodology(ies
 ### Getting ready for the hands-on part
 
 - Bring a laptop with <i class="fa-brands fa-r-project"></i> (preferebly [the latest `4.6.1` version](https://cran.r-project.org/bin/windows/base/)) and [**RStudio**](https://posit.co/downloads) already installed.
-- I would highly recommend to [install `quarto`](https://quarto.org/docs/download/) in your device before the session, as working with a `quarto` document is more fun than `.Rmd` 😊
-- Install these packages ahead of time so we don't lose workshop time to it:
+- I would highly recommend to [install `quarto`](https://quarto.org/docs/download/) in your device before the session, as working with a `quarto` document is more fun than <i class="fa-brands fa-r-project"></i> Markdown 😊 
+    + ...**but** this is optional. If you are more comfortable working with <i class="fa-brands fa-r-project"></i> Markdown document, you don't have to install `quarto`.
+- You could install these <i class="fa-brands fa-r-project"></i> packages ahead of the scheduled session, which would give us more time to learn, practice, and discuss the materials by running this script on your base <i class="fa-brands fa-r-project"></i>:
 
 ```r
 install.packages(c("tidyverse", "psych", "pak", "mirt", "caret", "skimr", "haven"), dependencies = TRUE)
@@ -39,9 +39,9 @@ pak::pak("masurp/ggmirt")  # ggmirt package only available on GitHub
 
 ::: {.callout-note}
 ## How to download the slides 🖨️
-Click the *icon* ☰ in the lower-left corner of the *slide* → click `Tools` in the upper-left corner → select `PDF Export Mode` → press `Ctrl` + `P` until a *pop-up window* appears to print the *slide*, then *print* it as a `PDF` *file*.
+Click the icon ☰ in the lower-left corner of the slide → click `Tools` in the upper-left corner → select `PDF Export Mode` → press `Ctrl` + `P` until a pop-up window appears to print the slide, then print it as a `PDF` file.
 
-Alternatively, you can press the `e` key as a *shortcut*, then print the *slide* as a `PDF` *file*.
+Alternatively, you can simply press the `e` key as a shortcut, then print the slide as a `PDF` file.
 :::
 
 ### Questions?
@@ -51,10 +51,10 @@ Get in touch anytime before or after the workshop — [amelia.zein@cais-research
 ::: {.callout-note}
 ## License
 
-All workshop materials are licensed as [<i class="fab fa-creative-commons"><i class="fa fa-universal-access"></i></i> BY 4.0](https://creativecommons.org/licenses/by/4.0/). This means **you are free to reuse the materials, but the original source must be properly cited**.
+All workshop materials are licensed as [<i class="fab fa-creative-commons"><i class="fa fa-universal-access"></i></i> BY 4.0](https://creativecommons.org/licenses/by/4.0/). This means **you are free to reuse the materials, but please cite the original source**.
 
 :::
 
 ::: {.callout-note collapse="true" appearance="simple"}
-I used Gemini 3.8 Flash to generate images (i.e., [staircase illustration](img/diagrams/staircase.png) and the [ICC plot](img/diagrams/icc_sigmoid.png)) and Claude Sonnet 5 to troubleshoot `quarto` and `git` bugs.
+I used Gemini 3.8 Flash to generate images (i.e., [staircase illustration](img/diagrams/staircase.png), the [item characteristic curve](img/diagrams/icc_sigmoid.png), and the [item and test information function](img/diagrams/info.png)) and Claude Sonnet 5 to troubleshoot <i class="fa-brands fa-r-project"></i>, `quarto` and `git` bugs.
 :::

@@ -34,7 +34,8 @@ website:
           - text: Github Repository of Zein & Akhtar (2025)
             href: https://github.com/rameliaz/grm-tutorial-paper
           - text: Amini-Nejad, et al. (2025)
-            href: https://econtent.hogrefe.com/doi/10.1027/2698-1866/a000110  
+            href: https://econtent.hogrefe.com/doi/10.1027/2698-1866/a000110
+              
   navbar:
     left:
       - href: https://rameliaz.github.io/

@@ -21,7 +21,7 @@ format:
 2. Meet the IRT family
 3. Item and model parameters of the Graded Response Model (GRM)
 4. Hands-On: Fitting a GRM 
-5. Interpreting model and item parameters
+5. Using the results
 6. Wrap-up, discussion, and Q&A
 
 ## {.section-slide}
@@ -67,7 +67,7 @@ CTT strongly assumes that reliability (thus measurement error) remains similar f
 <br>
 **IRT enables estimation of invariance at both item- (i.e., "differential item functioning" or DIF) and scale-level (i.e., "differential test functioning" or DTF).** <br>
 <br>
-CTT primarily focuses on estimating measurement invariance at the scale-level.
+CFA tests invariance via item loadings and intercepts, usually judged by changes in overall model fit. 
 :::
 :::
 
@@ -98,7 +98,7 @@ Let us zoom in here.
 ## 1️⃣ Linear vs. Probabilistic {.text-slide-bg}
 
 ::: {.lead}
-In CTT terms, every increase in the latent trait (i.e., "Depression") is associated with a constant increase in the expected score on the item. In other words, the latent trait **causes** the observed score (i.e., reflective model).
+In CTT terms, every increase in the latent trait (i.e., "Depression") is associated with a constant increase in the expected score on the item. In other words, the latent trait **causes** the observed score.
 :::
 
 ![](../img/diagrams/4.png){fig-align="center" width="50%"}
@@ -144,7 +144,7 @@ Standard CFA assumes continuous items and a strictly linear relationship. When i
 ## 1️⃣ Linear vs. Probabilistic {.text-slide-bg}
 
 ::: {.lead}
-In contrast, IRT models this relationship as a **probabilistic function**, so the relationship between the latent trait and the observed score is non-linear.
+In contrast, IRT models this relationship as a **probabilistic function**, so the relationship between the latent trait and the observed score is non-linear. Suppose that we have an item with [**two response categories**]{style="color: red;"} (yes/no), the probability curve would look like this:
 :::
 
 ::: columns
@@ -204,7 +204,7 @@ As we saw earlier in multigroup CFA, measurement invariance tests whether an ins
 
 ::: {.content-box}
 ::: {.incremental}
-- **CFA/CTT:** Primarily tests invariance step-by-step across the entire scale (configural → metric → scalar) by checking changes in global model fit.
+- **CFA/CTT:** Tests invariance step by step (configural → metric → scalar), mainly via changes in overall model fit; locating/identifying problematic items can be done by applying partial invariance.
 - **IRT (DIF & DTF):** Directly pinpoints **Differential Item Functioning (DIF)** at the individual item level along the trait continuum $\theta$:
   - *Uniform DIF:* An item is systematically easier/harder to endorse for one group across all trait levels (difference in threshold parameter - $b$).
   - *Non-uniform DIF:* An item discriminates differently across groups (difference in discrimination parameter - $a$).
@@ -230,14 +230,15 @@ In a typical IRT model, each item get at least **one threshold parameter (*b*)**
 :::
 
 ::: {.content-box}
-* **$b$ (threshold):** *where* on $\theta$ the item is doing its work. The number of *b* we get depends on how many response categories are there.
-* **$a$ (discrimination):** *how strongly* it distinguishes people around that point. Larger discrimination parameters means steeper probability curves, which reflect more informative item.
+::: {.incremental}
+* **$b$ (threshold or difficulty):** *where* on the $\theta$ continuum the response category is doing its work. 
+  - A more "technical" definition: $b$ is the point on the $\theta$ continuum where the probability of responding in this category or higher reaches 50%.
+  - The number of $b$ we get depends on how many response categories are in our scale (`n response categories - 1`).
+* **$a$ (discrimination):** denotes *how strongly* the item differentiates between participants with lower or higher levels of $\theta$. 
+  - A larger $a$ value means a steeper probability curve, indicating that the specific item yields more information.
 * Rule of thumbs ([Baker & Kim, 2017](https://link.springer.com/book/10.1007/978-3-319-54205-8)): 
-  + $a$ less than 0.35 = very low
-  + 0.35 – 0.64 = low
-  + 0.65 – 1.34 = moderate
-  + 1.35 – 1.69 = high
-  + 1.70 or more = very high
+  + $a$ less than 0.35 = very low; + 0.35 – 0.64 = low; + 0.65 – 1.34 = moderate; + 1.35 – 1.69 = high; 1.70 or more = very high
+:::
 :::
 
 ## The IRT Family {.text-slide-bg}
@@ -258,7 +259,7 @@ In a typical IRT model, each item get at least **one threshold parameter (*b*)**
 
 ::: {.callout-important appearance="simple"}
 The 3PL adds a third item parameter, *c* ([pseudo-guessing](https://assess.com/irt-item-pseudo-guessing-parameter/)), to capture the chance of endorsement at very low trait levels. <br>
-In addition to the examples shown above, there are many other IRT variants that are specifically calibrated to estimate models with *n* dimensions, *n* response categories, response formats and response styles.
+In addition to the examples shown above, there are many other IRT variants that are specifically calibrated to estimate models with *n* dimensions, *n* response categories, various response formats and response styles.
 :::
 
 ## {.section-slide}
@@ -269,7 +270,7 @@ In addition to the examples shown above, there are many other IRT variants that 
 :::
 
 ::: {.section-bubble}
-Item and Model Parameters of the Graded Response Model (GRM)
+Item, Model Parameters, and Assumptions of the Graded Response Model (GRM)
 :::
 
 ## The Staircase Illustration {.text-slide-bg}
@@ -284,10 +285,10 @@ Item and Model Parameters of the Graded Response Model (GRM)
 * The mean of $\theta$ is usually centered around 0, so a threshold like $b_1 = -1.2$ means: people about 1.2 *SD* below the mean are the ones flipping between the two lowest categories.
 :::
 
-## Reading Item Probability Curves {.text-slide-bg}
+## Item Probability Curves {.text-slide-bg}
 
 ::: {.lead}
-Plot the probability of endorsing each category against $\theta$: each threshold represents the transition boundary between two adjacent categories.
+Suppose that we have a Likert-type item with five response categories. The, we plot the probability of endorsing each category against $\theta$, where each threshold represents the transition boundary between two adjacent categories.
 :::
 
 ::: columns
@@ -304,10 +305,54 @@ Plot the probability of endorsing each category against $\theta$: each threshold
 :::
 :::
 
+## Item and Test Information {.text-slide-bg}
+
+::: {.lead}
+**Information** tells us *how precisely* we can locate a participant on $\theta$: the more information, the smaller the measurement error at that trait level.
+:::
+
+::: columns
+::: {.column width="55%"}
+![](../img/diagrams/info.png){fig-align="center"}
+:::
+::: {.column width="45%" .text-small}
+::: {.incremental}
+- **Item information** $I_i(\theta)$: each item is precise only in part of the $\theta$ range.
+  - *Height* depends on $a$: steeper items (A, C) carry more information than flat ones (B).
+  - *Location* depends on $b$: an item is informative around its thresholds (C only works at high $\theta$).
+- **Test information** $I(\theta) = \sum_i I_i(\theta)$: item information simply **adds up**, so adding items targeted at a weak region closes that gap.
+- This is what the conditional reliability curves and **blindspots** from earlier are built on.
+:::
+:::
+:::
+
+## Model Fit Parameters {.text-slide-bg}
+
+::: {.lead}
+Beyond item parameters (*a*, *b*), we also need to know whether the GRM **as a whole** actually fits the data. `mirt` gives us this via `M2()` (overall model fit) and `itemfit()` (item-level fit).
+:::
+
+::: {.content-box .text-small}
+| Model Fit Params | Good Fit When | Additional Infos |
+|---|---|---|
+| $M_2$ or $C_2$ *p*-value | *n.s.* | sensitive to large *N*; almost always significant in big samples, $C_2$ used in polytomous data |
+| [RMSEA](https://psycnet.apa.org/record/2014-30220-001) | ≤ .05 | .05–.08 = acceptable; unreliable with few items/df |
+| [SRMSR](https://psycnet.apa.org/record/2014-30220-001) | ≤ .05 | .05–.08 = acceptable; \< .08 = some misfit, but not severe |
+| [CFI](https://www.tandfonline.com/doi/abs/10.1080/10705519909540118) | ≥ .95 | .90–.95 = acceptable |
+| [TLI](https://www.tandfonline.com/doi/abs/10.1080/10705519909540118) | ≥ .95 | .90–.95 = acceptable |
+: {tbl-colwidths="[30,18,52]"}
+:::
+
+::: {.incremental}
+* Avoid relying on a single index.
+* At the **item level**, `itemfit()` gives us $S\_X^2$ and its corresponding *p*-value.
+  - Large *p*-values are desirable, and we will see why in the hands-on session.
+:::
+
 ## Three Assumptions {.columns-slide}
 
 ::: {.lead}
-Before interpreting GRM model and item parameters, three core construct assumptions need to hold, which closely mirroring those in factor analysis:
+Before trusting GRM model and item parameters, three core construct assumptions need to hold, which closely mirroring those in factor analysis:
 :::
 
 ::: {.columns-area}
@@ -324,7 +369,7 @@ Higher $\theta$ → higher probability of endorsing a stronger response category
 
 ### Unidimensionality
 
-One $\theta$ underlies the item pool, we already checked this in this morning's factor analysis session.
+One $\theta$ underlies the item pool, we already checked this in the factor analysis session.
 :::
 
 ::: {.col-item .text-center}
@@ -361,7 +406,7 @@ We'll fit a GRM together on a 7-item scale from the NaDiRA survey measuring disc
 * **Items:** 7 Everyday Discrimination scale items (`ker_diskerf_*`, adapted from [Williams, et al., 1997](https://journals.sagepub.com/doi/10.1177/135910539700200305)), 6-point frequency scale (*Täglich*/Daily → *Nie*/Never).
 * **Data:** Teaching extract of the NaDiRA dataset (*N* = 1,000; 972 complete cases), with a calibrated simulated option as fallback.
 * **Document (two options):** `exercise.qmd` or `exercise.Rmd` — open it now in RStudio and follow along.
-* You can compare the results with a published paper investigating the psychometric properties of the same (but longer) scale in Austrian sample: Amini-Nejad, R., Hirsch, S., Goreis, A., Nater, U. M., & Mewes, R. (2025). Factor Structure and Validity of a German Version of the Everyday Discrimination Scale Among Immigrants From Türkiye. *Psychological Test Adaptation and Development*, 6, 216–237. <https://doi.org/10.1027/2698-1866/a000110>
+* You can compare the results with a published paper investigating the psychometric properties of the same (but longer) scale in Austrian sample: Amini-Nejad, R., Hirsch, S., Goreis, A., Nater, U. M., & Nater-Mewes, R. (2025). Factor Structure and Validity of a German Version of the Everyday Discrimination Scale Among Immigrants From Türkiye. *Psychological Test Adaptation and Development*, 6, 216–237. <https://doi.org/10.1027/2698-1866/a000110>
 :::
 
 ## Open `exercise.qmd` {.text-slide-bg}
@@ -373,7 +418,7 @@ Let's switch to RStudio.
 :::
 
 ::: {.content-box .text-center}
-We'll walk through Steps 1–9 together: meet the data → dimensionality → fit GRM → item &amp; test information → reliability → model fit → residual correlations ($Q_3$).
+We'll walk through Steps 0–9 together: setup → meet the dataset → quick data check → dimensionality → fit GRM → item probability curves → item &amp; test information → reliability → model and item fit → residual correlations ($Q_3$).
 :::
 
 ## {.section-slide}
@@ -384,7 +429,7 @@ We'll walk through Steps 1–9 together: meet the data → dimensionality → fi
 :::
 
 ::: {.section-bubble}
-Reading &amp; Using the Results
+Using the Results
 :::
 
 ## When (Not) to Use GRM {.columns-slide}
@@ -395,7 +440,7 @@ Reading &amp; Using the Results
 
 ### Sample size
 
-Stable item parameters generally need a few hundred participants or more, so it is not a good option for a 30-person pilot.
+Stable item parameters generally need a few hundred participants or more, so it is not a reasonable modeling choice for a 30-person pilot.
 :::
 
 ::: {.col-item .text-center}
@@ -430,10 +475,10 @@ Wrap-Up &amp; Discussion
 
 ::: {.content-box}
 * **Textbooks (beginner → advanced):**
-  + *Beginner:* Embretson, S. E., &amp; Reise, S. P. (2000). *Item Response Theory for Psychologists.* Lawrence Erlbaum Associates.
-  + *Intermediate:* de Ayala, R. J. (2009). *The Theory and Practice of Item Response Theory.* Guilford Press.
-  + *Intermediate/Advanced:* DeMars, C. (2010). *Item Response Theory.* Oxford University Press.
-  + *Advanced:* van der Linden, W. J. (Ed.). (2016). *Handbook of Item Response Theory* (Vols. 1–3). CRC Press.
+  + *Beginner:* Embretson, S. E., &amp; Reise, S. P. (2026). [*Item Response Theory: Foundations for Psychologists and Social Scientists (2nd edition).*](https://www.routledge.com/Item-Response-Theory-Foundations-for-Psychologists-and-Social-Scientists/Embretson-Reise/p/book/9781315726557) Routledge.
+  + *Intermediate:* de Ayala, R. J. (2022). [*The Theory and Practice of Item Response Theory (2nd edition).*](https://www.guilford.com/books/The-Theory-and-Practice-of-Item-Response-Theory/R-de-Ayala/9781462547753?srsltid=AU7gw4WRbvBzG1CVjESm5q_67LK6uihlEO6yR6KBU1ArUnmAqVXGxngk) Guilford Press.
+  + *Intermediate/Advanced:* DeMars, C. (2010). [*Item Response Theory.*](https://global.oup.com/academic/product/item-response-theory-9780195377033?cc=si&lang=en&) Oxford University Press.
+  + *Advanced:* van der Linden, W. J. (Ed.). (2016). [*Handbook of Item Response Theory*](https://www.taylorfrancis.com/books/edit/10.1201/9781315374512/handbook-item-response-theory-wim-van-der-linden) (Vols. 1–3). CRC Press.
 * **Tutorial paper:** Zein, R. A., &amp; Akhtar, H. (2025). *Getting started with the graded response model: An introduction and tutorial in R.* International Journal of Psychology, 60(1), e13265. <https://doi.org/10.1002/ijop.13265>
 * **Questions afterwards:** [amelia.zein@cais-research.de](mailto:amelia.zein@cais-research.de) or [amelia.zein@psikologi.unair.ac.id](mailto:amelia.zein@psikologi.unair.ac.id).
 :::

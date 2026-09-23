@@ -229,7 +229,7 @@
 <li>Meet the IRT family</li>
 <li>Item and model parameters of the Graded Response Model (GRM)</li>
 <li>Hands-On: Fitting a GRM</li>
-<li>Interpreting model and item parameters</li>
+<li>Using the results</li>
 <li>Wrap-up, discussion, and Q&amp;A</li>
 </ol>
 </section>
@@ -262,7 +262,7 @@
 <div class="col-item text-center">
 <p><span class="col-icon"><i class="fa-solid fa-scale-balanced"></i></span></p>
 <h3 id="invariance-scale--vs.-item-level">Invariance: Scale- vs.&nbsp;Item-level</h3>
-<p><br> <strong>IRT enables estimation of invariance at both item- (i.e., “differential item functioning” or DIF) and scale-level (i.e., “differential test functioning” or DTF).</strong> <br> <br> CTT primarily focuses on estimating measurement invariance at the scale-level.</p>
+<p><br> <strong>IRT enables estimation of invariance at both item- (i.e., “differential item functioning” or DIF) and scale-level (i.e., “differential test functioning” or DTF).</strong> <br> <br> CFA tests invariance via item loadings and intercepts, usually judged by changes in overall model fit.</p>
 </div>
 </div>
 </section>
@@ -302,7 +302,7 @@
 <section id="linear-vs.-probabilistic-3" class="slide level2 text-slide-bg">
 <h2>1️⃣ Linear vs.&nbsp;Probabilistic</h2>
 <div class="lead">
-<p>In CTT terms, every increase in the latent trait (i.e., “Depression”) is associated with a constant increase in the expected score on the item. In other words, the latent trait <strong>causes</strong> the observed score (i.e., reflective model).</p>
+<p>In CTT terms, every increase in the latent trait (i.e., “Depression”) is associated with a constant increase in the expected score on the item. In other words, the latent trait <strong>causes</strong> the observed score.</p>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure>
@@ -362,7 +362,7 @@
 <section id="linear-vs.-probabilistic-6" class="slide level2 text-slide-bg">
 <h2>1️⃣ Linear vs.&nbsp;Probabilistic</h2>
 <div class="lead">
-<p>In contrast, IRT models this relationship as a <strong>probabilistic function</strong>, so the relationship between the latent trait and the observed score is non-linear.</p>
+<p>In contrast, IRT models this relationship as a <strong>probabilistic function</strong>, so the relationship between the latent trait and the observed score is non-linear. Suppose that we have an item with <span style="color: red;"><strong>two response categories</strong></span> (yes/no), the probability curve would look like this:</p>
 </div>
 <div class="columns">
 <div class="column" style="width:55%;">
@@ -427,7 +427,7 @@
 </div>
 <div class="content-box">
 <ul>
-<li class="fragment"><strong>CFA/CTT:</strong> Primarily tests invariance step-by-step across the entire scale (configural → metric → scalar) by checking changes in global model fit.</li>
+<li class="fragment"><strong>CFA/CTT:</strong> Tests invariance step by step (configural → metric → scalar), mainly via changes in overall model fit; locating/identifying problematic items can be done by applying partial invariance.</li>
 <li class="fragment"><strong>IRT (DIF &amp; DTF):</strong> Directly pinpoints <strong>Differential Item Functioning (DIF)</strong> at the individual item level along the trait continuum <span class="math inline">\(\theta\)</span>:
 <ul>
 <li class="fragment"><em>Uniform DIF:</em> An item is systematically easier/harder to endorse for one group across all trait levels (difference in threshold parameter - <span class="math inline">\(b\)</span>).</li>
@@ -454,15 +454,18 @@
 </div>
 <div class="content-box">
 <ul>
-<li><strong><span class="math inline">\(b\)</span> (threshold):</strong> <em>where</em> on <span class="math inline">\(\theta\)</span> the item is doing its work. The number of <em>b</em> we get depends on how many response categories are there.</li>
-<li><strong><span class="math inline">\(a\)</span> (discrimination):</strong> <em>how strongly</em> it distinguishes people around that point. Larger discrimination parameters means steeper probability curves, which reflect more informative item.</li>
-<li>Rule of thumbs (<a href="https://link.springer.com/book/10.1007/978-3-319-54205-8">Baker &amp; Kim, 2017</a>):
+<li class="fragment"><strong><span class="math inline">\(b\)</span> (threshold or difficulty):</strong> <em>where</em> on the <span class="math inline">\(\theta\)</span> continuum the response category is doing its work.
 <ul>
-<li><span class="math inline">\(a\)</span> less than 0.35 = very low</li>
-<li>0.35 – 0.64 = low</li>
-<li>0.65 – 1.34 = moderate</li>
-<li>1.35 – 1.69 = high</li>
-<li>1.70 or more = very high</li>
+<li class="fragment">A more “technical” definition: <span class="math inline">\(b\)</span> is the point on the <span class="math inline">\(\theta\)</span> continuum where the probability of responding in this category or higher reaches 50%.</li>
+<li class="fragment">The number of <span class="math inline">\(b\)</span> we get depends on how many response categories are in our scale (<code>n response categories - 1</code>).</li>
+</ul></li>
+<li class="fragment"><strong><span class="math inline">\(a\)</span> (discrimination):</strong> denotes <em>how strongly</em> the item differentiates between participants with lower or higher levels of <span class="math inline">\(\theta\)</span>.
+<ul>
+<li class="fragment">A larger <span class="math inline">\(a\)</span> value means a steeper probability curve, indicating that the specific item yields more information.</li>
+</ul></li>
+<li class="fragment">Rule of thumbs (<a href="https://link.springer.com/book/10.1007/978-3-319-54205-8">Baker &amp; Kim, 2017</a>):
+<ul>
+<li class="fragment"><span class="math inline">\(a\)</span> less than 0.35 = very low; + 0.35 – 0.64 = low; + 0.65 – 1.34 = moderate; + 1.35 – 1.69 = high; 1.70 or more = very high</li>
 </ul></li>
 </ul>
 </div>
@@ -516,7 +519,7 @@
 <i class="callout-icon"></i>
 </div>
 <div class="callout-content">
-<p>The 3PL adds a third item parameter, <em>c</em> (<a href="https://assess.com/irt-item-pseudo-guessing-parameter/">pseudo-guessing</a>), to capture the chance of endorsement at very low trait levels. <br> In addition to the examples shown above, there are many other IRT variants that are specifically calibrated to estimate models with <em>n</em> dimensions, <em>n</em> response categories, response formats and response styles.</p>
+<p>The 3PL adds a third item parameter, <em>c</em> (<a href="https://assess.com/irt-item-pseudo-guessing-parameter/">pseudo-guessing</a>), to capture the chance of endorsement at very low trait levels. <br> In addition to the examples shown above, there are many other IRT variants that are specifically calibrated to estimate models with <em>n</em> dimensions, <em>n</em> response categories, various response formats and response styles.</p>
 </div>
 </div>
 </div>
@@ -528,7 +531,7 @@
 <p>03</p>
 </div>
 <div class="section-bubble">
-<p>Item and Model Parameters of the Graded Response Model (GRM)</p>
+<p>Item, Model Parameters, and Assumptions of the Graded Response Model (GRM)</p>
 </div>
 </section>
 <section id="the-staircase-illustration" class="slide level2 text-slide-bg">
@@ -544,10 +547,10 @@
 <li class="fragment"><p>The mean of <span class="math inline">\(\theta\)</span> is usually centered around 0, so a threshold like <span class="math inline">\(b_1 = -1.2\)</span> means: people about 1.2 <em>SD</em> below the mean are the ones flipping between the two lowest categories.</p></li>
 </ul>
 </section>
-<section id="reading-item-probability-curves" class="slide level2 text-slide-bg">
-<h2>Reading Item Probability Curves</h2>
+<section id="item-probability-curves" class="slide level2 text-slide-bg">
+<h2>Item Probability Curves</h2>
 <div class="lead">
-<p>Plot the probability of endorsing each category against <span class="math inline">\(\theta\)</span>: each threshold represents the transition boundary between two adjacent categories.</p>
+<p>Suppose that we have a Likert-type item with five response categories. The, we plot the probability of endorsing each category against <span class="math inline">\(\theta\)</span>, where each threshold represents the transition boundary between two adjacent categories.</p>
 </div>
 <div class="columns">
 <div class="column" style="width:60%;">
@@ -561,10 +564,90 @@
 </ul>
 </div></div>
 </section>
+<section id="item-and-test-information" class="slide level2 text-slide-bg">
+<h2>Item and Test Information</h2>
+<div class="lead">
+<p><strong>Information</strong> tells us <em>how precisely</em> we can locate a participant on <span class="math inline">\(\theta\)</span>: the more information, the smaller the measurement error at that trait level.</p>
+</div>
+<div class="columns">
+<div class="column" style="width:55%;">
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="../img/diagrams/info.png" class="quarto-figure quarto-figure-center"></p>
+</figure>
+</div>
+</div><div class="column text-small" style="width:45%;">
+<ul>
+<li class="fragment"><strong>Item information</strong> <span class="math inline">\(I_i(\theta)\)</span>: each item is precise only in part of the <span class="math inline">\(\theta\)</span> range.
+<ul>
+<li class="fragment"><em>Height</em> depends on <span class="math inline">\(a\)</span>: steeper items (A, C) carry more information than flat ones (B).</li>
+<li class="fragment"><em>Location</em> depends on <span class="math inline">\(b\)</span>: an item is informative around its thresholds (C only works at high <span class="math inline">\(\theta\)</span>).</li>
+</ul></li>
+<li class="fragment"><strong>Test information</strong> <span class="math inline">\(I(\theta) = \sum_i I_i(\theta)\)</span>: item information simply <strong>adds up</strong>, so adding items targeted at a weak region closes that gap.</li>
+<li class="fragment">This is what the conditional reliability curves and <strong>blindspots</strong> from earlier are built on.</li>
+</ul>
+</div></div>
+</section>
+<section id="model-fit-parameters" class="slide level2 text-slide-bg">
+<h2>Model Fit Parameters</h2>
+<div class="lead">
+<p>Beyond item parameters (<em>a</em>, <em>b</em>), we also need to know whether the GRM <strong>as a whole</strong> actually fits the data. <code>mirt</code> gives us this via <code>M2()</code> (overall model fit) and <code>itemfit()</code> (item-level fit).</p>
+</div>
+<div class="content-box text-small">
+<table class="caption-top">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 18%">
+<col style="width: 52%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Model Fit Params</th>
+<th>Good Fit When</th>
+<th>Additional Infos</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(M_2\)</span> or <span class="math inline">\(C_2\)</span> <em>p</em>-value</td>
+<td><em>n.s.</em></td>
+<td>sensitive to large <em>N</em>; almost always significant in big samples, <span class="math inline">\(C_2\)</span> used in polytomous data</td>
+</tr>
+<tr class="even">
+<td><a href="https://psycnet.apa.org/record/2014-30220-001">RMSEA</a></td>
+<td>≤ .05</td>
+<td>.05–.08 = acceptable; unreliable with few items/df</td>
+</tr>
+<tr class="odd">
+<td><a href="https://psycnet.apa.org/record/2014-30220-001">SRMSR</a></td>
+<td>≤ .05</td>
+<td>.05–.08 = acceptable; &lt; .08 = some misfit, but not severe</td>
+</tr>
+<tr class="even">
+<td><a href="https://www.tandfonline.com/doi/abs/10.1080/10705519909540118">CFI</a></td>
+<td>≥ .95</td>
+<td>.90–.95 = acceptable</td>
+</tr>
+<tr class="odd">
+<td><a href="https://www.tandfonline.com/doi/abs/10.1080/10705519909540118">TLI</a></td>
+<td>≥ .95</td>
+<td>.90–.95 = acceptable</td>
+</tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li class="fragment">Avoid relying on a single index.</li>
+<li class="fragment">At the <strong>item level</strong>, <code>itemfit()</code> gives us <span class="math inline">\(S\_X^2\)</span> and its corresponding <em>p</em>-value.
+<ul>
+<li class="fragment">Large <em>p</em>-values are desirable, and we will see why in the hands-on session.</li>
+</ul></li>
+</ul>
+</section>
 <section id="three-assumptions" class="slide level2 columns-slide">
 <h2>Three Assumptions</h2>
 <div class="lead">
-<p>Before interpreting GRM model and item parameters, three core construct assumptions need to hold, which closely mirroring those in factor analysis:</p>
+<p>Before trusting GRM model and item parameters, three core construct assumptions need to hold, which closely mirroring those in factor analysis:</p>
 </div>
 <div class="columns-area">
 <div class="col-item text-center">
@@ -575,7 +658,7 @@
 <div class="col-item text-center">
 <p><span class="col-icon fa-solid fa-layer-group"></span></p>
 <h3 id="unidimensionality">Unidimensionality</h3>
-<p>One <span class="math inline">\(\theta\)</span> underlies the item pool, we already checked this in this morning’s factor analysis session.</p>
+<p>One <span class="math inline">\(\theta\)</span> underlies the item pool, we already checked this in the factor analysis session.</p>
 </div>
 <div class="col-item text-center">
 <p><span class="col-icon fa-solid fa-link-slash"></span></p>
@@ -614,7 +697,7 @@
 <li><strong>Items:</strong> 7 Everyday Discrimination scale items (<code>ker_diskerf_*</code>, adapted from <a href="https://journals.sagepub.com/doi/10.1177/135910539700200305">Williams, et al., 1997</a>), 6-point frequency scale (<em>Täglich</em>/Daily → <em>Nie</em>/Never).</li>
 <li><strong>Data:</strong> Teaching extract of the NaDiRA dataset (<em>N</em> = 1,000; 972 complete cases), with a calibrated simulated option as fallback.</li>
 <li><strong>Document (two options):</strong> <code>exercise.qmd</code> or <code>exercise.Rmd</code> — open it now in RStudio and follow along.</li>
-<li>You can compare the results with a published paper investigating the psychometric properties of the same (but longer) scale in Austrian sample: Amini-Nejad, R., Hirsch, S., Goreis, A., Nater, U. M., &amp; Mewes, R. (2025). Factor Structure and Validity of a German Version of the Everyday Discrimination Scale Among Immigrants From Türkiye. <em>Psychological Test Adaptation and Development</em>, 6, 216–237. <a href="https://doi.org/10.1027/2698-1866/a000110" class="uri">https://doi.org/10.1027/2698-1866/a000110</a></li>
+<li>You can compare the results with a published paper investigating the psychometric properties of the same (but longer) scale in Austrian sample: Amini-Nejad, R., Hirsch, S., Goreis, A., Nater, U. M., &amp; Nater-Mewes, R. (2025). Factor Structure and Validity of a German Version of the Everyday Discrimination Scale Among Immigrants From Türkiye. <em>Psychological Test Adaptation and Development</em>, 6, 216–237. <a href="https://doi.org/10.1027/2698-1866/a000110" class="uri">https://doi.org/10.1027/2698-1866/a000110</a></li>
 </ul>
 </div>
 </section>
@@ -625,7 +708,7 @@
 <p><a href="../files/exercise.html">Click on this link to be redirected to the rendered <code>html</code></a></p>
 </div>
 <div class="content-box text-center">
-<p>We’ll walk through Steps 1–9 together: meet the data → dimensionality → fit GRM → item &amp; test information → reliability → model fit → residual correlations (<span class="math inline">\(Q_3\)</span>).</p>
+<p>We’ll walk through Steps 0–9 together: setup → meet the dataset → quick data check → dimensionality → fit GRM → item probability curves → item &amp; test information → reliability → model and item fit → residual correlations (<span class="math inline">\(Q_3\)</span>).</p>
 </div>
 </section>
 <section id="section-4" class="slide level2 section-slide">
@@ -635,7 +718,7 @@
 <p>05</p>
 </div>
 <div class="section-bubble">
-<p>Reading &amp; Using the Results</p>
+<p>Using the Results</p>
 </div>
 </section>
 <section id="when-not-to-use-grm" class="slide level2 columns-slide">
@@ -644,7 +727,7 @@
 <div class="col-item text-center">
 <p><span class="col-icon fa-solid fa-users"></span></p>
 <h3 id="sample-size">Sample size</h3>
-<p>Stable item parameters generally need a few hundred participants or more, so it is not a good option for a 30-person pilot.</p>
+<p>Stable item parameters generally need a few hundred participants or more, so it is not a reasonable modeling choice for a 30-person pilot.</p>
 </div>
 <div class="col-item text-center">
 <p><span class="col-icon fa-solid fa-shapes"></span></p>
@@ -674,10 +757,10 @@
 <ul>
 <li><strong>Textbooks (beginner → advanced):</strong>
 <ul>
-<li><em>Beginner:</em> Embretson, S. E., &amp; Reise, S. P. (2000). <em>Item Response Theory for Psychologists.</em> Lawrence Erlbaum Associates.</li>
-<li><em>Intermediate:</em> de Ayala, R. J. (2009). <em>The Theory and Practice of Item Response Theory.</em> Guilford Press.</li>
-<li><em>Intermediate/Advanced:</em> DeMars, C. (2010). <em>Item Response Theory.</em> Oxford University Press.</li>
-<li><em>Advanced:</em> van der Linden, W. J. (Ed.). (2016). <em>Handbook of Item Response Theory</em> (Vols. 1–3). CRC Press.</li>
+<li><em>Beginner:</em> Embretson, S. E., &amp; Reise, S. P. (2026). <a href="https://www.routledge.com/Item-Response-Theory-Foundations-for-Psychologists-and-Social-Scientists/Embretson-Reise/p/book/9781315726557"><em>Item Response Theory: Foundations for Psychologists and Social Scientists (2nd edition).</em></a> Routledge.</li>
+<li><em>Intermediate:</em> de Ayala, R. J. (2022). <a href="https://www.guilford.com/books/The-Theory-and-Practice-of-Item-Response-Theory/R-de-Ayala/9781462547753?srsltid=AU7gw4WRbvBzG1CVjESm5q_67LK6uihlEO6yR6KBU1ArUnmAqVXGxngk"><em>The Theory and Practice of Item Response Theory (2nd edition).</em></a> Guilford Press.</li>
+<li><em>Intermediate/Advanced:</em> DeMars, C. (2010). <a href="https://global.oup.com/academic/product/item-response-theory-9780195377033?cc=si&amp;lang=en&amp;"><em>Item Response Theory.</em></a> Oxford University Press.</li>
+<li><em>Advanced:</em> van der Linden, W. J. (Ed.). (2016). <a href="https://www.taylorfrancis.com/books/edit/10.1201/9781315374512/handbook-item-response-theory-wim-van-der-linden"><em>Handbook of Item Response Theory</em></a> (Vols. 1–3). CRC Press.</li>
 </ul></li>
 <li><strong>Tutorial paper:</strong> Zein, R. A., &amp; Akhtar, H. (2025). <em>Getting started with the graded response model: An introduction and tutorial in R.</em> International Journal of Psychology, 60(1), e13265. <a href="https://doi.org/10.1002/ijop.13265" class="uri">https://doi.org/10.1002/ijop.13265</a></li>
 <li><strong>Questions afterwards:</strong> <a href="mailto:amelia.zein@cais-research.de">amelia.zein@cais-research.de</a> or <a href="mailto:amelia.zein@psikologi.unair.ac.id">amelia.zein@psikologi.unair.ac.id</a>.</li>

@@ -445,15 +445,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <p>This site keeps the materials for the session <strong>Item Response Theory: Graded Response Model</strong>, as a part of the larger <strong>Workshop Itemkonstruktion</strong>, hosted by Universität Duisburg-Essen (IKG, DeZIM Nationaler Diskriminierungs- &amp; Rassismusmonitor, DeZIM Forschungsgemeinschaft &amp; InZentIM), 28.–29. September 2026.</p>
-<p>The workshop’s overall theme is <em>“From Idea to Item Battery: The Methodology(ies) Behind Item Construction in Migration and Racism Research.”</em></p>
 <section id="outline" class="level3">
 <h3 class="anchored" data-anchor-id="outline">Outline</h3>
 <ol type="1">
-<li>What does IRT add on top of classical test theory (CTT)?</li>
-<li>Core ideas of the Graded Response Model (GRM)</li>
-<li>Hands-on: fitting a GRM in R</li>
-<li>Interpreting model and item parameters</li>
-<li>Wrap-up, discussion &amp; Q&amp;A</li>
+<li>What makes IRT different from Classical Test Theory?</li>
+<li>Meet the IRT family</li>
+<li>Item and model parameters of the Graded Response Model (GRM)</li>
+<li>Hands-On: Fitting a GRM</li>
+<li>Using the results</li>
+<li>Wrap-up, discussion, and Q&amp;A</li>
 </ol>
 </section>
 <section id="finding-your-way-around-this-site" class="level3">
@@ -473,8 +473,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="getting-ready-for-the-hands-on-part">Getting ready for the hands-on part</h3>
 <ul>
 <li>Bring a laptop with <i class="fa-brands fa-r-project"></i> (preferebly <a href="https://cran.r-project.org/bin/windows/base/">the latest <code>4.6.1</code> version</a>) and <a href="https://posit.co/downloads"><strong>RStudio</strong></a> already installed.</li>
-<li>I would highly recommend to <a href="https://quarto.org/docs/download/">install <code>quarto</code></a> in your device before the session, as working with a <code>quarto</code> document is more fun than <code>.Rmd</code> 😊</li>
-<li>Install these packages ahead of time so we don’t lose workshop time to it:</li>
+<li>I would highly recommend to <a href="https://quarto.org/docs/download/">install <code>quarto</code></a> in your device before the session, as working with a <code>quarto</code> document is more fun than <i class="fa-brands fa-r-project"></i> Markdown 😊
+<ul>
+<li>…<strong>but</strong> this is optional. If you are more comfortable working with <i class="fa-brands fa-r-project"></i> Markdown document, you don’t have to install <code>quarto</code>.</li>
+</ul></li>
+<li>You could install these <i class="fa-brands fa-r-project"></i> packages ahead of the scheduled session, which would give us more time to learn, practice, and discuss the materials by running this script on your base <i class="fa-brands fa-r-project"></i>:</li>
 </ul>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"tidyverse"</span>, <span class="st">"psych"</span>, <span class="st">"pak"</span>, <span class="st">"mirt"</span>, <span class="st">"caret"</span>, <span class="st">"skimr"</span>, <span class="st">"haven"</span>), <span class="at">dependencies =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -492,8 +495,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Click the <em>icon</em> ☰ in the lower-left corner of the <em>slide</em> → click <code>Tools</code> in the upper-left corner → select <code>PDF Export Mode</code> → press <code>Ctrl</code> + <code>P</code> until a <em>pop-up window</em> appears to print the <em>slide</em>, then <em>print</em> it as a <code>PDF</code> <em>file</em>.</p>
-<p>Alternatively, you can press the <code>e</code> key as a <em>shortcut</em>, then print the <em>slide</em> as a <code>PDF</code> <em>file</em>.</p>
+<p>Click the icon ☰ in the lower-left corner of the slide → click <code>Tools</code> in the upper-left corner → select <code>PDF Export Mode</code> → press <code>Ctrl</code> + <code>P</code> until a pop-up window appears to print the slide, then print it as a <code>PDF</code> file.</p>
+<p>Alternatively, you can simply press the <code>e</code> key as a shortcut, then print the slide as a <code>PDF</code> file.</p>
 </div>
 </div>
 </section>
@@ -510,7 +513,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>All workshop materials are licensed as <a href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons"><i class="fa fa-universal-access"></i></i> BY 4.0</a>. This means <strong>you are free to reuse the materials, but the original source must be properly cited</strong>.</p>
+<p>All workshop materials are licensed as <a href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons"><i class="fa fa-universal-access"></i></i> BY 4.0</a>. This means <strong>you are free to reuse the materials, but please cite the original source</strong>.</p>
 </div>
 </div>
 <div class="callout callout-style-simple callout-note">
@@ -519,7 +522,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<p>I used Gemini 3.8 Flash to generate images (i.e., <a href="img/diagrams/staircase.png">staircase illustration</a> and the <a href="img/diagrams/icc_sigmoid.png">ICC plot</a>) and Claude Sonnet 5 to troubleshoot <code>quarto</code> and <code>git</code> bugs.</p>
+<p>I used Gemini 3.8 Flash to generate images (i.e., <a href="img/diagrams/staircase.png">staircase illustration</a>, the <a href="img/diagrams/icc_sigmoid.png">item characteristic curve</a>, and the <a href="img/diagrams/info.png">item and test information function</a>) and Claude Sonnet 5 to troubleshoot <i class="fa-brands fa-r-project"></i>, <code>quarto</code> and <code>git</code> bugs.</p>
 </div>
 </div>
 </div>
