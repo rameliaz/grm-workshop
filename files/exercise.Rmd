@@ -22,7 +22,7 @@ This is the hands-on companion to *"Introduction to IRT's Graded Response Model"
 >   + Before running `.qmd` or `.Rmd` document with the real dataset, please create a new folder `data/` in your project root, then keep the dataset there.
 > - **If you don't have any access to the dataset:** `USE_SIMULATED_DATA <- TRUE`, which generates a synthetic dataset from item parameters estimated on the real data, so the shape and difficulty of the exercise carry over, but every response is simulated with `mirt` package. There is no real participants' data in it.
 
-We'll go through 9 short steps together: meet the dataset, check dimensionality, fit the GRM, read its output, inspect residual correlations, and think about what it means for your own scales.
+We'll go through 10 steps together: meet the dataset, check dimensionality, fit the GRM, read its output, inspect residual correlations, and think about what it means for your own scales.
 
 > **If you're running the simulated dataset**
 >
@@ -69,7 +69,7 @@ Everything dataset-specific lives here. This is the only chunk you should need t
 ```{r}
 USE_SIMULATED_DATA <- FALSE # set TRUE if you don't have an access to the dataset
 
-DATA_PATH <- "../data/NaDiRa_Teaching_w0.dta" # path to the dataset don't forget to create a new folder `data/` in your project root, then keep the dataset file there
+DATA_PATH <- "data/NaDiRa_Teaching_w0.dta" # path to the dataset don't forget to create a new folder `data/` in your project root, then keep the dataset file there
 
 ITEM_COLS <- c(
     "ker_diskerf_service", "ker_diskerf_respekt", "ker_diskerf_nernst",
@@ -188,7 +188,7 @@ We can also run a parallel analysis if we are unsure about the number of $\theta
 
 ```{r}
 set.seed(2026) # fixes the simulated reference line so the plot is identical on every render
-fa.parallel(polychoric(data)$rho, n.obs = nrow(data), fm = "minres", fa = "pc", main = "Scree Plot Modern Discrimination Scale - NaDiRA Test Dataset")
+fa.parallel(polychoric(data)$rho, n.obs = nrow(data), fm = "minres", fa = "pc", main = "Scree Plot Everyday Discrimination Scale - NaDiRA Test Dataset")
 ```
 
 If the proportion of variance explained by the first factor is comfortably above 50% and the scree plot elbows sharply after one factor, unidimensionality is reasonably supported, so we can proceed to the GRM.
@@ -293,7 +293,7 @@ Rough guide: RMSEA ≤ .05 and non-significant item-level tests are reassuring; 
 
 > **Item misfit**
 >
-> `itemfit()`'s default test ($S\_X^2$) checks $H_0$: *this item's responses fit the model's predictions*. A **significant *p*-value flags misfit** (we reject $H_0$); a non-significant one is what we want: this means the observed responses don't deviate from what the GRM expects for that item.
+> `itemfit()`'s default test ($S\text{-}X^2$) checks $H_0$: *this item's responses fit the model's predictions*. A **significant *p*-value flags misfit** (we reject $H_0$); a non-significant one is what we want: this means the observed responses don't deviate from what the GRM expects for that item.
 
 At the item level, two of seven items (`ker_diskerf_service`, `ker_diskerf_angst`) show significant misfit (*p* < .05); with *N* = 972 that's not simply a huge-sample artifact the way it would be with, say, 9,000+ respondents, so it's worth a closer look. RMSEA tends to be an unreliable indicator with only a handful of items and few degrees of freedom (df = 14 here).
 

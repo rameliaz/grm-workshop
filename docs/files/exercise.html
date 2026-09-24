@@ -517,7 +517,7 @@ window.Quarto = {
 </ul>
 </div>
 </div>
-<p>We’ll go through 9 short steps together: meet the dataset, check dimensionality, fit the GRM, read its output, inspect residual correlations, and think about what it means for your own scales.</p>
+<p>We’ll go through 10 steps together: meet the dataset, check dimensionality, fit the GRM, read its output, inspect residual correlations, and think about what it means for your own scales.</p>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -569,7 +569,7 @@ window.Quarto = {
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>USE_SIMULATED_DATA <span class="ot">&lt;-</span> <span class="cn">FALSE</span> <span class="co"># set TRUE if you don't have an access to the dataset</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>DATA_PATH <span class="ot">&lt;-</span> <span class="st">"../data/NaDiRa_Teaching_w0.dta"</span> <span class="co"># path to the dataset don't forget to create a new folder `data/` in your project root, then keep the dataset file there</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>DATA_PATH <span class="ot">&lt;-</span> <span class="st">"data/NaDiRa_Teaching_w0.dta"</span> <span class="co"># path to the dataset don't forget to create a new folder `data/` in your project root, then keep the dataset file there</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>ITEM_COLS <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ker_diskerf_service"</span>, <span class="st">"ker_diskerf_respekt"</span>, <span class="st">"ker_diskerf_nernst"</span>,</span>
@@ -949,7 +949,7 @@ Minimum correlation of possible factor scores     0.81</code></pre>
 <p>We can also run a parallel analysis if we are unsure about the number of <span class="math inline">\(\theta\)</span> underlies our item pool (<a href="https://onlinelibrary.wiley.com/doi/10.1002/j.2333-8504.2007.tb02083.x">Liu et al., 2007</a>) by running this script:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2026</span>) <span class="co"># fixes the simulated reference line so the plot is identical on every render</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fa.parallel</span>(<span class="fu">polychoric</span>(data)<span class="sc">$</span>rho, <span class="at">n.obs =</span> <span class="fu">nrow</span>(data), <span class="at">fm =</span> <span class="st">"minres"</span>, <span class="at">fa =</span> <span class="st">"pc"</span>, <span class="at">main =</span> <span class="st">"Scree Plot Modern Discrimination Scale - NaDiRA Test Dataset"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fa.parallel</span>(<span class="fu">polychoric</span>(data)<span class="sc">$</span>rho, <span class="at">n.obs =</span> <span class="fu">nrow</span>(data), <span class="at">fm =</span> <span class="st">"minres"</span>, <span class="at">fa =</span> <span class="st">"pc"</span>, <span class="at">main =</span> <span class="st">"Scree Plot Everyday Discrimination Scale - NaDiRA Test Dataset"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1146,7 +1146,7 @@ theta     1</code></pre>
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><code>itemfit()</code>’s default test (<span class="math inline">\(S\_X^2\)</span>) checks <span class="math inline">\(H_0\)</span>: <em>this item’s responses fit the model’s predictions</em>. A <strong>significant <em>p</em>-value flags misfit</strong> (we reject <span class="math inline">\(H_0\)</span>); a non-significant one is what we want: this means the observed responses don’t deviate from what the GRM expects for that item.</p>
+<p><code>itemfit()</code>’s default test (<span class="math inline">\(S\text{-}X^2\)</span>) checks <span class="math inline">\(H_0\)</span>: <em>this item’s responses fit the model’s predictions</em>. A <strong>significant <em>p</em>-value flags misfit</strong> (we reject <span class="math inline">\(H_0\)</span>); a non-significant one is what we want: this means the observed responses don’t deviate from what the GRM expects for that item.</p>
 </div>
 </div>
 <p>At the item level, two of seven items (<code>ker_diskerf_service</code>, <code>ker_diskerf_angst</code>) show significant misfit (<em>p</em> &lt; .05); with <em>N</em> = 972 that’s not simply a huge-sample artifact the way it would be with, say, 9,000+ respondents, so it’s worth a closer look. RMSEA tends to be an unreliable indicator with only a handful of items and few degrees of freedom (df = 14 here).</p>

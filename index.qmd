@@ -20,11 +20,11 @@ This site keeps the materials for the session **Item Response Theory: Graded Res
 - [**Rendered `html` of the exercise**](files/exercise.html) — a read-only walkthrough of the hands-on exercise, handy if you'd rather follow along on screen than run R yourself
 - **Important links** - the tutorial paper this session is based on, plus further reading
     + The tutorial paper: [Zein & Akhtar (2025)](https://onlinelibrary.wiley.com/doi/full/10.1002/ijop.13265).
-    + A published paper that examines factor structure of Everyday's Discrimination scale in Austrian sample. You can compare the results of the exercise with the results reported there: [Amini-Nejad, et al. (2025)](https://econtent.hogrefe.com/doi/10.1027/2698-1866/a000110).
+    + A published paper that examines factor structure of Everyday Discrimination scale in Austrian sample. You can compare the results of the exercise with the results reported there: [Amini-Nejad, et al. (2025)](https://econtent.hogrefe.com/doi/10.1027/2698-1866/a000110).
 
 ### Getting ready for the hands-on part
 
-- Bring a laptop with <i class="fa-brands fa-r-project"></i> (preferebly [the latest `4.6.1` version](https://cran.r-project.org/bin/windows/base/)) and [**RStudio**](https://posit.co/downloads) already installed.
+- Bring a laptop with <i class="fa-brands fa-r-project"></i> (preferably [the latest `4.6.1` version](https://cran.r-project.org/bin/windows/base/)) and [**RStudio**](https://posit.co/downloads) already installed.
 - I would highly recommend to [install `quarto`](https://quarto.org/docs/download/) in your device before the session, as working with a `quarto` document is more fun than <i class="fa-brands fa-r-project"></i> Markdown 😊 
     + ...**but** this is optional. If you are more comfortable working with <i class="fa-brands fa-r-project"></i> Markdown document, you don't have to install `quarto`.
 - You could install these <i class="fa-brands fa-r-project"></i> packages ahead of the scheduled session, which would give us more time to learn, practice, and discuss the materials by running this script on your base <i class="fa-brands fa-r-project"></i>:

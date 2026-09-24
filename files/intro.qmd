@@ -74,56 +74,10 @@ CFA tests invariance via item loadings and intercepts, usually judged by changes
 ## 1️⃣ Linear vs. Probabilistic {.text-slide-bg}
 
 ::: {.lead}
-Suppose that we want to measure how much a participant experiences symptoms of depression.
-:::
-
-![](../img/diagrams/1.png){fig-align="center" width="40%"}
-
-## 1️⃣ Linear vs. Probabilistic {.text-slide-bg}
-
-::: {.lead}
-Suppose that we want to measure how much a participant experiences symptoms of depression **using a self-report scale**.
-:::
-
-![](../img/diagrams/2.png){fig-align="center" width="50%"}
-
-## 1️⃣ Linear vs. Probabilistic {.text-slide-bg}
-
-::: {.lead}
-Let us zoom in here.
-:::
-
-![](../img/diagrams/3.png){fig-align="center" width="50%"}
-
-## 1️⃣ Linear vs. Probabilistic {.text-slide-bg}
-
-::: {.lead}
-In CTT terms, every increase in the latent trait (i.e., "Depression") is associated with a constant increase in the expected score on the item. In other words, the latent trait **causes** the observed score.
-:::
-
-![](../img/diagrams/4.png){fig-align="center" width="50%"}
-
-```r
-# In lavaan syntax: '=~' ("is measured by") specifies a reflective model
-# The latent trait (Depression) causes the observed scores on the items:
-model <- '
-  Depression =~ item_1 + item_2 + item_3
-'
-```
-
-## 1️⃣ Linear vs. Probabilistic {.text-slide-bg}
-
-::: {.lead}
-... and because the relationship is linear, it can be expressed as a linear regression equation. This equation is what factor analysis looks like under the hood.
+This equation illustrates what factor analysis looks like. The relationship between the latent trait `depression` and the item used to measure it is linear.
 :::
 
 ![](../img/diagrams/5.png){fig-align="center" width="50%"}
-
-$$Item_i = \tau + \lambda \cdot \xi + \delta$$
-
-## 1️⃣ Linear vs. Probabilistic {.text-slide-bg}
-
-![](../img/diagrams/5.png){fig-align="center" width="70%"}
 
 $$Item_i = \tau + \lambda \cdot \xi + \delta$$
 
@@ -337,7 +291,7 @@ Beyond item parameters (*a*, *b*), we also need to know whether the GRM **as a w
 |---|---|---|
 | $M_2$ or $C_2$ *p*-value | *n.s.* | sensitive to large *N*; almost always significant in big samples, $C_2$ used in polytomous data |
 | [RMSEA](https://psycnet.apa.org/record/2014-30220-001) | ≤ .05 | .05–.08 = acceptable; unreliable with few items/df |
-| [SRMSR](https://psycnet.apa.org/record/2014-30220-001) | ≤ .05 | .05–.08 = acceptable; \< .08 = some misfit, but not severe |
+| [SRMSR](https://psycnet.apa.org/record/2014-30220-001) | ≤ .05 | .05–.08 = acceptable |
 | [CFI](https://www.tandfonline.com/doi/abs/10.1080/10705519909540118) | ≥ .95 | .90–.95 = acceptable |
 | [TLI](https://www.tandfonline.com/doi/abs/10.1080/10705519909540118) | ≥ .95 | .90–.95 = acceptable |
 : {tbl-colwidths="[30,18,52]"}
@@ -345,8 +299,8 @@ Beyond item parameters (*a*, *b*), we also need to know whether the GRM **as a w
 
 ::: {.incremental}
 * Avoid relying on a single index.
-* At the **item level**, `itemfit()` gives us $S\_X^2$ and its corresponding *p*-value.
-  - Large *p*-values are desirable, and we will see why in the hands-on session.
+* At the **item level**, `itemfit()` gives us $S\text{-}X^2$ and its corresponding *p*-value.
+  - Large *p*-values are *desirable*, and we will see why in the hands-on session.
 :::
 
 ## Three Assumptions {.columns-slide}

@@ -1,6 +1,7 @@
 project:
   type: website
   output-dir: docs
+  execute-dir: project # run code from the project root so DATA_PATH ("data/...") resolves during the site build
   resources:
     - img/
     - files/

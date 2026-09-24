@@ -4,6 +4,7 @@
 /.claude/
 AGENTS.md
 /data/
+/files/data/
 .Rproj.user
 .Rhistory
 .RData
