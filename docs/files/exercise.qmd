@@ -181,9 +181,9 @@ a$fa.values
 
 If the proportion of variance explained by the first factor is comfortably above 50% and the scree plot elbows sharply after one factor, unidimensionality is reasonably supported, so we can proceed to the GRM.
 
-The scree plot backs up the EFA results: eigenvalues 3.70 then a sharp drop to 0.5. Note that `fa.parallel()`'s own text output will say it "suggests the number of factors = 2" — the second eigenvalue does clear the simulated reference line, driven mainly by the three overt-hostility items (`bedbel`, `beleid`, `angriff`) pulling slightly apart from the rest. 
+The scree plot backs up the EFA results: eigenvalues 3.70 then a sharp drop to 0.5. Note that `fa.parallel()`'s own text output will say it "suggests the number of factors = 2" — the second eigenvalue does clear the simulated reference line, driven mainly by the three overt-hostility items (`bedbel`, `beleid`, `angriff`) pulling slightly apart from the rest (see [Step 9](#step-9-inspecting-residual-correlations-(local-dependence))). 
 
-The two factors are still substantially correlated (*r* ≈ .57), and the first factor alone accounts for the bulk of the variance, so a single-factor GRM remains a reasonable. Keep this item grouping in mind, though, since it resurfaces in Step 9.
+The two factors are still substantially correlated (*r* ≈ .57), and the first factor alone accounts for the bulk of the variance, so a single-factor GRM may still be a reasonable conclusion. Keep this item grouping in mind, though, since it resurfaces in [Step 9](#step-9-inspecting-residual-correlations-(local-dependence)).
 
 ## Step 4: Fit the GRM
 

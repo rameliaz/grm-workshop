@@ -426,7 +426,7 @@
 <section id="item-probability-curves" class="slide level2 text-slide-bg">
 <h2>Item Probability Curves</h2>
 <div class="lead">
-<p>Suppose that we have a Likert-type item with five response categories. The, we plot the probability of endorsing each category against <span class="math inline">\(\theta\)</span>, where each threshold represents the transition boundary between two adjacent categories.</p>
+<p>Suppose that we have a Likert-type item with five response categories. Then, we plot the probability of endorsing each category against <span class="math inline">\(\theta\)</span>, where each threshold represents the transition boundary between two adjacent categories.</p>
 </div>
 <div class="columns">
 <div class="column" style="width:60%;">
@@ -513,12 +513,8 @@
 </table>
 </div>
 <ul>
-<li class="fragment">Avoid relying on a single index.</li>
-<li class="fragment">When dealing with a non-significant <span class="math inline">\(M_2\)</span> or <span class="math inline">\(C_2\)</span> test, tentatively reject the model and examine the residual correlations in order to identify any problematic items.
-<ul>
-<li class="fragment">Then decide whether to retain the model in light of these issues.</li>
-</ul></li>
-<li class="fragment">At the <strong>item level</strong>, <code>itemfit()</code> gives us <span class="math inline">\(S\text{-}X^2\)</span> and its corresponding <em>p</em>-value, as well as <code>RMSEA</code>.
+<li class="fragment">When dealing with a non-significant <span class="math inline">\(M_2\)</span> or <span class="math inline">\(C_2\)</span> test, tentatively reject the model and examine the residual correlations in order to identify any problematic items. Then, decide whether to retain the model in light of these issues.</li>
+<li class="fragment">At the <strong>item level</strong>, <code>itemfit()</code> gives us <span class="math inline">\(S\text{-}X^2\)</span>, its <em>p</em>-value, and <code>RMSEA</code>.
 <ul>
 <li class="fragment"><strong>Large</strong> <em>p</em>-values of the <span class="math inline">\(S\text{-}X^2\)</span> test <strong>indicate item fit</strong>, and we will see why in the hands-on session.</li>
 </ul></li>
@@ -527,12 +523,16 @@
 <section id="model-fit-parameters-1" class="slide level2 text-slide-bg">
 <h2>Model Fit Parameters</h2>
 <div class="lead">
-<p>Always be cautious of its limitations when using cutoffs/rules of thumb. The use of these cutoffs are disputed in the literature because:</p>
+<p>Always be cautious of its limitations when using cutoffs/rules of thumb.</p>
 </div>
+<ul>
+<li class="fragment">Avoid relying on a single index.</li>
+<li class="fragment">The use of these cutoffs are disputed in the literature because:
 <ul>
 <li class="fragment">These cutoffs are tied to specific, simulated model characteristics that don’t generalize well when model structures and data conditions change (see <a href="https://www.tandfonline.com/doi/pdf/10.1207/s15328007sem1103_2">Marsh, et al., 2004</a>; <a href="https://www.annualreviews.org/content/journals/10.1146/annurev-psych-121924-104021">McNeish, 2025</a>).</li>
 <li class="fragment">When a continuous, informative statistic gets collapsed into pass/fail, this may discourage researchers from looking at <em>where</em> and <em>how much</em> misfit exists.</li>
 <li class="fragment">Chasing model fit indices may be just as questionable as <em>p</em>-value hacking.</li>
+</ul></li>
 </ul>
 </section>
 <section id="three-assumptions" class="slide level2 columns-slide">
@@ -586,8 +586,8 @@
 <div class="content-box">
 <ul>
 <li><strong>Items:</strong> 7 Everyday Discrimination scale items (<code>ker_diskerf_*</code>, adapted from <a href="https://journals.sagepub.com/doi/10.1177/135910539700200305">Williams, et al., 1997</a>), 6-point frequency scale (<em>Täglich</em>/Daily → <em>Nie</em>/Never).</li>
-<li><strong>Data:</strong> Teaching extract of the NaDiRA dataset (<em>N</em> = 1,000; 972 complete cases), with a calibrated simulated option as fallback.</li>
-<li><strong>Document (two options):</strong> <code>exercise.qmd</code> or <code>exercise.Rmd</code> — open it now in RStudio and follow along.</li>
+<li><strong>Data:</strong> Teaching extract of the NaDiRA dataset (<em>N</em> = <code>r nrow(data)</code>, no missing data), with a calibrated simulated option as fallback.</li>
+<li><strong>Document (two options):</strong> <a href="files/exercise.qmd?download"><code>exercise.qmd</code></a> or <a href="files/exercise.Rmd?download"><code>exercise.Rmd</code></a> — open it now in RStudio and follow along.</li>
 <li>You can compare the results with a published paper investigating the psychometric properties of the same (but longer) scale in Austrian sample: Amini-Nejad, R., Hirsch, S., Goreis, A., Nater, U. M., &amp; Nater-Mewes, R. (2025). Factor Structure and Validity of a German Version of the Everyday Discrimination Scale Among Immigrants From Türkiye. <em>Psychological Test Adaptation and Development</em>, 6, 216–237. <a href="https://doi.org/10.1027/2698-1866/a000110" class="uri">https://doi.org/10.1027/2698-1866/a000110</a></li>
 </ul>
 </div>

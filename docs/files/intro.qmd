@@ -242,7 +242,7 @@ Item, Model Parameters, and Assumptions of the Graded Response Model (GRM)
 ## Item Probability Curves {.text-slide-bg}
 
 ::: {.lead}
-Suppose that we have a Likert-type item with five response categories. The, we plot the probability of endorsing each category against $\theta$, where each threshold represents the transition boundary between two adjacent categories.
+Suppose that we have a Likert-type item with five response categories. Then, we plot the probability of endorsing each category against $\theta$, where each threshold represents the transition boundary between two adjacent categories.
 :::
 
 ::: columns
@@ -298,23 +298,23 @@ Beyond item parameters (*a*, *b*), we also need to know whether the GRM **as a w
 :::
 
 ::: {.incremental}
-* Avoid relying on a single index.
-* When dealing with a non-significant $M_2$ or $C_2$ test, tentatively reject the model and examine the residual correlations in order to identify any problematic items. 
-  - Then decide whether to retain the model in light of these issues.
-* At the **item level**, `itemfit()` gives us $S\text{-}X^2$ and its corresponding *p*-value, as well as `RMSEA`.
+* When dealing with a non-significant $M_2$ or $C_2$ test, tentatively reject the model and examine the residual correlations in order to identify any problematic items. Then, decide whether to retain the model in light of these issues.
+* At the **item level**, `itemfit()` gives us $S\text{-}X^2$, its *p*-value, and `RMSEA`.
   - **Large** *p*-values of the $S\text{-}X^2$ test **indicate item fit**, and we will see why in the hands-on session.
 :::
 
 ## Model Fit Parameters {.text-slide-bg}
 
 ::: {.lead}
-Always be cautious of its limitations when using cutoffs/rules of thumb. The use of these cutoffs are disputed in the literature because:
+Always be cautious of its limitations when using cutoffs/rules of thumb. 
 :::
 
 ::: {.incremental}
-* These cutoffs are tied to specific, simulated model characteristics that don't generalize well when model structures and data conditions change (see [Marsh, et al., 2004](https://www.tandfonline.com/doi/pdf/10.1207/s15328007sem1103_2); [McNeish, 2025](https://www.annualreviews.org/content/journals/10.1146/annurev-psych-121924-104021)).
-* When a continuous, informative statistic gets collapsed into pass/fail, this may discourage researchers from looking at *where* and *how much* misfit exists.
-* Chasing model fit indices may be just as questionable as *p*-value hacking.
+* Avoid relying on a single index.
+* The use of these cutoffs are disputed in the literature because:
+  + These cutoffs are tied to specific, simulated model characteristics that don't generalize well when model structures and data conditions change (see [Marsh, et al., 2004](https://www.tandfonline.com/doi/pdf/10.1207/s15328007sem1103_2); [McNeish, 2025](https://www.annualreviews.org/content/journals/10.1146/annurev-psych-121924-104021)).
+  + When a continuous, informative statistic gets collapsed into pass/fail, this may discourage researchers from looking at *where* and *how much* misfit exists.
+  + Chasing model fit indices may be just as questionable as *p*-value hacking.
 :::
 
 ## Three Assumptions {.columns-slide}
@@ -372,8 +372,8 @@ We'll fit a GRM together on a 7-item scale from the NaDiRA survey measuring disc
 
 ::: {.content-box}
 * **Items:** 7 Everyday Discrimination scale items (`ker_diskerf_*`, adapted from [Williams, et al., 1997](https://journals.sagepub.com/doi/10.1177/135910539700200305)), 6-point frequency scale (*Täglich*/Daily → *Nie*/Never).
-* **Data:** Teaching extract of the NaDiRA dataset (*N* = 1,000; 972 complete cases), with a calibrated simulated option as fallback.
-* **Document (two options):** `exercise.qmd` or `exercise.Rmd` — open it now in RStudio and follow along.
+* **Data:** Teaching extract of the NaDiRA dataset (*N* = `r nrow(data)`, no missing data), with a calibrated simulated option as fallback.
+* **Document (two options):** [`exercise.qmd`](files/exercise.qmd?download) or [`exercise.Rmd`](files/exercise.Rmd?download) — open it now in RStudio and follow along.
 * You can compare the results with a published paper investigating the psychometric properties of the same (but longer) scale in Austrian sample: Amini-Nejad, R., Hirsch, S., Goreis, A., Nater, U. M., & Nater-Mewes, R. (2025). Factor Structure and Validity of a German Version of the Everyday Discrimination Scale Among Immigrants From Türkiye. *Psychological Test Adaptation and Development*, 6, 216–237. <https://doi.org/10.1027/2698-1866/a000110>
 :::
 
