@@ -452,7 +452,7 @@
 <p><img data-src="../img/diagrams/info.png" class="quarto-figure quarto-figure-center"></p>
 </figure>
 </div>
-</div><div class="column text-small" style="width:45%;">
+</div><div class="column" style="width:45%;">
 <ul>
 <li class="fragment"><strong>Item information</strong> <span class="math inline">\(I_i(\theta)\)</span>: each item is precise only in part of the <span class="math inline">\(\theta\)</span> range.
 <ul>
@@ -514,10 +514,25 @@
 </div>
 <ul>
 <li class="fragment">Avoid relying on a single index.</li>
-<li class="fragment">At the <strong>item level</strong>, <code>itemfit()</code> gives us <span class="math inline">\(S\text{-}X^2\)</span> and its corresponding <em>p</em>-value.
+<li class="fragment">When dealing with a non-significant <span class="math inline">\(M_2\)</span> or <span class="math inline">\(C_2\)</span> test, tentatively reject the model and examine the residual correlations in order to identify any problematic items.
 <ul>
-<li class="fragment">Large <em>p</em>-values are <em>desirable</em>, and we will see why in the hands-on session.</li>
+<li class="fragment">Then decide whether to retain the model in light of these issues.</li>
 </ul></li>
+<li class="fragment">At the <strong>item level</strong>, <code>itemfit()</code> gives us <span class="math inline">\(S\text{-}X^2\)</span> and its corresponding <em>p</em>-value, as well as <code>RMSEA</code>.
+<ul>
+<li class="fragment"><strong>Large</strong> <em>p</em>-values of the <span class="math inline">\(S\text{-}X^2\)</span> test <strong>indicate item fit</strong>, and we will see why in the hands-on session.</li>
+</ul></li>
+</ul>
+</section>
+<section id="model-fit-parameters-1" class="slide level2 text-slide-bg">
+<h2>Model Fit Parameters</h2>
+<div class="lead">
+<p>Always be cautious of its limitations when using cutoffs/rules of thumb. The use of these cutoffs are disputed in the literature because:</p>
+</div>
+<ul>
+<li class="fragment">These cutoffs are tied to specific, simulated model characteristics that don’t generalize well when model structures and data conditions change (see <a href="https://www.tandfonline.com/doi/pdf/10.1207/s15328007sem1103_2">Marsh, et al., 2004</a>; <a href="https://www.annualreviews.org/content/journals/10.1146/annurev-psych-121924-104021">McNeish, 2025</a>).</li>
+<li class="fragment">When a continuous, informative statistic gets collapsed into pass/fail, this may discourage researchers from looking at <em>where</em> and <em>how much</em> misfit exists.</li>
+<li class="fragment">Chasing model fit indices may be just as questionable as <em>p</em>-value hacking.</li>
 </ul>
 </section>
 <section id="three-assumptions" class="slide level2 columns-slide">

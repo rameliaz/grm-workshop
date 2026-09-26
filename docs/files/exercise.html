@@ -454,7 +454,6 @@ window.Quarto = {
   <li><a href="#the-swap-in-code-chunk" id="toc-the-swap-in-code-chunk" class="nav-link" data-scroll-target="#the-swap-in-code-chunk">The swap-in code chunk</a></li>
   <li><a href="#the-items" id="toc-the-items" class="nav-link" data-scroll-target="#the-items">The items</a></li>
   <li><a href="#importing-and-cleaning-the-dataset" id="toc-importing-and-cleaning-the-dataset" class="nav-link" data-scroll-target="#importing-and-cleaning-the-dataset">Importing and cleaning the dataset</a></li>
-  <li><a href="#checking-for-missing-data" id="toc-checking-for-missing-data" class="nav-link" data-scroll-target="#checking-for-missing-data">Checking for missing data</a></li>
   </ul></li>
   <li><a href="#step-2-quick-data-check" id="toc-step-2-quick-data-check" class="nav-link" data-scroll-target="#step-2-quick-data-check">Step 2: Quick data check</a></li>
   <li><a href="#step-3-dimensionality" id="toc-step-3-dimensionality" class="nav-link" data-scroll-target="#step-3-dimensionality">Step 3: Dimensionality</a></li>
@@ -541,14 +540,13 @@ window.Quarto = {
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>      <span class="st">"psych"</span>, <span class="co"># descriptive stats &amp; unidimensionality checks</span></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>      <span class="st">"pak"</span>, <span class="co"># to install a GitHub-only package (ggmirt)</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>      <span class="st">"mirt"</span>, <span class="co"># the main GRM engine</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>      <span class="st">"caret"</span>, <span class="co"># flagging large residual correlations</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>      <span class="st">"skimr"</span>, <span class="co"># quick look at data distributions</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>      <span class="st">"haven"</span> <span class="co"># to import the NaDiRA STATA .dta file</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">dependencies =</span> <span class="cn">TRUE</span></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>pak<span class="sc">::</span><span class="fu">pak</span>(<span class="st">"masurp/ggmirt"</span>) <span class="co"># ggmirt available only on github</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>      <span class="st">"skimr"</span>, <span class="co"># quick look at data distributions</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>      <span class="st">"haven"</span> <span class="co"># to import the NaDiRA STATA .dta file</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">dependencies =</span> <span class="cn">TRUE</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>pak<span class="sc">::</span><span class="fu">pak</span>(<span class="st">"masurp/ggmirt"</span>) <span class="co"># ggmirt available only on github</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Now activate them.</p>
 <div class="cell">
@@ -556,9 +554,8 @@ window.Quarto = {
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mirt)</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggmirt)</span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr)</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(haven)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="step-1-meet-the-dataset" class="level2">
@@ -569,7 +566,7 @@ window.Quarto = {
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>USE_SIMULATED_DATA <span class="ot">&lt;-</span> <span class="cn">FALSE</span> <span class="co"># set TRUE if you don't have an access to the dataset</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>DATA_PATH <span class="ot">&lt;-</span> <span class="st">"data/NaDiRa_Teaching_w0.dta"</span> <span class="co"># path to the dataset don't forget to create a new folder `data/` in your project root, then keep the dataset file there</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>DATA_PATH <span class="ot">&lt;-</span> <span class="st">"data/NaDiRa_Teaching_w0_clean.dta"</span> <span class="co"># path to the dataset don't forget to create a new folder `data/` in your project root, then keep the dataset file there</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>ITEM_COLS <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"ker_diskerf_service"</span>, <span class="st">"ker_diskerf_respekt"</span>, <span class="st">"ker_diskerf_nernst"</span>,</span>
@@ -660,74 +657,45 @@ window.Quarto = {
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># real participants' answers)</span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set.seed</span>(<span class="dv">2026</span>)</span>
 <span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    a_par <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">2.34</span>, <span class="fl">3.43</span>, <span class="fl">2.75</span>, <span class="fl">1.42</span>, <span class="fl">1.75</span>, <span class="fl">2.13</span>, <span class="fl">1.51</span>)</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    d_par <span class="ot">&lt;-</span> <span class="fu">matrix</span>(</span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>        <span class="fu">c</span>(</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>            <span class="fl">1.80</span>, <span class="sc">-</span><span class="fl">1.44</span>, <span class="sc">-</span><span class="fl">2.99</span>, <span class="sc">-</span><span class="fl">5.04</span>, <span class="sc">-</span><span class="fl">6.60</span>,</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>            <span class="fl">2.46</span>, <span class="sc">-</span><span class="fl">1.72</span>, <span class="sc">-</span><span class="fl">3.84</span>, <span class="sc">-</span><span class="fl">5.54</span>, <span class="sc">-</span><span class="fl">7.84</span>,</span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>            <span class="fl">2.65</span>, <span class="sc">-</span><span class="fl">0.80</span>, <span class="sc">-</span><span class="fl">2.79</span>, <span class="sc">-</span><span class="fl">4.41</span>, <span class="sc">-</span><span class="fl">6.49</span>,</span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>            <span class="sc">-</span><span class="fl">0.48</span>, <span class="sc">-</span><span class="fl">2.49</span>, <span class="sc">-</span><span class="fl">3.37</span>, <span class="sc">-</span><span class="fl">3.99</span>, <span class="sc">-</span><span class="fl">5.20</span>,</span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>            <span class="sc">-</span><span class="fl">0.62</span>, <span class="sc">-</span><span class="fl">3.12</span>, <span class="sc">-</span><span class="fl">4.44</span>, <span class="sc">-</span><span class="fl">5.53</span>, <span class="sc">-</span><span class="fl">6.70</span>,</span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>            <span class="fl">0.19</span>, <span class="sc">-</span><span class="fl">2.49</span>, <span class="sc">-</span><span class="fl">3.85</span>, <span class="sc">-</span><span class="fl">5.07</span>, <span class="sc">-</span><span class="fl">6.86</span>,</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>            <span class="sc">-</span><span class="fl">2.30</span>, <span class="sc">-</span><span class="fl">4.73</span>, <span class="sc">-</span><span class="fl">5.43</span>, <span class="sc">-</span><span class="fl">6.49</span>, <span class="sc">-</span><span class="fl">7.93</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>        ),</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">nrow =</span> <span class="fu">length</span>(ITEM_COLS), <span class="at">ncol =</span> N_CATEGORIES <span class="sc">-</span> <span class="dv">1</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>    raw <span class="ot">&lt;-</span> <span class="fu">simdata</span>(<span class="at">a =</span> a_par, <span class="at">d =</span> d_par, <span class="at">N =</span> <span class="dv">970</span>, <span class="at">itemtype =</span> <span class="st">"graded"</span>) <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    raw <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(raw)</span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">colnames</span>(raw) <span class="ot">&lt;-</span> ITEM_COLS</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>    raw <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(DATA_PATH) <span class="sc">%&gt;%</span></span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>        <span class="fu">select</span>(<span class="fu">all_of</span>(ITEM_COLS)) <span class="sc">%&gt;%</span></span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>        <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), as.numeric)) <span class="co"># drop haven_labelled class, keep plain numeric codes</span></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(raw)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>tibble [1,000 × 7] (S3: tbl_df/tbl/data.frame)
- $ ker_diskerf_service: num [1:1000] 1 2 4 3 1 2 2 3 1 3 ...
- $ ker_diskerf_respekt: num [1:1000] 1 2 3 2 1 4 2 2 1 2 ...
- $ ker_diskerf_nernst : num [1:1000] 1 3 4 4 2 5 1 1 1 4 ...
- $ ker_diskerf_angst  : num [1:1000] 1 1 3 1 1 1 1 1 1 1 ...
- $ ker_diskerf_bedbel : num [1:1000] 1 1 2 3 2 1 1 1 1 1 ...
- $ ker_diskerf_beleid : num [1:1000] 1 1 2 2 2 2 1 1 1 2 ...
- $ ker_diskerf_angriff: num [1:1000] 1 1 1 1 1 1 1 1 1 1 ...</code></pre>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>    a_par <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">2.51</span>, <span class="fl">3.48</span>, <span class="fl">2.87</span>, <span class="fl">1.21</span>, <span class="fl">1.68</span>, <span class="fl">1.97</span>, <span class="fl">1.13</span>) <span class="co"># discrimination params</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    d_par <span class="ot">&lt;-</span> <span class="fu">matrix</span>(                                     <span class="co"># intercepts (d = -a * b)</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>         <span class="fu">c</span>(</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>            <span class="co"># d1        d2        d3        d4        d5</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>            <span class="fl">1.9284</span>,  <span class="sc">-</span><span class="fl">1.5920</span>,  <span class="sc">-</span><span class="fl">3.0283</span>,  <span class="sc">-</span><span class="fl">5.0120</span>,  <span class="sc">-</span><span class="fl">6.7521</span>,  <span class="co"># service</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>            <span class="fl">2.5426</span>,  <span class="sc">-</span><span class="fl">1.7032</span>,  <span class="sc">-</span><span class="fl">3.6920</span>,  <span class="sc">-</span><span class="fl">5.5658</span>,  <span class="sc">-</span><span class="fl">7.7253</span>,  <span class="co"># respekt</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>            <span class="fl">3.0612</span>,  <span class="sc">-</span><span class="fl">0.7804</span>,  <span class="sc">-</span><span class="fl">2.6710</span>,  <span class="sc">-</span><span class="fl">4.2892</span>,  <span class="sc">-</span><span class="fl">6.9545</span>,  <span class="co"># nernst</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>            <span class="sc">-</span><span class="fl">0.3967</span>,  <span class="sc">-</span><span class="fl">2.3890</span>,  <span class="sc">-</span><span class="fl">3.2141</span>,  <span class="sc">-</span><span class="fl">4.2315</span>,  <span class="sc">-</span><span class="fl">5.4047</span>,  <span class="co"># angst</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>            <span class="sc">-</span><span class="fl">0.5662</span>,  <span class="sc">-</span><span class="fl">2.9232</span>,  <span class="sc">-</span><span class="fl">4.3999</span>,  <span class="sc">-</span><span class="fl">5.5944</span>,  <span class="sc">-</span><span class="fl">6.6881</span>,  <span class="co"># bedbel</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>            <span class="fl">0.3987</span>,  <span class="sc">-</span><span class="fl">2.2918</span>,  <span class="sc">-</span><span class="fl">3.8572</span>,  <span class="sc">-</span><span class="fl">5.1107</span>,  <span class="sc">-</span><span class="fl">7.8703</span>,  <span class="co"># beleid</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>            <span class="sc">-</span><span class="fl">2.0059</span>,  <span class="sc">-</span><span class="fl">4.3481</span>,  <span class="sc">-</span><span class="fl">5.0828</span>,  <span class="sc">-</span><span class="fl">5.4529</span>,  <span class="sc">-</span><span class="fl">6.7298</span>   <span class="co"># angriff</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>        ),</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>        <span class="at">nrow =</span> <span class="fu">length</span>(ITEM_COLS), <span class="at">ncol =</span> N_CATEGORIES <span class="sc">-</span> <span class="dv">1</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a>    data <span class="ot">&lt;-</span> <span class="fu">simdata</span>(<span class="at">a =</span> a_par, <span class="at">d =</span> d_par, <span class="at">N =</span> <span class="dv">970</span>, <span class="at">itemtype =</span> <span class="st">"graded"</span>) <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>    data <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(data)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">colnames</span>(raw) <span class="ot">&lt;-</span> ITEM_COLS</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>} <span class="cf">else</span> {</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    data <span class="ot">&lt;-</span> <span class="fu">read_dta</span>(DATA_PATH) <span class="sc">%&gt;%</span></span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>        <span class="fu">select</span>(<span class="fu">all_of</span>(ITEM_COLS)) <span class="sc">%&gt;%</span></span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>        <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), as.numeric)) <span class="co"># drop haven_labelled class, keep plain numeric codes</span></span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-</div>
-</section>
-<section id="checking-for-missing-data" class="level3">
-<h3 class="anchored" data-anchor-id="checking-for-missing-data">Checking for missing data</h3>
-<p>Run this chunk especially if you use the real dataset, because we have several missing values in the real dataset.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>n_total <span class="ot">&lt;-</span> <span class="fu">nrow</span>(raw)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>n_complete <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">complete.cases</span>(raw))</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    n_complete, <span class="st">"of"</span>, n_total, <span class="st">"respondents have complete responses on all"</span>, <span class="fu">length</span>(ITEM_COLS),</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"items ("</span>, <span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> n_complete <span class="sc">/</span> n_total, <span class="dv">1</span>), <span class="st">"%).</span><span class="sc">\n</span><span class="st">"</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>972 of 1000 respondents have complete responses on all 7 items ( 97.2 %).</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> raw <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="fu">complete.cases</span>(.))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</div>
-<p>We use complete cases here (<em>N</em> = 972) for simplicity. With well under 5% missing, listwise deletion costs us very little.</p>
-<div class="callout callout-style-simple callout-note">
-<div class="callout-body d-flex">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-body-container">
-<p><code>mirt</code> can also model missingness directly via full-information maximum likelihood (<code>FIML</code>), but that’s beyond today’s scope.</p>
-</div>
-</div>
-</div>
+<p>We already have a cleaned dataset (<em>N</em> = 927).</p>
 </section>
 </section>
 <section id="step-2-quick-data-check" class="level2">
 <h2 class="anchored" data-anchor-id="step-2-quick-data-check">Step 2: Quick data check</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">describe</span>(data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["vars"],"name":[1],"type":["int"],"align":["right"]},{"label":["n"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["mean"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["sd"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["median"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["trimmed"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["mad"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["min"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["max"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["range"],"name":[10],"type":["dbl"],"align":["right"]},{"label":["skew"],"name":[11],"type":["dbl"],"align":["right"]},{"label":["kurtosis"],"name":[12],"type":["dbl"],"align":["right"]},{"label":["se"],"name":[13],"type":["dbl"],"align":["right"]}],"data":[{"1":"1","2":"927","3":"2.261057","4":"1.1425523","5":"2","6":"2.122476","7":"1.4826","8":"1","9":"6","10":"5","11":"1.0449536","12":"0.76563857","13":"0.03752634","_rn_":"ker_diskerf_service"},{"1":"2","2":"927","3":"2.361381","4":"1.2313128","5":"2","6":"2.204576","7":"1.4826","8":"1","9":"6","10":"5","11":"1.0049864","12":"0.50051032","13":"0.04044162","_rn_":"ker_diskerf_respekt"},{"1":"3","2":"927","3":"2.564186","4":"1.2435279","5":"2","6":"2.433378","7":"1.4826","8":"1","9":"6","10":"5","11":"0.7892553","12":"-0.05174789","13":"0.04084282","_rn_":"ker_diskerf_nernst"},{"1":"4","2":"927","3":"1.639698","4":"0.9735482","5":"1","6":"1.429341","7":"0.0000","8":"1","9":"6","10":"5","11":"2.0178800","12":"4.52494934","13":"0.03197552","_rn_":"ker_diskerf_angst"},{"1":"5","2":"927","3":"1.567422","4":"0.8375219","5":"1","6":"1.398385","7":"0.0000","8":"1","9":"6","10":"5","11":"1.9188117","12":"4.83458514","13":"0.02750783","_rn_":"ker_diskerf_bedbel"},{"1":"6","2":"927","3":"1.842503","4":"0.9698508","5":"2","6":"1.685061","7":"1.4826","8":"1","9":"6","10":"5","11":"1.3541706","12":"1.88347291","13":"0.03185408","_rn_":"ker_diskerf_beleid"},{"1":"7","2":"927","3":"1.202805","4":"0.5575640","5":"1","6":"1.076716","7":"0.0000","8":"1","9":"6","10":"5","11":"4.2140799","12":"24.23631470","13":"0.01831281","_rn_":"ker_diskerf_angriff"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(data)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Data summary</caption>
@@ -738,7 +706,7 @@ window.Quarto = {
 </tr>
 <tr class="even">
 <td style="text-align: left;">Number of rows</td>
-<td style="text-align: left;">972</td>
+<td style="text-align: left;">927</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">Number of columns</td>
@@ -801,8 +769,8 @@ window.Quarto = {
 <td style="text-align: left;">ker_diskerf_service</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">2.24</td>
-<td style="text-align: right;">1.11</td>
+<td style="text-align: right;">2.26</td>
+<td style="text-align: right;">1.14</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">2</td>
@@ -814,10 +782,10 @@ window.Quarto = {
 <td style="text-align: left;">ker_diskerf_respekt</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">2.33</td>
-<td style="text-align: right;">1.21</td>
+<td style="text-align: right;">2.36</td>
+<td style="text-align: right;">1.23</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">3</td>
 <td style="text-align: right;">6</td>
@@ -827,8 +795,8 @@ window.Quarto = {
 <td style="text-align: left;">ker_diskerf_nernst</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">2.51</td>
-<td style="text-align: right;">1.23</td>
+<td style="text-align: right;">2.56</td>
+<td style="text-align: right;">1.24</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">2</td>
 <td style="text-align: right;">2</td>
@@ -840,8 +808,8 @@ window.Quarto = {
 <td style="text-align: left;">ker_diskerf_angst</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">1.65</td>
-<td style="text-align: right;">1.03</td>
+<td style="text-align: right;">1.64</td>
+<td style="text-align: right;">0.97</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
@@ -853,7 +821,7 @@ window.Quarto = {
 <td style="text-align: left;">ker_diskerf_bedbel</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">1.55</td>
+<td style="text-align: right;">1.57</td>
 <td style="text-align: right;">0.84</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
@@ -867,7 +835,7 @@ window.Quarto = {
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1.84</td>
-<td style="text-align: right;">1.03</td>
+<td style="text-align: right;">0.97</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">2</td>
@@ -879,8 +847,8 @@ window.Quarto = {
 <td style="text-align: left;">ker_diskerf_angriff</td>
 <td style="text-align: right;">0</td>
 <td style="text-align: right;">1</td>
-<td style="text-align: right;">1.19</td>
-<td style="text-align: right;">0.53</td>
+<td style="text-align: right;">1.20</td>
+<td style="text-align: right;">0.56</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
 <td style="text-align: right;">1</td>
@@ -892,9 +860,9 @@ window.Quarto = {
 </table>
 </div>
 </div>
-<p>Look at the <code>hist</code> column — frequency-of-negative-experience items like these are typically right-skewed (most people report “Nie”/“Seltener”). <code>ker_diskerf_angriff</code> (physical attack) should look the most extreme; the everyday-slight items (<code>nernst</code>, <code>respekt</code>, <code>service</code>) should look comparatively less skewed.</p>
+<p>Look at the <code>hist</code> column — frequency-of-negative-experience items like these are typically right-skewed (most people report “Nie”/“Seltener”). <code>angriff</code> (physical attack) should look the most extreme; the everyday-slight items (<code>nernst</code>, <code>respekt</code>, <code>service</code>) should look comparatively less skewed.</p>
 <p>That skew is exactly why we’ll use a <strong>polychoric correlation matrix</strong> (instead of Pearson’s or Spearman) for the dimensionality check below.</p>
-<p>And that’s exactly what we see: <code>ker_diskerf_angriff</code> is by far the most skewed item (skew = 3.90, mean = 1.19, so almost everyone answers “Nie”), while <code>ker_diskerf_nernst</code> is the mildest (skew = 0.83, mean = 2.51).</p>
+<p>And that’s exactly what we see: <code>angriff</code> is by far the most skewed item (skew = 4.21, mean = 1.20, so almost everyone answers “Nie”), while <code>nernst</code> has the lowest skew (skew = 0.79) — its mean (2.56) is actually the highest of the seven, meaning this everyday slight is common enough that responses spread more evenly across the scale instead of piling up at one end.</p>
 <p>The severe/rare items and the everyday/common items sit at opposite ends, which is a good sign the item set spans a real range of severity rather than all measuring the same narrow slice of experience.</p>
 </section>
 <section id="step-3-dimensionality" class="level2">
@@ -902,89 +870,95 @@ window.Quarto = {
 <p>We already ran this exact logic in the factor analysis session. We will do a fast check to confirm a single <span class="math inline">\(\theta\)</span> underlies this item pool.</p>
 <p>With only 6 response categories, Pearson’s/Spearman correlations understate how strongly these items actually relate to each other, so a <strong>polychoric</strong> correlation matrix is the more appropriate input here for factor analysis (<a href="https://psycnet.apa.org/record/2004-21445-005">Flora &amp; Curran, 2004</a>; recommended specifically for 4–7 category Likert data by <a href="https://journals.sagepub.com/doi/10.1177/00131644221111838">Guo &amp; Choi, 2023</a>). <code>psych::irt.fa()</code> computes it for us automatically:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>efa <span class="ot">&lt;-</span> <span class="fu">irt.fa</span>(data, <span class="at">nfactors =</span> <span class="dv">1</span>, <span class="at">fm =</span> <span class="st">"minres"</span>, <span class="at">plot =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(efa<span class="sc">$</span>fa)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>efa <span class="ot">&lt;-</span> <span class="fu">irt.fa</span>(data, <span class="at">nfactors =</span> <span class="dv">1</span>, <span class="at">fm =</span> <span class="st">"minres"</span>, <span class="at">plot =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(efa<span class="sc">$</span>fa)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Factor Analysis using method =  minres
 Call: fa(r = r, nfactors = nfactors, n.obs = n.obs, rotate = rotate, 
     fm = fm)
 Standardized loadings (pattern matrix) based upon correlation matrix
                      MR1   h2   u2 com
-ker_diskerf_service 0.72 0.52 0.48   1
-ker_diskerf_respekt 0.84 0.71 0.29   1
-ker_diskerf_nernst  0.80 0.65 0.35   1
-ker_diskerf_angst   0.62 0.38 0.62   1
-ker_diskerf_bedbel  0.73 0.53 0.47   1
-ker_diskerf_beleid  0.80 0.64 0.36   1
-ker_diskerf_angriff 0.65 0.42 0.58   1
+ker_diskerf_service 0.75 0.56 0.44   1
+ker_diskerf_respekt 0.85 0.72 0.28   1
+ker_diskerf_nernst  0.78 0.61 0.39   1
+ker_diskerf_angst   0.57 0.32 0.68   1
+ker_diskerf_bedbel  0.73 0.54 0.46   1
+ker_diskerf_beleid  0.79 0.63 0.37   1
+ker_diskerf_angriff 0.57 0.32 0.68   1
 
                 MR1
-SS loadings    3.85
-Proportion Var 0.55
+SS loadings    3.70
+Proportion Var 0.53
 
 Mean item complexity =  1
 Test of the hypothesis that 1 factor is sufficient.
 
-df null model =  21  with the objective function =  3.9 with Chi Square =  3773.91
-df of  the model are 14  and the objective function was  0.45 
+df null model =  21  with the objective function =  3.88 with Chi Square =  3578.29
+df of  the model are 14  and the objective function was  0.62 
 
-The root mean square of the residuals (RMSR) is  0.05 
-The df corrected root mean square of the residuals is  0.06 
+The root mean square of the residuals (RMSR) is  0.06 
+The df corrected root mean square of the residuals is  0.08 
 
-The harmonic n.obs is  972 with the empirical chi square  94.82  with prob &lt;  4.6e-14 
-The total n.obs was  972  with Likelihood Chi Square =  430.61  with prob &lt;  4.4e-83 
+The harmonic n.obs is  927 with the empirical chi square  157.23  with prob &lt;  2.6e-26 
+The total n.obs was  927  with Likelihood Chi Square =  575.57  with prob &lt;  8.4e-114 
 
-Tucker Lewis Index of factoring reliability =  0.833
-RMSEA index =  0.175  and the 90 % confidence intervals are  0.161 0.189
-BIC =  334.3
+Tucker Lewis Index of factoring reliability =  0.763
+RMSEA index =  0.208  and the 90 % confidence intervals are  0.194 0.223
+BIC =  479.93
 Fit based upon off diagonal values = 0.99
 Measures of factor score adequacy             
                                                    MR1
 Correlation of (regression) scores with factors   0.95
-Multiple R square of scores with factors          0.91
-Minimum correlation of possible factor scores     0.81</code></pre>
+Multiple R square of scores with factors          0.90
+Minimum correlation of possible factor scores     0.80</code></pre>
 </div>
 </div>
-<p>Here, it shows that Proportion Var = .55 in the EFA analysis above, with loadings between .62 and .84. Every item is solidly on the one factor, none of them weak or borderline.</p>
+<p>Here, it shows that Proportion Var = .53 in the EFA analysis above, with loadings between .57 and .85. Every item is solidly on the one factor, none of them weak or borderline.</p>
 <p>We can also run a parallel analysis if we are unsure about the number of <span class="math inline">\(\theta\)</span> underlies our item pool (<a href="https://onlinelibrary.wiley.com/doi/10.1002/j.2333-8504.2007.tb02083.x">Liu et al., 2007</a>) by running this script:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2026</span>) <span class="co"># fixes the simulated reference line so the plot is identical on every render</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">fa.parallel</span>(<span class="fu">polychoric</span>(data)<span class="sc">$</span>rho, <span class="at">n.obs =</span> <span class="fu">nrow</span>(data), <span class="at">fm =</span> <span class="st">"minres"</span>, <span class="at">fa =</span> <span class="st">"pc"</span>, <span class="at">main =</span> <span class="st">"Scree Plot Everyday Discrimination Scale - NaDiRA Test Dataset"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2026</span>) <span class="co"># fixes the simulated reference line so the plot is identical on every render</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">fa.parallel</span>(<span class="fu">polychoric</span>(data)<span class="sc">$</span>rho, <span class="at">n.obs =</span> <span class="fu">nrow</span>(data), <span class="at">fm =</span> <span class="st">"minres"</span>, <span class="at">main =</span> <span class="st">"Scree Plot Everyday Discrimination Scale - NaDiRA Test Dataset"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="exercise_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="exercise_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Parallel analysis suggests that the number of factors =  NA  and the number of components =  1 </code></pre>
+<pre><code>Parallel analysis suggests that the number of factors =  2  and the number of components =  1 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>a<span class="sc">$</span>fa.values</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  3.69710399  0.49807239  0.01627579 -0.04907037 -0.09132340 -0.11550352
+[7] -0.25845115</code></pre>
 </div>
 </div>
 <p>If the proportion of variance explained by the first factor is comfortably above 50% and the scree plot elbows sharply after one factor, unidimensionality is reasonably supported, so we can proceed to the GRM.</p>
-<p>The scree plot backs up the EFA results: eigenvalues 4.28 then a sharp drop to 0.83. Comfortably unidimensional, so we can proceed to the GRM.</p>
+<p>The scree plot backs up the EFA results: eigenvalues 3.70 then a sharp drop to 0.5. Note that <code>fa.parallel()</code>’s own text output will say it “suggests the number of factors = 2” — the second eigenvalue does clear the simulated reference line, driven mainly by the three overt-hostility items (<code>bedbel</code>, <code>beleid</code>, <code>angriff</code>) pulling slightly apart from the rest.</p>
+<p>The two factors are still substantially correlated (<em>r</em> ≈ .57), and the first factor alone accounts for the bulk of the variance, so a single-factor GRM remains a reasonable. Keep this item grouping in mind, though, since it resurfaces in Step 9.</p>
 </section>
 <section id="step-4-fit-the-grm" class="level2">
 <h2 class="anchored" data-anchor-id="step-4-fit-the-grm">Step 4: Fit the GRM</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"theta = 1-"</span>, <span class="fu">length</span>(ITEM_COLS)) <span class="co"># specifying the model</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>model <span class="co"># we can see here the model contains one LV (theta) with 7 items</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">"theta = 1-"</span>, <span class="fu">length</span>(ITEM_COLS)) <span class="co"># specifying the model</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>model <span class="co"># we can see here the model contains one LV (theta) with 7 items</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "theta = 1-7"</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">mirt</span>(<span class="at">data =</span> data, <span class="at">model =</span> model, <span class="at">itemtype =</span> <span class="st">"graded"</span>, <span class="at">SE =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>) <span class="co"># now fit the model</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>coefs <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit, <span class="at">IRTpars =</span> <span class="cn">TRUE</span>, <span class="at">simplify =</span> <span class="cn">TRUE</span>) <span class="co"># keep item parameters in a list</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(coefs) <span class="co"># print item parameters</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">mirt</span>(<span class="at">data =</span> data, <span class="at">model =</span> model, <span class="at">itemtype =</span> <span class="st">"graded"</span>, <span class="at">SE =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>) <span class="co"># now fit the model</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>coefs <span class="ot">&lt;-</span> <span class="fu">coef</span>(fit, <span class="at">IRTpars =</span> <span class="cn">TRUE</span>, <span class="at">simplify =</span> <span class="cn">TRUE</span>) <span class="co"># keep item parameters in a list</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(coefs) <span class="co"># print item parameters</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$items
                         a     b1    b2    b3    b4    b5
-ker_diskerf_service 2.338 -0.771 0.615 1.278 2.154 2.823
-ker_diskerf_respekt 3.430 -0.719 0.501 1.118 1.615 2.285
-ker_diskerf_nernst  2.755 -0.964 0.292 1.014 1.601 2.356
-ker_diskerf_angst   1.415  0.338 1.758 2.381 2.817 3.672
-ker_diskerf_bedbel  1.752  0.356 1.783 2.533 3.157 3.821
-ker_diskerf_beleid  2.127 -0.088 1.172 1.810 2.384 3.226
-ker_diskerf_angriff 1.507  1.528 3.137 3.600 4.303 5.264
+ker_diskerf_service 2.511 -0.768 0.634 1.206 1.996 2.689
+ker_diskerf_respekt 3.483 -0.730 0.489 1.060 1.598 2.218
+ker_diskerf_nernst  2.869 -1.067 0.272 0.931 1.495 2.424
+ker_diskerf_angst   1.217  0.326 1.963 2.641 3.477 4.441
+ker_diskerf_bedbel  1.680  0.337 1.740 2.619 3.330 3.981
+ker_diskerf_beleid  1.974 -0.202 1.161 1.954 2.589 3.987
+ker_diskerf_angriff 1.125  1.783 3.865 4.518 4.847 5.982
 
 $means
 theta 
@@ -996,33 +970,33 @@ theta     1</code></pre>
 </div>
 </div>
 <p><code>a</code> is discrimination; <code>b1</code>–<code>b5</code> are the five thresholds (six categories → five boundaries). Higher <code>a</code> = an item that differentiates people more sharply; the spread of <code>b</code> values tells us <em>where</em> on <span class="math inline">\(\theta\)</span> each item is doing its work.</p>
-<p>In this scale, <code>ker_diskerf_respekt</code> (“less respect”) has the highest discrimination (<em>a</em> = 3.43), which makes it the sharpest differentiator of the seven, while <code>ker_diskerf_angst</code> (“afraid of you”) has the lowest (<em>a</em> = 1.42).</p>
-<p><code>ker_diskerf_angriff</code> (“physically attacked”) stands out on its thresholds instead: they run from 1.53 up to 5.26, far higher than any other item, meaning it takes an extremely high <span class="math inline">\(\theta\)</span> before “Täglich” becomes a plausible response, which tracks with how rare that experience actually is.</p>
+<p>In this scale, <code>respekt</code> (“less respect”) has the highest discrimination (<em>a</em> = 3.48), which makes it the sharpest differentiator of the seven, while <code>angriff</code> (“being physically attacked”) has the lowest (<em>a</em> = 1.12).</p>
+<p><code>angriff</code> (“physically attacked”) also stands out on its thresholds: they run from 1.78 up to 5.98, far higher than any other item, meaning it takes an extremely high <span class="math inline">\(\theta\)</span> before “Täglich” becomes a plausible response, which tracks with how rare that experience actually is.</p>
 </section>
 <section id="step-5-item-probability-curves" class="level2">
 <h2 class="anchored" data-anchor-id="step-5-item-probability-curves">Step 5: Item probability curves</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tracePlot</span>(fit, <span class="at">title =</span> <span class="st">"Item Probability Functions"</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">color =</span> <span class="st">"Response Category"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tracePlot</span>(fit, <span class="at">title =</span> <span class="st">"Item Probability Functions"</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">color =</span> <span class="st">"Response Category"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="exercise_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="exercise_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Thresholds are where the probability of scoring in category k or higher reaches 50%. Curves that overlap a lot, or peak only at one end of <span class="math inline">\(\theta\)</span>, are telling you that item is only informative for part of the trait range.</p>
-<p>Pick out <code>ker_diskerf_angriff</code> in the grid: because its thresholds sit so far to the right, the “Nie” curve dominates almost the entire visible range. The other five categories barely get a look-in until <span class="math inline">\(\theta\)</span> is very high. Compare that to <code>ker_diskerf_nernst</code>, whose curves are bunched much closer to the middle, it’s doing useful work across a wider, more central stretch of <span class="math inline">\(\theta\)</span>.</p>
+<p>Pick out <code>angriff</code> in the grid: because its thresholds sit so far to the right, the “Nie” curve dominates almost the entire visible range. The other five categories barely get a look-in until <span class="math inline">\(\theta\)</span> is very high. Compare that to <code>nernst</code> and <code>respekt</code>, whose curves are bunched much closer to the middle, it’s doing useful work across a wider, more central stretch of <span class="math inline">\(\theta\)</span>.</p>
 </section>
 <section id="step-6-item-and-test-information" class="level2">
 <h2 class="anchored" data-anchor-id="step-6-item-and-test-information">Step 6: Item and test information</h2>
 <p>This is the information that traditional factor analysis can’t give: <em>where</em> exactly our scale is precise.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">itemInfoPlot</span>(fit, <span class="at">facet =</span> <span class="cn">TRUE</span>, <span class="at">title =</span> <span class="st">"Item Information Functions"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">itemInfoPlot</span>(fit, <span class="at">facet =</span> <span class="cn">TRUE</span>, <span class="at">title =</span> <span class="st">"Item Information Functions"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="exercise_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="exercise_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -1041,51 +1015,51 @@ theta     1</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">testInfoPlot</span>(fit, <span class="at">title =</span> <span class="st">"Test Information Function"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">testInfoPlot</span>(fit, <span class="at">title =</span> <span class="st">"Test Information Function"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="exercise_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="exercise_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Compare the shape of the test information curve to where we’d expect our target population to actually sit on <span class="math inline">\(\theta\)</span>. A curve that peaks somewhere our participants rarely fall is a scale that’s precise in the wrong place.</p>
-<p>Here, test information peaks around <span class="math inline">\(\theta \approx 1.5\)</span> (info <span class="math inline">\(\approx 10.9\)</span>) and stays fairly high out to <span class="math inline">\(\theta \approx 3\)</span>, but falls off sharply below <span class="math inline">\(\theta \approx -1\)</span> (info <span class="math inline">\(\approx 1\)</span> at <span class="math inline">\(\theta = -2\)</span>, about a tenth of the peak).</p>
+<p>Here, test information peaks around <span class="math inline">\(\theta \approx 1.25\)</span> (info <span class="math inline">\(\approx 10.7\)</span>) and stays moderately high out to <span class="math inline">\(\theta \approx 3\)</span> (info <span class="math inline">\(\approx 6.0\)</span>), but falls off sharply below <span class="math inline">\(\theta \approx -1\)</span> (info <span class="math inline">\(\approx 1.2\)</span> at <span class="math inline">\(\theta = -2\)</span>, about a tenth of the peak).</p>
 </section>
 <section id="step-7-reliability-across-theta" class="level2">
 <h2 class="anchored" data-anchor-id="step-7-reliability-across-theta">Step 7: Reliability across <span class="math inline">\(\theta\)</span></h2>
 <p><strong>Marginal reliability</strong> is the IRT analogue of classical test-theory reliability: it integrates the test information function over an <em>assumed</em> <span class="math inline">\(\theta\)</span> distribution (normal, by default) to get a single reliability estimate for the population as a whole.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">marginal_rxx</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">marginal_rxx</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] 0.8670347</code></pre>
+<pre><code>[1] 0.8699944</code></pre>
 </div>
 </div>
 <p><strong>Empirical reliability</strong> instead uses the actual estimated <span class="math inline">\(\theta\)</span> scores and their standard errors for <em>this</em> sample, so it reflects the observed spread of scores. It’s the ratio of true-score variance to observed-score variance, computed directly from the EAP estimates (or factor scores, in CTT’s term) and their SEs.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>theta_se <span class="ot">&lt;-</span> <span class="fu">fscores</span>(fit, <span class="at">full.scores.SE =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">empirical_rxx</span>(theta_se)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>theta_se <span class="ot">&lt;-</span> <span class="fu">fscores</span>(fit, <span class="at">full.scores.SE =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">empirical_rxx</span>(theta_se)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>   theta 
-0.869756 </code></pre>
+<pre><code>    theta 
+0.8725019 </code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># using mirt's own plot() rather than ggmirt::conRelPlot() here -- for some reason,</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="co"># mirt/ggmirt version combination conRelPlot() crashes R outright</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="co"># mirt's native rxx plot shows the same thing</span></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fit, <span class="at">type =</span> <span class="st">"rxx"</span>, <span class="at">main =</span> <span class="st">"Reliability Across the θ Continuum"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># using mirt's own plot() rather than ggmirt::conRelPlot() here -- for some reason,</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># mirt/ggmirt version combination conRelPlot() crashes R outright</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># mirt's native rxx plot shows the same thing</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fit, <span class="at">type =</span> <span class="st">"rxx"</span>, <span class="at">main =</span> <span class="st">"Reliability Across the θ Continuum"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="exercise_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="exercise_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Marginal and empirical reliability should be close. The plot shows us <em>where</em> reliability holds up (commonly interpreted as adequate above ~.80) and where it doesn’t, and usually the tails.</p>
-<p>Here they are: marginal rxx = .867, empirical rxx = .870, which is what we want. Reliability stays <span class="math inline">\(\geq\)</span> .80 across roughly <span class="math inline">\(\theta\)</span> = -1.35 to 3.67, lining up with the information plot above.</p>
+<p>Here they are: marginal rxx = .870, empirical rxx = .873, which is what we want. Reliability stays <span class="math inline">\(\geq\)</span> .80 across roughly <span class="math inline">\(\theta\)</span> = -1.29 to 3.18, lining up with the information plot above.</p>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1104,38 +1078,38 @@ theta     1</code></pre>
 <h2 class="anchored" data-anchor-id="step-8-model-and-item-fit-parameters">Step 8: Model and item fit parameters</h2>
 <p>Now, let us check the model and item fit parameters.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">M2</span>(fit, <span class="at">type =</span> <span class="st">"C2"</span>) <span class="co"># we use C2 because we're dealing with polytomous data</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">M2</span>(fit, <span class="at">type =</span> <span class="st">"C2"</span>) <span class="co"># we use C2 because we're dealing with polytomous data</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["M2"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["df"],"name":[2],"type":["int"],"align":["right"]},{"label":["p"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["RMSEA"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["RMSEA_5"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["RMSEA_95"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["SRMSR"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["TLI"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["CFI"],"name":[9],"type":["dbl"],"align":["right"]}],"data":[{"1":"205.6391","2":"14","3":"0","4":"0.1187322","5":"0.1046189","6":"0.1332962","7":"0.07208006","8":"0.9296017","9":"0.9530678","_rn_":"stats"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["M2"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["df"],"name":[2],"type":["int"],"align":["right"]},{"label":["p"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["RMSEA"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["RMSEA_5"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["RMSEA_95"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["SRMSR"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["TLI"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["CFI"],"name":[9],"type":["dbl"],"align":["right"]}],"data":[{"1":"195.1998","2":"14","3":"0","4":"0.118225","5":"0.1037649","6":"0.1331581","7":"0.07841299","8":"0.9263629","9":"0.9509086","_rn_":"stats"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
 </div>
-<p>Here the picture is mixed: RMSEA = .119 (90% CI .105–.133) is well above the ≤.05 “good fit” guideline, but CFI = .953 meets the “good fit” guideline, SRMSR = .072 is acceptable, and TLI = .93 is borderline.</p>
+<p>Here the picture is mixed: RMSEA = .118 (90% CI .104-.133) is well above the ≤.05 “good fit” guideline, but CFI = .951 meets the “good fit” guideline, SRMSR = .078 is rather acceptable, and TLI = .926 is borderline.</p>
 <div class="callout callout-style-simple callout-tip">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<p>SRMSR here is the reliable signal of <em>how much</em> misfit there practically is, and if it’s less than 0.08, then it indicates that some items might be misfitting, but not so severe.</p>
+<p>SRMSR here is the reliable signal of <em>how much</em> misfit there practically is, and if it’s less than 0.08, then it may indicate that some items are misfitting, but perhaps not so severe.</p>
 </div>
 </div>
 </div>
 <p>Now, let us see the item fit statistics.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">itemfit</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">itemfit</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">
-{"columns":[{"label":["item"],"name":[1],"type":["chr"],"align":["left"]},{"label":["S_X2"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["df.S_X2"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["RMSEA.S_X2"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["p.S_X2"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"ker_diskerf_service","2":"59.98352","3":"41","4":"0.021836694","5":"0.02803185"},{"1":"ker_diskerf_respekt","2":"52.84878","3":"39","4":"0.019123345","5":"0.06851033"},{"1":"ker_diskerf_nernst","2":"41.34565","3":"39","4":"0.007870276","5":"0.36856582"},{"1":"ker_diskerf_angst","2":"78.57477","3":"53","4":"0.022292475","5":"0.01281521"},{"1":"ker_diskerf_bedbel","2":"48.08034","3":"39","4":"0.015484925","5":"0.15105683"},{"1":"ker_diskerf_beleid","2":"40.36427","3":"45","4":"0.000000000","5":"0.66841793"},{"1":"ker_diskerf_angriff","2":"24.05158","3":"21","4":"0.012233289","5":"0.29056596"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+{"columns":[{"label":["item"],"name":[1],"type":["chr"],"align":["left"]},{"label":["S_X2"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["df.S_X2"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["RMSEA.S_X2"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["p.S_X2"],"name":[5],"type":["dbl"],"align":["right"]}],"data":[{"1":"ker_diskerf_service","2":"48.54044","3":"41","4":"0.01409292","5":"0.1951267276"},{"1":"ker_diskerf_respekt","2":"46.60849","3":"37","4":"0.01674639","5":"0.1337667839"},{"1":"ker_diskerf_nernst","2":"54.38383","3":"37","4":"0.02252508","5":"0.0325142947"},{"1":"ker_diskerf_angst","2":"80.57528","3":"54","4":"0.02305348","5":"0.0110126663"},{"1":"ker_diskerf_bedbel","2":"71.31272","3":"38","4":"0.03076860","5":"0.0008541023"},{"1":"ker_diskerf_beleid","2":"63.13980","3":"43","4":"0.02248991","5":"0.0242773156"},{"1":"ker_diskerf_angriff","2":"31.42847","3":"23","4":"0.01989321","5":"0.1126255300"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
   </script>
 </div>
 </div>
 </div>
-<p>Rough guide: RMSEA ≤ .05 and non-significant item-level tests are reassuring; <strong>but</strong> avoid over-interpret significance with very large samples, since almost any model will show <em>some</em> misfit anyway. The most important question would be: how severe is the misfit and can we tolerate it?</p>
+<p>Rough guide: RMSEA ≤ .05 and non-significant item-level tests are what we want; <strong>but</strong> avoid over-interpret significance with very large samples, since almost any model will show <em>some</em> misfit anyway. RMSEA tends to be an unreliable indicator with only a handful of items and few degrees of freedom (df = 14 here). The most important question would be: how severe is the misfit and can we reasonably tolerate it?</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -1149,7 +1123,7 @@ theta     1</code></pre>
 <p><code>itemfit()</code>’s default test (<span class="math inline">\(S\text{-}X^2\)</span>) checks <span class="math inline">\(H_0\)</span>: <em>this item’s responses fit the model’s predictions</em>. A <strong>significant <em>p</em>-value flags misfit</strong> (we reject <span class="math inline">\(H_0\)</span>); a non-significant one is what we want: this means the observed responses don’t deviate from what the GRM expects for that item.</p>
 </div>
 </div>
-<p>At the item level, two of seven items (<code>ker_diskerf_service</code>, <code>ker_diskerf_angst</code>) show significant misfit (<em>p</em> &lt; .05); with <em>N</em> = 972 that’s not simply a huge-sample artifact the way it would be with, say, 9,000+ respondents, so it’s worth a closer look. RMSEA tends to be an unreliable indicator with only a handful of items and few degrees of freedom (df = 14 here).</p>
+<p>At the item level, four of seven items (<code>nernst</code>, <code>angst</code>, <code>bedbel</code>, <code>beleid</code>) show significant misfit (<em>p</em> &lt; .05); with <em>N</em> = 927 that’s not simply a huge-sample artifact the way it would be with, say, 9,000+ respondents, so it’s worth a closer look.</p>
 </section>
 <section id="step-9-inspecting-residual-correlations-local-dependence" class="level2">
 <h2 class="anchored" data-anchor-id="step-9-inspecting-residual-correlations-local-dependence">Step 9: Inspecting residual correlations (local dependence)</h2>
@@ -1159,42 +1133,12 @@ theta     1</code></pre>
 <i class="callout-icon"></i>
 </div>
 <div class="callout-body-container">
-<p>If global (model) fit tells us <em>whether</em> there’s a problem; residual correlations tell us <em>where</em> the problems are.</p>
+<p>If global (model) fit tells us <em>whether</em> there’s a problem; residual correlations tell us <em>where</em> the problems likely lie.</p>
 </div>
 </div>
 </div>
-<p>If two items still correlate once <span class="math inline">\(\theta\)</span> is accounted for, they’re carrying some shared content the model isn’t capturing, which is also called <strong>local dependence (LD)</strong>. We’ll use Yen’s <span class="math inline">\(Q_3\)</span> statistic, which the tutorial paper recommends over the LD <span class="math inline">\(\chi^2\)</span> statistic specifically for polytomous data like this.</p>
-<div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>q3 <span class="ot">&lt;-</span> <span class="fu">residuals</span>(fit, <span class="at">type =</span> <span class="st">"Q3"</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>) <span class="co"># asking mirt to compute q3 </span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(q3, <span class="dv">2</span>) <span class="co"># round the value to only two decimals</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>                    ker_diskerf_service ker_diskerf_respekt ker_diskerf_nernst
-ker_diskerf_service                1.00               -0.01              -0.21
-ker_diskerf_respekt               -0.01                1.00              -0.22
-ker_diskerf_nernst                -0.21               -0.22               1.00
-ker_diskerf_angst                 -0.13               -0.20              -0.03
-ker_diskerf_bedbel                -0.28               -0.30              -0.19
-ker_diskerf_beleid                -0.30               -0.27              -0.23
-ker_diskerf_angriff               -0.17               -0.26              -0.11
-                    ker_diskerf_angst ker_diskerf_bedbel ker_diskerf_beleid
-ker_diskerf_service             -0.13              -0.28              -0.30
-ker_diskerf_respekt             -0.20              -0.30              -0.27
-ker_diskerf_nernst              -0.03              -0.19              -0.23
-ker_diskerf_angst                1.00              -0.06              -0.03
-ker_diskerf_bedbel              -0.06               1.00               0.25
-ker_diskerf_beleid              -0.03               0.25               1.00
-ker_diskerf_angriff              0.03               0.13               0.10
-                    ker_diskerf_angriff
-ker_diskerf_service               -0.17
-ker_diskerf_respekt               -0.26
-ker_diskerf_nernst                -0.11
-ker_diskerf_angst                  0.03
-ker_diskerf_bedbel                 0.13
-ker_diskerf_beleid                 0.10
-ker_diskerf_angriff                1.00</code></pre>
-</div>
-</div>
-<p>To flag problematic items, we apply |<span class="math inline">\(Q_3\)</span>| &gt; 0.2 critical value, that is commonly used (<a href="https://journals.sagepub.com/doi/abs/10.3102/10769986022003265">Chen &amp; Thissen, 1997</a>), as a first-pass screen, but see the negative-bias caveat below before treating it as a hard cutoff.</p>
+<p>If two items still correlate once <span class="math inline">\(\theta\)</span> is accounted for, they’re carrying some shared content the model isn’t capturing, which is also called <strong>local dependence (LD)</strong>. We’ll use Yen’s <span class="math inline">\(Q_3\)</span> statistic, which is recommended over the LD <span class="math inline">\(\chi^2\)</span> statistic specifically for polytomous data like this.</p>
+<p>To flag problematic items, we may apply |<span class="math inline">\(Q_3\)</span>| &gt; 0.2 critical value, that is commonly used (<a href="https://journals.sagepub.com/doi/abs/10.3102/10769986022003265">Chen &amp; Thissen, 1997</a>), as a first-pass screen, but see the negative-bias caveat below before treating it as a hard cutoff.</p>
 <div class="callout callout-style-simple callout-caution">
 <div class="callout-body d-flex">
 <div class="callout-icon-container">
@@ -1206,42 +1150,77 @@ ker_diskerf_angriff                1.00</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">findCorrelation</span>(q3, <span class="at">cutoff =</span> <span class="fl">0.2</span>, <span class="at">names =</span> <span class="cn">TRUE</span>, <span class="at">verbose =</span> <span class="cn">TRUE</span>) <span class="co"># flag problematic items that have more paired correlations more than |0.2|</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>q3 <span class="ot">&lt;-</span> <span class="fu">residuals</span>(fit, <span class="at">type =</span> <span class="st">"Q3"</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>) <span class="co"># asking mirt to compute q3 </span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(q3, <span class="dv">2</span>) <span class="co"># round the value to only two decimals</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Compare row 2  and column  5 with corr  0.301 
-  Means:  0.21 vs 0.161 so flagging column 2 
-Compare row 5  and column  6 with corr  0.252 
-  Means:  0.182 vs 0.143 so flagging column 5 
-Compare row 6  and column  1 with corr  0.3 
-  Means:  0.166 vs 0.117 so flagging column 6 
-Compare row 1  and column  3 with corr  0.209 
-  Means:  0.17 vs 0.111 so flagging column 1 
-All correlations &lt;= 0.2 </code></pre>
-</div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "ker_diskerf_respekt" "ker_diskerf_bedbel"  "ker_diskerf_beleid" 
-[4] "ker_diskerf_service"</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(q3[<span class="fu">upper.tri</span>(q3)]) <span class="co"># calculating mean off-diagonal, to see the "no-LD" baseline</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] -0.1185788</code></pre>
+<pre><code>                    ker_diskerf_service ker_diskerf_respekt ker_diskerf_nernst
+ker_diskerf_service                1.00               -0.14              -0.17
+ker_diskerf_respekt               -0.14                1.00              -0.22
+ker_diskerf_nernst                -0.17               -0.22               1.00
+ker_diskerf_angst                 -0.04               -0.11              -0.16
+ker_diskerf_bedbel                -0.24               -0.28              -0.19
+ker_diskerf_beleid                -0.26               -0.32              -0.20
+ker_diskerf_angriff               -0.18               -0.15              -0.26
+                    ker_diskerf_angst ker_diskerf_bedbel ker_diskerf_beleid
+ker_diskerf_service             -0.04              -0.24              -0.26
+ker_diskerf_respekt             -0.11              -0.28              -0.32
+ker_diskerf_nernst              -0.16              -0.19              -0.20
+ker_diskerf_angst                1.00              -0.05              -0.07
+ker_diskerf_bedbel              -0.05               1.00               0.17
+ker_diskerf_beleid              -0.07               0.17               1.00
+ker_diskerf_angriff              0.01               0.26               0.22
+                    ker_diskerf_angriff
+ker_diskerf_service               -0.18
+ker_diskerf_respekt               -0.15
+ker_diskerf_nernst                -0.26
+ker_diskerf_angst                  0.01
+ker_diskerf_bedbel                 0.26
+ker_diskerf_beleid                 0.22
+ker_diskerf_angriff                1.00</code></pre>
 </div>
 </div>
 <p>A couple of things worth knowing before reading this table at face value.</p>
-<p>First, <span class="math inline">\(Q_3\)</span> has a well-documented <em>negative</em> bias, especially with few items: because <span class="math inline">\(\theta\)</span> is estimated from the same items whose residuals are being correlated, the “no local dependence” baseline isn’t <em>exactly</em> 0, but it’s somewhat below zero (<a href="https://journals.sagepub.com/doi/abs/10.1177/014662168400800201">Yen, 1984, p.&nbsp;127</a>; Marais, 2013, p.&nbsp;121, in <a href="https://onlinelibrary.wiley.com/doi/book/10.1002/9781118574454">Christensen, Kreiner &amp; Mesbah (Eds.), 2013</a>). Here that mean off-diagonal <span class="math inline">\(Q_3\)</span> is -.119.</p>
-<p>Most of the negative values in this residual correlation matrix are the expected statistical byproduct of a handful of strongly-loading items sharing one factor (compare each value to that -.119 baseline, not to 0), so perhaps not necessarily a red flag on their own.</p>
-<p>What’s more informative is which items sit <em>further</em> from that baseline than the rest. <code>findCorrelation()</code> flags <code>ker_diskerf_respekt</code>↔︎<code>ker_diskerf_bedbel</code> (<span class="math inline">\(Q_3\)</span> = -.30), <code>ker_diskerf_service</code>↔︎<code>ker_diskerf_beleid</code> (<span class="math inline">\(Q_3\)</span> = -.30), and a few others beyond |.2|. The one that stands out most is <code>ker_diskerf_bedbel</code>↔︎<code>ker_diskerf_beleid</code> (“threatened/harassed” and “insulted/called names”), at <span class="math inline">\(Q_3\)</span> = +.25 — a <em>positive</em> residual correlation bucks the general negative trend, which is a stronger signal of local dependence than any of the negative ones: these two items likely share something beyond <span class="math inline">\(\theta\)</span>, plausibly because being threatened and being insulted often happen together in the same hostile encounter.</p>
-<p>However, none of this is severe enough to justify dropping an item.</p>
-<p>If the same pattern shows up on the full NaDiRA sample, reasonable next steps are: * rewording one of the overlapping items * modeling them as a testlet, or, * <strong>as a last resort</strong>, removing one.</p>
-<p>Removing items should stay a last resort, because while it can improve model fit it also narrows the scope of what the scale actually measures.</p>
+<p>First, <span class="math inline">\(Q_3\)</span> has a well-documented <em>negative</em> bias, especially with few items: because <span class="math inline">\(\theta\)</span> is estimated from the same items whose residuals are being correlated, the “no local dependence” baseline isn’t <em>exactly</em> 0, but it’s somewhat below zero (<a href="https://journals.sagepub.com/doi/abs/10.1177/014662168400800201">Yen, 1984, p.&nbsp;127</a>; Marais, 2013, p.&nbsp;121, in <a href="https://onlinelibrary.wiley.com/doi/book/10.1002/9781118574454">Christensen, Kreiner &amp; Mesbah (Eds.), 2013</a>). Here that mean off-diagonal <span class="math inline">\(Q_3\)</span> is -.113.</p>
+<p>Most of the negative values in this residual correlation matrix are the expected statistical byproduct of a handful of strongly-loading items sharing one factor. Instead of comparing the <span class="math inline">\(Q_3\)</span> values to 0, we should evaluate them relative to the mean-off <span class="math inline">\(\bar{Q}_3\)</span> = -0.113 (centered as <span class="math inline">\(Q_{3d} = Q_3 - \bar{Q}_3\)</span>).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>baseline <span class="ot">&lt;-</span> <span class="fu">mean</span>(q3[<span class="fu">upper.tri</span>(q3)]) <span class="co"># calculating mean off-diagonal, to see the "no-LD" baseline</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>baseline <span class="co"># baseline is -0.113</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.1133676</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(q3) <span class="sc">%&gt;%</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="st">"item1"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>item1, <span class="at">names_to =</span> <span class="st">"item2"</span>, <span class="at">values_to =</span> <span class="st">"Q3"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(item1 <span class="sc">&lt;</span> item2) <span class="sc">%&gt;%</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Q3d =</span> Q3 <span class="sc">-</span> baseline) <span class="sc">%&gt;%</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Q3 <span class="sc">&gt;</span> <span class="dv">0</span>, Q3d <span class="sc">&gt;</span> <span class="fl">0.2</span>) <span class="co"># flag problematic items that have more paired correlations more than 0.2 from the baseline (-0.113)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div data-pagedtable="false">
+  <script data-pagedtable-source="" type="application/json">
+{"columns":[{"label":["item1"],"name":[1],"type":["chr"],"align":["left"]},{"label":["item2"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Q3"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["Q3d"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"ker_diskerf_bedbel","2":"ker_diskerf_beleid","3":"0.1747185","4":"0.2880860"},{"1":"ker_diskerf_angriff","2":"ker_diskerf_bedbel","3":"0.2572965","4":"0.3706640"},{"1":"ker_diskerf_angriff","2":"ker_diskerf_beleid","3":"0.2178528","4":"0.3312204"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
+  </script>
+</div>
+</div>
+</div>
+<p>All three pairs above exceed the common rule of thumb threshold of <span class="math inline">\(Q_{3d} &gt; +0.20\)</span> above the baseline. This may indicate that experiences of overt verbal hostility (<code>beleid</code>), threats (<code>bedbel</code>), and physical assault (<code>angriff</code>) share “nuisance variance” (i.e., “unknown source”) beyond general everyday discrimination, and this is likely because they frequently co-occur during the same hostile encounters.</p>
+<p>However, in my view, none of this is severe enough to justify dropping an item.</p>
+<p>If the same pattern shows up on the full NaDiRA sample, alternative reasonable next steps are:</p>
+<ul>
+<li>Modeling the “overt hostility” items (<code>bedbel</code>, <code>beleid</code>, <code>angriff</code>) as a specific testlet or secondary factor alongside the general discrimination factor (i.e., a bifactor structure).</li>
+<li>Refining item wording in future survey waves to distinguish distinct situational contexts, or</li>
+<li><strong>as a last resort</strong>, removing items.
+<ul>
+<li>Removing an item only if testlet approaches fail and parameter distortion remains an issue, keeping in mind the potential loss in content coverage.</li>
+<li>Removing items should stay a last resort, because while it can improve model fit it also narrows the scope of what the scale actually measures.</li>
+</ul></li>
+</ul>
 </section>
 <section id="try-it-yourself" class="level2">
 <h2 class="anchored" data-anchor-id="try-it-yourself">Try it yourself</h2>
-<p>A few things to explore in the time we have left, or you could just explore this independently after this session:</p>
+<p>A few things to explore independently after this session:</p>
 <ul>
 <li>Drop the item with the lowest discrimination (<code>a</code>) from <code>model</code> and re-fit. How much does the test information curve change?</li>
-<li><code>ker_diskerf_angriff</code> (physical attack) should have the most extreme thresholds of the seven. Confirm that in your output, and think about why that makes substantive sense.</li>
-<li>If you were designing a real NaDiRA-based discrimination battery, which part of <span class="math inline">\(\theta\)</span> would you most want it to be reliable in, and does anything here suggest you’d need more items there?</li>
+<li>If you were designing a scale for measuring people’s everyday discrimination experiences for a large-scale survey like NaDiRA, which part of <span class="math inline">\(\theta\)</span> would you most want it to be reliable in, and does anything here suggest you’d need more items there?</li>
 <li>If you had the full NaDiRA sample instead of this teaching extract, which item from Step 9 would you investigate first and would you reword, parcel, or drop?</li>
 </ul>
 </section>
@@ -1252,7 +1231,7 @@ All correlations &lt;= 0.2 </code></pre>
 <section id="session-info" class="level2">
 <h2 class="anchored" data-anchor-id="session-info">Session Info</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>R version 4.6.1 (2026-06-24 ucrt)
 Platform: x86_64-w64-mingw32/x64
@@ -1274,45 +1253,38 @@ attached base packages:
 [8] base     
 
 other attached packages:
- [1] haven_2.5.5     skimr_2.2.2     caret_7.0-1     ggmirt_0.1.0   
- [5] mirt_1.47       lattice_0.22-9  psych_2.6.5     lubridate_1.9.5
- [9] forcats_1.0.1   stringr_1.6.0   dplyr_1.2.1     purrr_1.2.2    
-[13] readr_2.2.0     tidyr_1.3.2     tibble_3.3.1    ggplot2_4.0.3  
-[17] tidyverse_2.0.0
+ [1] haven_2.5.5     skimr_2.2.2     ggmirt_0.1.0    mirt_1.47      
+ [5] lattice_0.22-9  psych_2.6.5     lubridate_1.9.5 forcats_1.0.1  
+ [9] stringr_1.6.0   dplyr_1.2.1     purrr_1.2.2     readr_2.2.0    
+[13] tidyr_1.3.2     tibble_3.3.1    ggplot2_4.0.3   tidyverse_2.0.0
 
 loaded via a namespace (and not attached):
- [1] mnormt_2.1.2         pROC_1.19.1          pbapply_1.7-5       
- [4] gridExtra_2.3.1      permute_0.9-10       testthat_3.3.2      
- [7] rlang_1.3.0          magrittr_2.0.5       otel_0.2.0          
-[10] e1071_1.7-17         compiler_4.6.1       mgcv_1.9-4          
-[13] vctrs_0.7.3          reshape2_1.4.5       pkgconfig_2.0.3     
-[16] fastmap_1.2.0        labeling_0.4.3       rmarkdown_2.31      
-[19] prodlim_2026.03.11   sessioninfo_1.2.4    tzdb_0.5.0          
-[22] xfun_0.60            jsonlite_2.0.0       splines2_0.5.4      
-[25] recipes_1.4.0        Deriv_4.3.0          parallel_4.6.1      
-[28] cluster_2.1.8.2      R6_2.6.1             stringi_1.8.9       
-[31] RColorBrewer_1.1-3   parallelly_1.48.0    rpart_4.1.27        
-[34] brio_1.1.5           Rcpp_1.1.2           iterators_1.0.14    
-[37] knitr_1.51           future.apply_1.20.2  audio_0.1-12        
-[40] base64enc_0.1-6      R.utils_2.13.0       Matrix_1.7-5        
-[43] splines_4.6.1        nnet_7.3-20          timechange_0.4.0    
-[46] tidyselect_1.2.1     yaml_2.3.12          vegan_2.7-6         
-[49] stringfish_0.19.2    timeDate_4052.112    codetools_0.2-20    
-[52] dcurver_0.9.3        listenv_1.0.0        plyr_1.8.9          
-[55] withr_3.0.3          S7_0.2.2             evaluate_1.0.5      
-[58] future_1.75.0        survival_3.8-9       proxy_0.4-29        
-[61] RcppParallel_6.2.1   pillar_1.11.1        foreach_1.5.2       
-[64] generics_0.1.4       hms_1.1.4            scales_1.4.0        
-[67] globals_0.19.1       qs2_0.3.1            class_7.3-23        
-[70] glue_1.8.1           clipr_0.8.1          tools_4.6.1         
-[73] data.table_1.18.4    beepr_2.0            SimDesign_2.27      
-[76] ModelMetrics_1.2.2.2 gower_1.0.2          grid_4.6.1          
-[79] ipred_0.9-16         nlme_3.1-170         repr_1.1.7          
-[82] cli_3.6.6            lava_1.9.3           gtable_0.3.6        
-[85] R.methodsS3_1.8.2    digest_0.6.39        progressr_1.0.0     
-[88] GPArotation_2026.8-2 htmlwidgets_1.6.4    farver_2.1.2        
-[91] htmltools_0.5.9      R.oo_1.27.1          lifecycle_1.0.5     
-[94] hardhat_1.4.3        MASS_7.3-66         </code></pre>
+ [1] tidyselect_1.2.1     farver_2.1.2         R.utils_2.13.0      
+ [4] S7_0.2.2             fastmap_1.2.0        stringfish_0.19.2   
+ [7] digest_0.6.39        timechange_0.4.0     lifecycle_1.0.5     
+[10] Deriv_4.3.0          dcurver_0.9.3        cluster_2.1.8.2     
+[13] magrittr_2.0.5       compiler_4.6.1       rlang_1.3.0         
+[16] tools_4.6.1          yaml_2.3.12          knitr_1.51          
+[19] labeling_0.4.3       htmlwidgets_1.6.4    mnormt_2.1.2        
+[22] repr_1.1.7           RColorBrewer_1.1-3   withr_3.0.3         
+[25] R.oo_1.27.1          grid_4.6.1           e1071_1.7-17        
+[28] future_1.75.0        progressr_1.0.0      GPArotation_2026.8-2
+[31] globals_0.19.1       scales_1.4.0         MASS_7.3-66         
+[34] cli_3.6.6            rmarkdown_2.31       vegan_2.7-6         
+[37] generics_0.1.4       otel_0.2.0           RcppParallel_6.2.1  
+[40] future.apply_1.20.2  SimDesign_2.27       tzdb_0.5.0          
+[43] sessioninfo_1.2.4    pbapply_1.7-5        proxy_0.4-29        
+[46] audio_0.1-12         splines_4.6.1        parallel_4.6.1      
+[49] beepr_2.0            base64enc_0.1-6      vctrs_0.7.3         
+[52] Matrix_1.7-5         jsonlite_2.0.0       hms_1.1.4           
+[55] listenv_1.0.0        testthat_3.3.2       clipr_0.8.1         
+[58] glue_1.8.1           parallelly_1.48.0    codetools_0.2-20    
+[61] stringi_1.8.9        gtable_0.3.6         splines2_0.5.4      
+[64] pillar_1.11.1        brio_1.1.5           htmltools_0.5.9     
+[67] R6_2.6.1             evaluate_1.0.5       R.methodsS3_1.8.2   
+[70] class_7.3-23         Rcpp_1.1.2           gridExtra_2.3.1     
+[73] nlme_3.1-170         permute_0.9-10       mgcv_1.9-4          
+[76] qs2_0.3.1            xfun_0.60            pkgconfig_2.0.3     </code></pre>
 </div>
 </div>
 

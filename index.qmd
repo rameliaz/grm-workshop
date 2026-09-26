@@ -30,7 +30,7 @@ This site keeps the materials for the session **Item Response Theory: Graded Res
 - You could install these <i class="fa-brands fa-r-project"></i> packages ahead of the scheduled session, which would give us more time to learn, practice, and discuss the materials by running this script on your base <i class="fa-brands fa-r-project"></i>:
 
 ```r
-install.packages(c("tidyverse", "psych", "pak", "mirt", "caret", "skimr", "haven"), dependencies = TRUE)
+install.packages(c("tidyverse", "psych", "pak", "mirt", "skimr", "haven"), dependencies = TRUE)
 
 pak::pak("masurp/ggmirt")  # ggmirt package only available on GitHub
 ```
