@@ -35,8 +35,6 @@ install.packages(c("tidyverse", "psych", "pak", "mirt", "skimr", "haven"), depen
 pak::pak("masurp/ggmirt")  # ggmirt package only available on GitHub
 ```
 
-- The exercise NaDiRA dataset itself will be provided in the room by the organizer.
-
 ::: {.callout-note}
 ## How to download the slides 🖨️
 Click the icon ☰ in the lower-left corner of the slide → click `Tools` in the upper-left corner → select `PDF Export Mode` → press `Ctrl` + `P` until a pop-up window appears to print the slide, then print it as a `PDF` file.
