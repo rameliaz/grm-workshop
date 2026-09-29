@@ -448,7 +448,7 @@ window.Quarto = {
    
   <ul>
   <li><a href="#welcome" id="toc-welcome" class="nav-link active" data-scroll-target="#welcome">Welcome!</a></li>
-  <li><a href="#step-0-setup-packages" id="toc-step-0-setup-packages" class="nav-link" data-scroll-target="#step-0-setup-packages">Step 0: Setup — packages</a></li>
+  <li><a href="#step-0-setup---packages" id="toc-step-0-setup---packages" class="nav-link" data-scroll-target="#step-0-setup---packages">Step 0: Setup - packages</a></li>
   <li><a href="#step-1-meet-the-dataset" id="toc-step-1-meet-the-dataset" class="nav-link" data-scroll-target="#step-1-meet-the-dataset">Step 1: Meet the dataset</a>
   <ul class="collapse">
   <li><a href="#the-swap-in-code-chunk" id="toc-the-swap-in-code-chunk" class="nav-link" data-scroll-target="#the-swap-in-code-chunk">The swap-in code chunk</a></li>
@@ -512,7 +512,7 @@ window.Quarto = {
 <ul>
 <li>Before running <code>.qmd</code> or <code>.Rmd</code> document with the real dataset, please create a new folder <code>data/</code> in your project root, then keep the dataset there.</li>
 </ul></li>
-<li><strong>If you don’t have any access to the dataset:</strong> <code>USE_SIMULATED_DATA &lt;- TRUE</code>, which generates a synthetic dataset from item parameters estimated on the real data, so the shape and difficulty of the exercise carry over, but every response is simulated with <code>mirt</code> package. There is no real participants’ data in it.</li>
+<li><strong>If you don’t have any access to the dataset:</strong> <code>USE_SIMULATED_DATA &lt;- TRUE</code>, which generates a synthetic dataset from item parameters estimated on the real data, so the shape and difficulty of the exercise carry over, but every response is simulated with <code>mirt</code> package, without real participants’ data in it.</li>
 </ul>
 </div>
 </div>
@@ -527,12 +527,12 @@ window.Quarto = {
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The numbers and conclusions quoted in Steps 8 and 9 describe the <strong>real NaDiRA data</strong> and won’t replicate under <code>USE_SIMULATED_DATA &lt;- TRUE</code>. <code>simdata()</code> generates responses that exactly satisfy the fitted GRM, so the simulated model and item fit (Step 8) comes out essentially perfect (no misfitting model or items at all), and it has no local dependence built in at all (the problematic items highlighted in Step 9 won’t appear). Steps 2–7 will look similar, though not identical, either way.</p>
+<p>The numbers and conclusions quoted in Steps 8 and 9 describe the <strong>real NaDiRA data</strong> and won’t replicate under <code>USE_SIMULATED_DATA &lt;- TRUE</code>. <code>simdata()</code> generates responses that exactly satisfy the fitted GRM, so the simulated model and item fit (Step 8) comes out essentially perfect (no misfitting model or items at all), and it has no local dependence at all (the problematic items highlighted in Step 9 won’t appear). Steps 2–7 will look similar, though not identical, either way.</p>
 </div>
 </div>
 </section>
-<section id="step-0-setup-packages" class="level2">
-<h2 class="anchored" data-anchor-id="step-0-setup-packages">Step 0: Setup — packages</h2>
+<section id="step-0-setup---packages" class="level2">
+<h2 class="anchored" data-anchor-id="step-0-setup---packages">Step 0: Setup - packages</h2>
 <p>If you already have these installed, skip this chunk.</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(</span>
@@ -631,7 +631,15 @@ window.Quarto = {
 </tr>
 </tbody>
 </table>
-<p>The response options in the questionnaire run left to right: <strong>Daily/<em>Täglich</em> (1) · At least once per week/<em>Mindestens einmal in der Woche</em> (2) · At least once per month/<em>Mindestens einmal im Monat</em> (3) · Several times a year/<em>Mehrmals im Jahr</em> (4) · Less often/<em>Seltener</em> (5) · Never/<em>Nie</em> (6)</strong>.</p>
+<p>The response options in the questionnaire run left to right:</p>
+<ul>
+<li>**Daily/<em>Täglich</em> (1)</li>
+<li>At least once per week/<em>Mindestens einmal in der Woche</em> (2)</li>
+<li>At least once per month/<em>Mindestens einmal im Monat</em> (3)</li>
+<li>Several times a year/<em>Mehrmals im Jahr</em> (4)</li>
+<li>Less often/<em>Seltener</em> (5)</li>
+<li>Never/<em>Nie</em> (6)**</li>
+</ul>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -860,9 +868,9 @@ window.Quarto = {
 </table>
 </div>
 </div>
-<p>Look at the <code>hist</code> column — frequency-of-negative-experience items like these are typically right-skewed (most people report “Nie”/“Seltener”). <code>angriff</code> (physical attack) should look the most extreme; the everyday-slight items (<code>nernst</code>, <code>respekt</code>, <code>service</code>) should look comparatively less skewed.</p>
+<p>Look at the <code>hist</code> column: frequency-of-negative-experience items like these are typically right-skewed (most people report “Nie”/“Seltener”). <code>angriff</code> (physical attack) should look the most extreme; the everyday-slight items (<code>nernst</code>, <code>respekt</code>, <code>service</code>) should look comparatively less skewed.</p>
 <p>That skew is exactly why we’ll use a <strong>polychoric correlation matrix</strong> (instead of Pearson’s or Spearman) for the dimensionality check below.</p>
-<p>And that’s exactly what we see: <code>angriff</code> is by far the most skewed item (skew = 4.21, mean = 1.20, so almost everyone answers “Nie”), while <code>nernst</code> has the lowest skew (skew = 0.79) — its mean (2.56) is actually the highest of the seven, meaning this everyday slight is common enough that responses spread more evenly across the scale instead of piling up at one end.</p>
+<p>And that’s exactly what we see: <code>angriff</code> is by far the most skewed item (skew = 4.21, mean = 1.20, so almost everyone answers “Nie”), while <code>nernst</code> has the lowest skew (skew = 0.79). Its mean (2.56) is actually the highest of the seven, meaning this everyday slight is common enough that responses spread more evenly across the scale instead of piling up at one end.</p>
 <p>The severe/rare items and the everyday/common items sit at opposite ends, which is a good sign the item set spans a real range of severity rather than all measuring the same narrow slice of experience.</p>
 </section>
 <section id="step-3-dimensionality" class="level2">
@@ -935,8 +943,8 @@ Minimum correlation of possible factor scores     0.80</code></pre>
 </div>
 </div>
 <p>If the proportion of variance explained by the first factor is comfortably above 50% and the scree plot elbows sharply after one factor, unidimensionality is reasonably supported, so we can proceed to the GRM.</p>
-<p>The scree plot backs up the EFA results: eigenvalues 3.70 then a sharp drop to 0.5. Note that <code>fa.parallel()</code>’s own text output will say it “suggests the number of factors = 2” — the second eigenvalue does clear the simulated reference line, driven mainly by the three overt-hostility items (<code>bedbel</code>, <code>beleid</code>, <code>angriff</code>) pulling slightly apart from the rest (see <a href="#step-9-inspecting-residual-correlations-(local-dependence)">Step 9</a>).</p>
-<p>The two factors are still substantially correlated (<em>r</em> ≈ .57), and the first factor alone accounts for the bulk of the variance, so a single-factor GRM may still be a reasonable conclusion. Keep this item grouping in mind, though, since it resurfaces in <a href="#step-9-inspecting-residual-correlations-(local-dependence)">Step 9</a>.</p>
+<p>The scree plot backs up the EFA results: eigenvalues 3.70 then a sharp drop to 0.5. Note that <code>fa.parallel()</code>’s own text output will say it “<em>suggests the number of factors = 2</em>”. The second eigenvalue does clear the simulated reference line, driven mainly by the three overt-hostility items (<code>bedbel</code>, <code>beleid</code>, <code>angriff</code>) pulling slightly apart from the rest (see <a href="#step-9-inspecting-residual-correlations-(local-dependence)">Step 9</a>).</p>
+<p>The two factors are still substantially correlated (<em>r</em> ≈ .57), and looking at the eigenvalues, the first factor alone accounts for the bulk of the variance, so a single-factor GRM may still be a reasonable conclusion. Keep this item grouping in mind, though, since it resurfaces in <a href="#step-9-inspecting-residual-correlations-(local-dependence)">Step 9</a>.</p>
 </section>
 <section id="step-4-fit-the-grm" class="level2">
 <h2 class="anchored" data-anchor-id="step-4-fit-the-grm">Step 4: Fit the GRM</h2>
@@ -976,7 +984,7 @@ theta     1</code></pre>
 <section id="step-5-item-probability-curves" class="level2">
 <h2 class="anchored" data-anchor-id="step-5-item-probability-curves">Step 5: Item probability curves</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tracePlot</span>(fit, <span class="at">title =</span> <span class="st">"Item Probability Functions"</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">color =</span> <span class="st">"Response Category"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tracePlot</span>(fit, <span class="at">title =</span> <span class="st">"Item Probability Curves Everyday Discrimination Scale - NaDIRa Test Dataset"</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">color =</span> <span class="st">"Response Category"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -992,7 +1000,7 @@ theta     1</code></pre>
 <h2 class="anchored" data-anchor-id="step-6-item-and-test-information">Step 6: Item and test information</h2>
 <p>This is the information that traditional factor analysis can’t give: <em>where</em> exactly our scale is precise.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">itemInfoPlot</span>(fit, <span class="at">facet =</span> <span class="cn">TRUE</span>, <span class="at">title =</span> <span class="st">"Item Information Functions"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">itemInfoPlot</span>(fit, <span class="at">facet =</span> <span class="cn">TRUE</span>, <span class="at">title =</span> <span class="st">"Item Information Functions Everyday Discrimination Scale - NaDIRa Test Dataset"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1015,7 +1023,7 @@ theta     1</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">testInfoPlot</span>(fit, <span class="at">title =</span> <span class="st">"Test Information Function"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">testInfoPlot</span>(fit, <span class="at">title =</span> <span class="st">"Test Information Function Everyday Discrimination Scale - NaDIRa Test Dataset"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1036,9 +1044,9 @@ theta     1</code></pre>
 <pre><code>[1] 0.8699944</code></pre>
 </div>
 </div>
-<p><strong>Empirical reliability</strong> instead uses the actual estimated <span class="math inline">\(\theta\)</span> scores and their standard errors for <em>this</em> sample, so it reflects the observed spread of scores. It’s the ratio of true-score variance to observed-score variance, computed directly from the EAP estimates (or factor scores, in CTT’s term) and their SEs.</p>
+<p><strong>Empirical reliability</strong> instead uses the actual estimated <span class="math inline">\(\theta\)</span> scores and their standard errors for <em>this</em> sample (from the model), so it reflects the observed spread of scores. It’s the ratio of true-score variance to observed-score variance, computed directly from the EAP estimates (or factor scores, in CTT’s term) and their SEs.</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>theta_se <span class="ot">&lt;-</span> <span class="fu">fscores</span>(fit, <span class="at">full.scores.SE =</span> <span class="cn">TRUE</span>)</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>theta_se <span class="ot">&lt;-</span> <span class="fu">fscores</span>(fit, <span class="at">full.scores.SE =</span> <span class="cn">TRUE</span>) <span class="co"># extract</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">empirical_rxx</span>(theta_se)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>    theta 
@@ -1049,7 +1057,7 @@ theta     1</code></pre>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># using mirt's own plot() rather than ggmirt::conRelPlot() here -- for some reason,</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="co"># mirt/ggmirt version combination conRelPlot() crashes R outright</span></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="co"># mirt's native rxx plot shows the same thing</span></span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fit, <span class="at">type =</span> <span class="st">"rxx"</span>, <span class="at">main =</span> <span class="st">"Reliability Across the θ Continuum"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fit, <span class="at">type =</span> <span class="st">"rxx"</span>, <span class="at">main =</span> <span class="st">"Reliability Everyday Discrimination Scale - NaDIRa Test Dataset, Across the θ Continuum"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1188,12 +1196,12 @@ ker_diskerf_angriff                1.00</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -0.1133676</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(q3) <span class="sc">%&gt;%</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="st">"item1"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>item1, <span class="at">names_to =</span> <span class="st">"item2"</span>, <span class="at">values_to =</span> <span class="st">"Q3"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(item1 <span class="sc">&lt;</span> item2) <span class="sc">%&gt;%</span></span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Q3d =</span> Q3 <span class="sc">-</span> baseline) <span class="sc">%&gt;%</span></span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Q3 <span class="sc">&gt;</span> <span class="dv">0</span>, Q3d <span class="sc">&gt;</span> <span class="fl">0.2</span>) <span class="co"># flag problematic items that have more paired correlations more than 0.2 from the baseline (-0.113)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(q3) <span class="sc">%&gt;%</span> <span class="co"># convert the matrix to data frame</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>(<span class="st">"item1"</span>) <span class="sc">%&gt;%</span> <span class="co"># move row names to a new column namely item1</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>item1, <span class="at">names_to =</span> <span class="st">"item2"</span>, <span class="at">values_to =</span> <span class="st">"Q3"</span>) <span class="sc">%&gt;%</span>  <span class="co"># long format: one row per item pair</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(item1 <span class="sc">&lt;</span> item2) <span class="sc">%&gt;%</span>  <span class="co"># keep each pair once, drop the diagonal</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Q3d =</span> Q3 <span class="sc">-</span> baseline) <span class="sc">%&gt;%</span> <span class="co"># subtract the baseline from raw q3</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Q3 <span class="sc">&gt;</span> <span class="dv">0</span>, Q3d <span class="sc">&gt;</span> <span class="fl">0.2</span>)  <span class="co"># flag pairs with Q3 &gt; 0.2 above baseline (possible local dependence)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div data-pagedtable="false">
   <script data-pagedtable-source="" type="application/json">

@@ -20,15 +20,15 @@ This is the hands-on companion to *"Introduction to IRT's Graded Response Model"
 >
 > - **In the workshop:** setting `USE_SIMULATED_DATA <- FALSE` — will read the real dataset.
 >   + Before running `.qmd` or `.Rmd` document with the real dataset, please create a new folder `data/` in your project root, then keep the dataset there.
-> - **If you don't have any access to the dataset:** `USE_SIMULATED_DATA <- TRUE`, which generates a synthetic dataset from item parameters estimated on the real data, so the shape and difficulty of the exercise carry over, but every response is simulated with `mirt` package. There is no real participants' data in it.
+> - **If you don't have any access to the dataset:** `USE_SIMULATED_DATA <- TRUE`, which generates a synthetic dataset from item parameters estimated on the real data, so the shape and difficulty of the exercise carry over, but every response is simulated with `mirt` package, without real participants' data in it.
 
 We'll go through 10 steps together: meet the dataset, check dimensionality, fit the GRM, read its output, inspect residual correlations, and think about what it means for your own scales.
 
 > **If you're running the simulated dataset**
 >
-> The numbers and conclusions quoted in Steps 8 and 9 describe the **real NaDiRA data** and won't replicate under `USE_SIMULATED_DATA <- TRUE`. `simdata()` generates responses that exactly satisfy the fitted GRM, so the simulated model and item fit (Step 8) comes out essentially perfect (no misfitting model or items at all), and it has no local dependence built in at all (the problematic items highlighted in Step 9 won't appear). Steps 2–7 will look similar, though not identical, either way.
+> The numbers and conclusions quoted in Steps 8 and 9 describe the **real NaDiRA data** and won't replicate under `USE_SIMULATED_DATA <- TRUE`. `simdata()` generates responses that exactly satisfy the fitted GRM, so the simulated model and item fit (Step 8) comes out essentially perfect (no misfitting model or items at all), and it has no local dependence at all (the problematic items highlighted in Step 9 won't appear). Steps 2–7 will look similar, though not identical, either way.
 
-## Step 0: Setup — packages
+## Step 0: Setup - packages
 
 If you already have these installed, skip this chunk.
 
@@ -92,7 +92,14 @@ This is question 3 of the NaDiRA survey instrument: *"Kommen wir nun zu Ihren Er
 | `ker_diskerf_beleid` | Sie werden beleidigt/beschimpft. | You are insulted/being called names. |
 | `ker_diskerf_angriff` | Sie werden körperlich angegriffen. | You are physically attacked. |
 
-The response options in the questionnaire run left to right: **Daily/*Täglich* (1) · At least once per week/*Mindestens einmal in der Woche* (2) · At least once per month/*Mindestens einmal im Monat* (3) · Several times a year/*Mehrmals im Jahr* (4) · Less often/*Seltener* (5) · Never/*Nie* (6)**.
+The response options in the questionnaire run left to right: 
+
+* **Daily/*Täglich* (1)
+* At least once per week/*Mindestens einmal in der Woche* (2) 
+* At least once per month/*Mindestens einmal im Monat* (3) 
+* Several times a year/*Mehrmals im Jahr* (4) 
+* Less often/*Seltener* (5) 
+* Never/*Nie* (6)**
 
 > **No need to reverse the scores**
 >
@@ -144,11 +151,11 @@ describe(data)
 skim(data)
 ```
 
-Look at the `hist` column — frequency-of-negative-experience items like these are typically right-skewed (most people report "Nie"/"Seltener"). `angriff` (physical attack) should look the most extreme; the everyday-slight items (`nernst`, `respekt`, `service`) should look comparatively less skewed.
+Look at the `hist` column: frequency-of-negative-experience items like these are typically right-skewed (most people report "Nie"/"Seltener"). `angriff` (physical attack) should look the most extreme; the everyday-slight items (`nernst`, `respekt`, `service`) should look comparatively less skewed. 
 
 That skew is exactly why we'll use a **polychoric correlation matrix** (instead of Pearson's or Spearman) for the dimensionality check below.
 
-And that's exactly what we see: `angriff` is by far the most skewed item (skew = 4.21, mean = 1.20, so almost everyone answers "Nie"), while `nernst` has the lowest skew (skew = 0.79) — its mean (2.56) is actually the highest of the seven, meaning this everyday slight is common enough that responses spread more evenly across the scale instead of piling up at one end.
+And that's exactly what we see: `angriff` is by far the most skewed item (skew = 4.21, mean = 1.20, so almost everyone answers "Nie"), while `nernst` has the lowest skew (skew = 0.79). Its mean (2.56) is actually the highest of the seven, meaning this everyday slight is common enough that responses spread more evenly across the scale instead of piling up at one end.
 
 The severe/rare items and the everyday/common items sit at opposite ends, which is a good sign the item set spans a real range of severity rather than all measuring the same narrow slice of experience.
 
@@ -175,9 +182,9 @@ a$fa.values
 
 If the proportion of variance explained by the first factor is comfortably above 50% and the scree plot elbows sharply after one factor, unidimensionality is reasonably supported, so we can proceed to the GRM.
 
-The scree plot backs up the EFA results: eigenvalues 3.70 then a sharp drop to 0.5. Note that `fa.parallel()`'s own text output will say it "suggests the number of factors = 2" — the second eigenvalue does clear the simulated reference line, driven mainly by the three overt-hostility items (`bedbel`, `beleid`, `angriff`) pulling slightly apart from the rest (see [Step 9](#step-9-inspecting-residual-correlations-(local-dependence))). 
+The scree plot backs up the EFA results: eigenvalues 3.70 then a sharp drop to 0.5. Note that `fa.parallel()`'s own text output will say it "*suggests the number of factors = 2*". The second eigenvalue does clear the simulated reference line, driven mainly by the three overt-hostility items (`bedbel`, `beleid`, `angriff`) pulling slightly apart from the rest (see [Step 9](#step-9-inspecting-residual-correlations-(local-dependence))). 
 
-The two factors are still substantially correlated (*r* ≈ .57), and the first factor alone accounts for the bulk of the variance, so a single-factor GRM may still be a reasonable conclusion. Keep this item grouping in mind, though, since it resurfaces in [Step 9](#step-9-inspecting-residual-correlations-(local-dependence)).
+The two factors are still substantially correlated (*r* ≈ .57), and looking at the eigenvalues, the first factor alone accounts for the bulk of the variance, so a single-factor GRM may still be a reasonable conclusion. Keep this item grouping in mind, though, since it resurfaces in [Step 9](#step-9-inspecting-residual-correlations-(local-dependence)).
 
 ## Step 4: Fit the GRM
 
@@ -198,7 +205,7 @@ In this scale, `respekt` ("less respect") has the highest discrimination (*a* = 
 ## Step 5: Item probability curves
 
 ```{r}
-tracePlot(fit, title = "Item Probability Functions") + labs(color = "Response Category")
+tracePlot(fit, title = "Item Probability Curves Everyday Discrimination Scale - NaDIRa Test Dataset") + labs(color = "Response Category")
 ```
 
 Thresholds are where the probability of scoring in category k or higher reaches 50%. Curves that overlap a lot, or peak only at one end of $\theta$, are telling you that item is only informative for part of the trait range.
@@ -210,7 +217,7 @@ Pick out `angriff` in the grid: because its thresholds sit so far to the right, 
 This is the information that traditional factor analysis can't give: *where* exactly our scale is precise.
 
 ```{r}
-itemInfoPlot(fit, facet = TRUE, title = "Item Information Functions")
+itemInfoPlot(fit, facet = TRUE, title = "Item Information Functions Everyday Discrimination Scale - NaDIRa Test Dataset")
 ```
 
 > **Why some curves have multiple peaks (i.e., multimodal)?**
@@ -218,7 +225,7 @@ itemInfoPlot(fit, facet = TRUE, title = "Item Information Functions")
 > A yes/no item only has one "tipping point" i.e., the trait level where people switch from one answer to the other, so it's only ever most useful for one type of participants. These items have six response categories, so each one has several tipping points or "steps" as in [the staircase illustration](intro.html#/the-staircase-illustration) (e.g., "rarely" to "sometimes", "sometimes" to "often", and so on). If those tipping points are spread far apart along the trait, the item ends up being especially useful for more than one type of participant, therefore showing up as more than one peak instead of just one.
 
 ```{r}
-testInfoPlot(fit, title = "Test Information Function")
+testInfoPlot(fit, title = "Test Information Function Everyday Discrimination Scale - NaDIRa Test Dataset")
 ```
 
 Compare the shape of the test information curve to where we'd expect our target population to actually sit on $\theta$. A curve that peaks somewhere our participants rarely fall is a scale that's precise in the wrong place.
@@ -233,7 +240,7 @@ Here, test information peaks around $\theta \approx 1.25$ (info $\approx 10.7$) 
 marginal_rxx(fit)
 ```
 
-**Empirical reliability** instead uses the actual estimated $\theta$ scores and their standard errors for *this* sample, so it reflects the observed spread of scores. It's the ratio of true-score variance to observed-score variance, computed directly from the EAP estimates (or factor scores, in CTT's term) and their SEs.
+**Empirical reliability** instead uses the actual estimated $\theta$ scores and their standard errors for *this* sample (from the model), so it reflects the observed spread of scores. It's the ratio of true-score variance to observed-score variance, computed directly from the EAP estimates (or factor scores, in CTT's term) and their SEs.
 
 ```{r}
 theta_se <- fscores(fit, full.scores.SE = TRUE)
@@ -244,7 +251,7 @@ empirical_rxx(theta_se)
 # using mirt's own plot() rather than ggmirt::conRelPlot() here -- for some reason,
 # mirt/ggmirt version combination conRelPlot() crashes R outright
 # mirt's native rxx plot shows the same thing
-plot(fit, type = "rxx", main = "Reliability Across the θ Continuum")
+plot(fit, type = "rxx", main = "Reliability Everyday Discrimination Scale - NaDIRa Test Dataset, Across the θ Continuum")
 ```
 
 Marginal and empirical reliability should be close. The plot shows us *where* reliability holds up (commonly interpreted as adequate above ~.80) and where it doesn't, and usually the tails.
@@ -304,12 +311,13 @@ Most of the negative values in this residual correlation matrix are the expected
 
 ```{r}
 baseline <- mean(q3[upper.tri(q3)]) # calculating mean off-diagonal, to see the "no-LD" baseline
-as.data.frame(q3) %>%
-  rownames_to_column("item1") %>%
-  pivot_longer(-item1, names_to = "item2", values_to = "Q3") %>%
-  filter(item1 < item2) %>%
-  mutate(Q3d = Q3 - baseline) %>%
-  filter(Q3 > 0, Q3d > 0.2) # flag problematic items that have more paired correlations more than 0.2 from the baseline (-0.113)
+baseline # baseline is -0.113
+as.data.frame(q3) %>% # convert the matrix to data frame
+  rownames_to_column("item1") %>% # move row names to a new column namely item1
+  pivot_longer(-item1, names_to = "item2", values_to = "Q3") %>%  # long format: one row per item pair
+  filter(item1 < item2) %>%  # keep each pair once, drop the diagonal
+  mutate(Q3d = Q3 - baseline) %>% # subtract the baseline from raw q3
+  filter(Q3 > 0, Q3d > 0.2)  # flag pairs with Q3 > 0.2 above baseline (possible local dependence)
 ```
 
 All three pairs above exceed the common rule of thumb threshold of $Q_{3d} > +0.20$ above the baseline. This may indicate that experiences of overt verbal hostility (`beleid`), threats (`bedbel`), and physical assault (`angriff`) share "nuisance variance" (i.e., "unknown source") beyond general everyday discrimination, and this is likely because they frequently co-occur during the same hostile encounters.
